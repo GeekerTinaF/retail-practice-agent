@@ -1,0 +1,259 @@
+# Retail Practice — source registry
+# Tier definitions follow .claude/skills/retail-research/evidence-policy.md §1.
+# `last_used` = date a retail-research output actually cited the source.
+#   null = listed for coverage only; not yet used or verified in an output.
+# `countries` = ids from countries.yaml ("EU" = EU-wide, "EMEA" = multi-country).
+
+version: 0.1
+last_updated: 2026-09-28
+
+tiers:
+  1: Primary company sources and official statistics
+  2: Strategic research and industry associations
+  3: Trade press
+  4: General business press
+  5: Secondary commentary (leads only; never cited as standalone fact)
+
+sources:
+  # --- Official statistics (tier 1) ---
+  - id: eurostat
+    name: Eurostat
+    type: official_statistics
+    tier: 1
+    countries: [EU]
+    url: https://ec.europa.eu/eurostat
+    notes: Dissemination API used for chart data (sts_trtu_m, prc_hicp_minr, ei_bsco_m, isoc_ec_ibgs).
+    last_used: 2026-09-28
+  - id: european_commission
+    name: European Commission
+    type: official
+    tier: 1
+    countries: [EU]
+    url: https://commission.europa.eu
+    last_used: 2026-09-28
+  - id: destatis
+    name: Destatis (Statistisches Bundesamt)
+    type: official_statistics
+    tier: 1
+    countries: [DE]
+    url: https://www.destatis.de
+    last_used: 2026-09-28
+  - id: ons
+    name: Office for National Statistics
+    type: official_statistics
+    tier: 1
+    countries: [GB]
+    url: https://www.ons.gov.uk
+    last_used: null
+  - id: insee
+    name: INSEE
+    type: official_statistics
+    tier: 1
+    countries: [FR]
+    url: https://www.insee.fr
+    last_used: null
+  - id: ine_es
+    name: INE (Instituto Nacional de Estadística)
+    type: official_statistics
+    tier: 1
+    countries: [ES]
+    url: https://www.ine.es
+    last_used: null
+  - id: cbs
+    name: CBS (Statistics Netherlands)
+    type: official_statistics
+    tier: 1
+    countries: [NL]
+    url: https://www.cbs.nl
+    last_used: null
+  - id: gus
+    name: GUS (Statistics Poland)
+    type: official_statistics
+    tier: 1
+    countries: [PL]
+    url: https://stat.gov.pl
+    last_used: null
+  - id: istat
+    name: ISTAT
+    type: official_statistics
+    tier: 1
+    countries: [IT]
+    url: https://www.istat.it
+    last_used: null
+  - id: scb
+    name: Statistics Sweden (SCB)
+    type: official_statistics
+    tier: 1
+    countries: [SE]
+    url: https://www.scb.se
+    last_used: null
+  - id: ssb
+    name: Statistics Norway (SSB)
+    type: official_statistics
+    tier: 1
+    countries: [NO]
+    url: https://www.ssb.no
+    last_used: null
+  - id: dst
+    name: Statistics Denmark
+    type: official_statistics
+    tier: 1
+    countries: [DK]
+    url: https://www.dst.dk
+    last_used: null
+  - id: statfi
+    name: Statistics Finland
+    type: official_statistics
+    tier: 1
+    countries: [FI]
+    url: https://stat.fi
+    last_used: null
+  - id: czso
+    name: Czech Statistical Office
+    type: official_statistics
+    tier: 1
+    countries: [CZ]
+    url: https://www.czso.cz
+    last_used: null
+
+  # --- Strategic research (tier 2) ---
+  - id: mckinsey
+    name: McKinsey & Company
+    type: strategic_research
+    tier: 2
+    countries: [EMEA]
+    url: https://www.mckinsey.com
+    notes: Forward-looking statements are labelled Forecast/Analysis. Always cite the exact report and year (e.g. The State of Fashion 2026).
+    last_used: 2026-09-28
+  - id: deloitte
+    name: Deloitte
+    type: strategic_research
+    tier: 2
+    countries: [EMEA]
+    url: https://www.deloitte.com
+    notes: e.g. Global Powers of Retailing / Global Powers of Luxury. Same labelling rule as McKinsey.
+    last_used: 2026-09-28
+
+  # --- Industry associations / research institutes (tier 2) ---
+  - id: hde
+    name: HDE Handelsverband Deutschland
+    type: industry_association
+    tier: 2
+    countries: [DE]
+    url: https://einzelhandel.de
+    last_used: 2026-09-28
+  - id: bte
+    name: BTE Handelsverband Textil Schuhe Lederwaren
+    type: industry_association
+    tier: 2
+    countries: [DE]
+    url: https://www.bte.de
+    last_used: 2026-09-28
+  - id: bevh
+    name: bevh (Bundesverband E-Commerce und Versandhandel)
+    type: industry_association
+    tier: 2
+    countries: [DE]
+    url: https://www.bevh.org
+    notes: Figures so far cited via BTE.
+    last_used: 2026-09-28
+  - id: nim
+    name: NIM (Nürnberg Institut für Marktentscheidungen), GfK Consumer Climate
+    type: research_institute
+    tier: 2
+    countries: [DE]
+    url: https://www.nim.org
+    last_used: 2026-09-28
+
+  # --- Trade press (tier 3) ---
+  - id: textilwirtschaft
+    name: TextilWirtschaft
+    type: trade_press
+    tier: 3
+    countries: [DE]
+    url: https://www.textilwirtschaft.de
+    notes: Largely paywalled; cite only content actually seen.
+    last_used: 2026-09-28
+  - id: logistics_manager
+    name: Logistics Manager
+    type: trade_press
+    tier: 3
+    countries: [GB, EMEA]
+    url: https://www.logisticsmanager.com
+    last_used: 2026-09-28
+  - id: wwd
+    name: WWD / Sourcing Journal
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://wwd.com
+    last_used: 2026-09-28
+  - id: fashionnetwork
+    name: FashionNetwork
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://fashionnetwork.com
+    last_used: 2026-09-28
+  - id: sgi_europe
+    name: Sporting Goods Intelligence Europe
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://www.sgieurope.com
+    last_used: 2026-09-28
+  - id: retaildetail
+    name: RetailDetail
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://www.retaildetail.eu
+    last_used: null
+  - id: retail_week
+    name: Retail Week
+    type: trade_press
+    tier: 3
+    countries: [GB]
+    url: https://www.retail-week.com
+    last_used: null
+  - id: just_style
+    name: Just Style
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://www.just-style.com
+    last_used: null
+  - id: dc_velocity
+    name: DC Velocity
+    type: trade_press
+    tier: 3
+    countries: [EMEA]
+    url: https://www.dcvelocity.com
+    last_used: null
+
+  # --- General business press (tier 4) ---
+  - id: reuters
+    name: Reuters
+    type: general_press
+    tier: 4
+    countries: [EMEA]
+    url: https://www.reuters.com
+    last_used: null
+  - id: investing_com
+    name: Investing.com
+    type: general_press
+    tier: 4
+    countries: [EMEA]
+    url: https://www.investing.com
+    notes: Used for one figure only (Zalando fulfilment cost ratio); a primary source is still needed.
+    last_used: 2026-09-28
+  - id: t_online
+    name: t-online
+    type: general_press
+    tier: 4
+    countries: [DE]
+    url: https://www.t-online.de
+    last_used: 2026-09-28
+
+  # Company IR/newsroom sources (tier 1) are recorded per account in
+  # accounts.csv (footprint_source_urls / inclusion_source_urls), not here.

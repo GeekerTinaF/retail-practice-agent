@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>France Beauty Retail Intelligence</title>
+<style>
+
+:root{
+  --paper:#ffffff; --page:#f6f6f3; --ink:#0f1c2e; --ink-2:#4a5160; --muted:#7c818b;
+  --rule:#e3e2dc; --rule-2:#cfcdc4; --navy:#13294b; --navy-soft:#e8edf5;
+  --series-1:#2a78d6; --series-2:#eb6834; --neutral-bar:#8a94a6;
+  --grid:#e1e0d9; --axis:#c3c2b7;
+  --fact:#1f5f3a; --fact-bg:#eaf4ee; --analysis:#6a4a0c; --analysis-bg:#fbf3e2;
+  --calc:#3d3a8c; --calc-bg:#eeedfa; --warn:#8a2c1e; --warn-bg:#fbecea;
+  --radius:10px;
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink); background:var(--page);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-size:15px;line-height:1.55}
+a{color:var(--series-1);overflow-wrap:anywhere}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+/* Header */
+header.report{background:var(--navy);color:#fff;padding-block:40px 32px}
+header.report .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin:0 0 10px}
+header.report h1{font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 22px;font-weight:650;letter-spacing:-.01em}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 28px;border-top:1px solid rgba(255,255,255,.2);padding-top:18px}
+.meta div{font-size:13px}
+.meta b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;font-weight:600;margin-bottom:2px}
+.disclaimer{margin-top:18px;font-size:12.5px;opacity:.8;max-width:900px}
+/* Nav */
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+nav.toc ul{list-style:none;margin:0 auto;padding:0 24px;max-width:1180px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+nav.toc a{display:block;padding:12px 10px;font-size:13px;color:var(--ink-2);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover,nav.toc a.active{color:var(--navy);border-bottom-color:var(--navy)}
+/* Sections */
+main{padding-block:12px 60px}
+section{padding-block:40px 8px;scroll-margin-top:52px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:22px}
+.sec-num{font-size:13px;font-weight:700;color:var(--navy);background:var(--navy-soft);border-radius:6px;padding:2px 8px}
+.sec-head h2{margin:0;font-size:22px;font-weight:650;letter-spacing:-.005em}
+.lede{color:var(--ink-2);max-width:880px;margin:0 0 20px}
+h3{font-size:17px;margin:28px 0 12px;font-weight:650}
+h4{font-size:14.5px;margin:0 0 6px;font-weight:650}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+/* Labels */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:2px 6px;vertical-align:1px;margin-right:4px;white-space:nowrap}
+.t-fact{background:var(--fact-bg);color:var(--fact)}
+.t-analysis{background:var(--analysis-bg);color:var(--analysis)}
+.t-calc{background:var(--calc-bg);color:var(--calc)}
+.t-unconf{background:var(--warn-bg);color:var(--warn)}
+.t-est{background:#eef1f4;color:#44505f}
+sup.ref a{font-size:10.5px;text-decoration:none;color:var(--series-1);font-weight:600;padding:0 1px}
+/* Exec summary */
+.exec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px}
+.finding{position:relative;padding-left:58px}
+.finding .n{position:absolute;left:20px;top:20px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.finding p{margin:6px 0 0;font-size:14px}
+.impl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px;margin-top:18px}
+.impl .card{border-top:3px solid var(--navy)}
+.impl h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy)}
+.impl ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+.impl li{margin-bottom:6px}
+.bottomline{margin-top:18px;background:var(--navy-soft);border-left:4px solid var(--navy);border-radius:6px;padding:14px 18px;font-size:14.5px}
+/* KPI */
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi .label{font-size:12.5px;color:var(--ink-2);font-weight:600}
+.kpi .value{font-size:30px;font-weight:650;letter-spacing:-.01em;line-height:1.1}
+.kpi .value small{font-size:14px;font-weight:600;color:var(--ink-2);margin-left:3px}
+.kpi .ctx{font-size:12.5px;color:var(--ink-2)}
+.kpi .src{margin-top:auto;padding-top:8px;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.4}
+.kpi.neg .value{color:#9b2d20}
+.kpi-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 0 10px}
+/* Charts */
+.chart-card h4{font-size:15px;margin-bottom:2px}
+.chart-card .msg{font-size:13.5px;color:var(--ink-2);margin:0 0 10px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2);margin:0 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.legend i.sq{height:10px;width:10px;border-radius:2px}
+.tip{position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-2);border-radius:8px;box-shadow:0 4px 14px rgba(15,28,46,.12);padding:8px 10px;font-size:12px;line-height:1.45;min-width:150px;opacity:0;transition:opacity .08s;z-index:5}
+.tip b{display:block;margin-bottom:2px}
+.tip .row{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.tip .row span{display:inline-flex;align-items:center;gap:6px}
+.tip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chart-meta{margin-top:10px;border-top:1px solid var(--rule);padding-top:8px;font-size:11.5px;color:var(--ink-2);display:grid;gap:2px}
+.chart-meta b{color:var(--ink);font-weight:600}
+details.data{margin-top:8px;font-size:12px}
+details.data summary{cursor:pointer;color:var(--series-1)}
+details.data .tbl-wrap{max-height:260px;overflow:auto;margin-top:6px}
+/* Tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{background:#f3f4f7;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-weight:700;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.wide{min-width:1000px}
+td.co{font-weight:650}
+.prio{display:inline-flex;align-items:center;gap:6px;font-weight:650;font-size:12.5px;white-space:nowrap}
+.prio i{width:9px;height:9px;border-radius:50%}
+.p-high i{background:#13294b}.p-med i{background:#6d86b0}.p-low i{background:#c5cfdf}
+/* Intelligence */
+.seg{margin-top:10px}
+.seg-title{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.seg-title h3{margin:0}
+.seg-title .line{flex:1;height:1px;background:var(--rule-2)}
+.dev dl{display:grid;grid-template-columns:128px 1fr;gap:6px 14px;margin:10px 0 0;font-size:13.5px}
+.dev dt{font-weight:650;color:var(--ink-2);font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.dev dd{margin:0}
+@media (max-width:560px){.dev dl{grid-template-columns:1fr}.dev dt{padding-top:6px}}
+.note{background:#f3f4f7;border-radius:8px;padding:12px 14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.callout{border-left:4px solid var(--series-2);background:#fff6f1;border-radius:6px;padding:12px 16px;font-size:13.5px;margin-top:16px}
+/* Logistics */
+.sig{display:grid;grid-template-columns:160px 1fr 1fr;gap:0;border-bottom:1px solid var(--rule)}
+.sig:last-child{border-bottom:0}
+.sig>div{padding:14px 16px;font-size:13.5px}
+.sig .theme{font-weight:650;color:var(--navy);background:#fafaf8}
+.sig-head{background:#f3f4f7!important;font-size:11.5px!important;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+@media (max-width:760px){.sig{grid-template-columns:1fr}.sig-head:not(:first-child){display:none}}
+/* Outlook */
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px}
+ul.clean{margin:0;padding-left:18px;font-size:14px}
+ul.clean li{margin-bottom:8px}
+/* Sources */
+ol.sources{font-size:12.5px;padding-left:26px;margin:0}
+ol.sources li{margin-bottom:8px;padding-left:4px}
+ol.sources li:target{background:#fff6d6;border-radius:4px}
+ol.sources .tier{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+footer{border-top:1px solid var(--rule);padding-block:24px;color:var(--muted);font-size:12px}
+@media print{nav.toc{display:none}section{break-inside:avoid-page}.card{break-inside:avoid}}
+
+
+/* ---- V0.2 additions ---- */
+.q{display:grid;grid-template-columns:44px 1fr;gap:0 14px;padding:16px 20px;border-bottom:1px solid var(--rule)}
+.q:last-child{border-bottom:0}
+.q .qn{font-size:12px;font-weight:700;color:var(--navy);background:var(--navy-soft);border-radius:6px;height:26px;display:grid;place-items:center}
+.q h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:3px 0 6px}
+.q p{margin:0;font-size:14.5px}
+.q ul{margin:4px 0 0;padding-left:18px;font-size:14px}
+.q li{margin-bottom:3px}
+.state{display:inline-flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;border-radius:999px;padding:3px 10px;border:1px solid var(--rule-2);background:#fff}
+.pill i{width:8px;height:8px;border-radius:50%}
+.pill.down i{background:#b5452f}.pill.flat i{background:#c79a2b}.pill.up i{background:#1f8a4c}
+.kpi .sowhat{font-size:12.5px;color:var(--ink);background:var(--analysis-bg);border-radius:6px;padding:6px 8px}
+.kpi .sowhat b{color:var(--analysis);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+.score{display:inline-flex;gap:3px;flex-wrap:wrap;align-items:center}
+.score span{font-size:11px;font-variant-numeric:tabular-nums;border:1px solid var(--rule-2);border-radius:4px;padding:1px 4px;background:#fff;color:var(--ink-2)}
+.score span.s2{background:#dfe7f3;border-color:#b9c8e0;color:var(--navy);font-weight:700}
+.score span.s0{color:#aab0ba}
+.band{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-top:4px}
+.band.high{background:var(--navy);color:#fff}.band.medium{background:#6d86b0;color:#fff}.band.low{background:#e3e7ee;color:#44505f}
+.chain{display:grid;gap:0;margin-top:10px}
+.chain .step{display:grid;grid-template-columns:30px 190px 1fr;gap:0 12px;padding:10px 0;border-top:1px solid var(--rule);font-size:13.5px}
+.chain .step:first-child{border-top:0}
+.chain .step .k{width:24px;height:24px;border-radius:50%;background:var(--navy-soft);color:var(--navy);font-size:12px;font-weight:700;display:grid;place-items:center}
+.chain .step .lbl{font-weight:650;font-size:12.5px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em;padding-top:3px}
+.chain .step.gap .k{background:var(--warn-bg);color:var(--warn)}
+.chain .step.act .k{background:var(--navy);color:#fff}
+@media (max-width:640px){.chain .step{grid-template-columns:30px 1fr}.chain .step>div:last-child{grid-column:2}}
+.chain-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between}
+.chain-head h4{font-size:16px;margin:0}
+.univ-yes{font-weight:650;color:var(--navy)}
+.univ-no{color:var(--muted)}
+.unknown{color:var(--muted);font-style:italic}
+.legend-inline{font-size:12px;color:var(--ink-2);margin:8px 0 14px}
+code.id{font-size:11.5px;background:#eef1f4;border-radius:4px;padding:1px 5px;white-space:nowrap}
+.cad{white-space:nowrap;font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="report">
+  <div class="wrap">
+    <p class="eyebrow">Geek+ EMEA · Retail Practice · Market → Account → Fulfilment → Commercial Intelligence · V0.2</p>
+    <h1>France Beauty &amp; Personal Care Retail Intelligence</h1>
+    <div class="meta">
+      <div><b>Reporting date</b>28 September 2026</div>
+      <div><b>Last updated</b>2026-09-28</div>
+      <div><b>Geographic scope</b>France (Southern Europe). EU27, Germany, UK, Spain and Italy appear only as labelled benchmarks.</div>
+      <div><b>Industry scope</b>Beauty &amp; personal care: selective/prestige retail, pharmacy &amp; dermocosmetics, mass &amp; digital-native brands, including beauty e-commerce and fulfilment</div>
+      <div><b>Data cut-off</b>Retail volumes: Jul 2026 (online: Jun 2026) · Prices: Aug 2026 · Confidence: Aug 2026 · Online buying: 2024 · Company news: to 28 Sep 2026</div>
+      <div><b>Research date / method</b>28 Sep 2026 · <code style="color:#fff;background:rgba(255,255,255,.12);padding:1px 5px;border-radius:4px">retail-research</code> skill V0.2</div>
+    </div>
+    <p class="disclaimer">Labels:
+      <span class="tag t-fact">Reported</span> as published by the named source ·
+      <span class="tag t-calc">Calculated</span> our arithmetic, method stated ·
+      <span class="tag t-est">Forecast</span> the source's own projection ·
+      <span class="tag t-analysis">Analysis</span> our interpretation, not a fact or a customer requirement ·
+      <span class="tag t-unconf">Unconfirmed</span> not verified against a tier 1–3 source.
+      No commercial relationship between Geek+ and any named company is implied. The two Geek+ references in §8 are public case studies, cited only as capability evidence. Intelligence Priority indicates where more intelligence gathering is justified. <b>It is not a sales priority</b>; no CRM data was used.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Report sections">
+  <ul>
+    <li><a href="#exec">1 Executive intelligence</a></li>
+    <li><a href="#signals">2 Headline signals</a></li>
+    <li><a href="#market">3 Market context</a></li>
+    <li><a href="#segments">4 Segments</a></li>
+    <li><a href="#universe">5 Account universe</a></li>
+    <li><a href="#active">6 Active signals</a></li>
+    <li><a href="#fulfilment">7 Fulfilment</a></li>
+    <li><a href="#chains">8 Commercial chains</a></li>
+    <li><a href="#gaps">9 Gaps &amp; conflicts</a></li>
+    <li><a href="#watchlist">10 Watchlist</a></li>
+    <li><a href="#sources">11 Sources</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 EXECUTIVE INTELLIGENCE -->
+<section id="exec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Executive intelligence</h2></div>
+  <div class="card" style="padding:0">
+    <div class="q"><span class="qn">Q1</span><div>
+      <h4>Current market state</h4>
+      <div class="state"><span class="pill down"><i></i>Prestige beauty: contracting</span><span class="pill up"><i></i>Online share: rising from a low base</span><span class="pill down"><i></i>Specialist retailers: stressed</span></div>
+      <p><span class="tag t-analysis">Analysis</span> French beauty demand is flat to negative in the selective channel, and the chains are under financial pressure. Prestige beauty fell −1% in value and −3% in units in 2025, while Europe grew +4%<sup class="ref"><a href="#s7">7</a></sup>. Douglas wrote down €99m of goodwill on NOCIBÉ<sup class="ref"><a href="#s10">10</a></sup>.</p>
+    </div></div>
+    <div class="q"><span class="qn">Q2</span><div>
+      <h4>What materially changed</h4>
+      <ul>
+        <li><b>Jul–Sep 2026:</b> CK Hutchison is in talks to sell Marionnaud (372 French stores) to the owner of Bogart. Unions struck on 5 Sep<sup class="ref"><a href="#s13">13</a></sup>.</li>
+        <li><b>May–Aug 2026:</b> Douglas took the NOCIBÉ impairment, cut its guidance and reported France like-for-like sales of −4.3% in Q3<sup class="ref"><a href="#s9">9</a></sup><sup class="ref"><a href="#s10">10</a></sup><sup class="ref"><a href="#s11">11</a></sup>.</li>
+        <li><b>1 Jul 2026:</b> an EU €3 customs duty on low-value parcels took effect and replaced France's €2 fee<sup class="ref"><a href="#s22">22</a></sup><sup class="ref"><a href="#s23">23</a></sup>.</li>
+      </ul>
+    </div></div>
+    <div class="q"><span class="qn">Q3</span><div>
+      <h4>Where fulfilment activity is concentrating</h4>
+      <p><span class="tag t-analysis">Analysis</span> Fulfilment activity is concentrating in <b>brand-owned direct-to-consumer (D2C) and e-commerce networks</b>, not in retail chains: L'Oréal's pan-European e-commerce site at Bain-de-Bretagne (run by 3PL Dimolog), Aroma-Zone's new Cavaillon site, and Dior's new ID Logistics site in the Aube. Pierre Fabre cancelled a €70m greenfield DC and chose a retrofit instead.</p>
+    </div></div>
+    <div class="q"><span class="qn">Q4</span><div>
+      <h4>Accounts with meaningful signals</h4>
+      <p style="font-size:13.5px;margin-bottom:4px">No signal reaches <b>High</b>, because none has tier 1–2 evidence and a score of 10 or more.</p>
+      <ul>
+        <li><b>Aroma-Zone</b> <span class="band medium">Medium</span> New 22,000 m² site; parcel volumes rising fast</li>
+        <li><b>L'Oréal / Dimolog</b> <span class="band medium">Medium</span> European e-commerce hub ramping; robots already installed</li>
+        <li><b>Dior · Marionnaud · Pierre Fabre · Shein/Temu</b> <span class="band medium">Medium</span> New 3PL DC, change of owner, DC retrofit, EU parcel duty</li>
+      </ul>
+    </div></div>
+    <div class="q"><span class="qn">Q5</span><div>
+      <h4>What Geek+ should monitor next</h4>
+      <ul>
+        <li>Cavaillon delivery and any automation vendor Aroma-Zone names (<a href="#watchlist">W02</a>)</li>
+        <li>Further robot extensions at Dimolog for L'Oréal (<a href="#watchlist">W01</a>)</li>
+        <li>The Marionnaud buyer's network plan after the six-month observation period (<a href="#watchlist">W03</a>)</li>
+        <li>Automation tenders for Pierre Fabre's route de Seysses retrofit and Dior's Aube site (<a href="#watchlist">W05–W06</a>)</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="bottomline"><b>Bottom line.</b> <span class="tag t-analysis">Analysis</span> In French beauty, the automation-relevant activity is in brand D2C and e-commerce fulfilment, not in the struggling perfumery chains. The next step is to confirm the evidence for a handful of named sites, not to run market-wide outreach.</div>
+</section>
+
+<!-- 2 HEADLINE SIGNALS -->
+<section id="signals">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Headline signals</h2></div>
+  <p class="lede">These six figures change how the market should be read. All other quantitative evidence is in §3.</p>
+  <div class="grid g3">
+    <div class="card kpi neg"><span class="label">Prestige (selective) beauty sales, value change</span><span class="value">−1<small>%</small></span><span class="ctx">2025 vs 2024 · France · €4.3bn market · units −3% · Europe +4% (benchmark)</span>
+      <span class="sowhat"><b>So what</b>The core selective channel is shrinking in volume, so store-led retailers are cutting cost, not adding capacity.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Circana via Premium Beauty News, 03 Mar 2026<sup class="ref"><a href="#s7">7</a></sup></span></div>
+    <div class="card kpi"><span class="label">E-commerce share of prestige beauty sales</span><span class="value">18<small>%</small></span><span class="ctx">2025 · France (8% in 2019) · online +12% while stores −4% · UK 50%, Germany 46% (benchmarks)</span>
+      <span class="sowhat"><b>So what</b>All the growth is online, and France still has a long way to go compared with the UK and Germany. Unit-level e-commerce picking will keep growing.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Circana via Premium Beauty News, 03 Mar 2026<sup class="ref"><a href="#s7">7</a></sup></span></div>
+    <div class="card kpi neg"><span class="label">Douglas France (NOCIBÉ) sales, like-for-like</span><span class="value">−4.3<small>%</small></span><span class="ctx">Q3 FY2025/26 (Apr–Jun 2026) · France · €169.1m · €99m goodwill impairment on NOCIBÉ and Parfumdreams in Q2</span>
+      <span class="sowhat"><b>So what</b>The second-largest perfumery chain is in restructuring mode. Its store network is under review, not its DCs.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Douglas Group, 12 May &amp; 12 Aug 2026<sup class="ref"><a href="#s9">9</a></sup><sup class="ref"><a href="#s10">10</a></sup></span></div>
+    <div class="card kpi neg"><span class="label">French cosmetics exports</span><span class="value">€22.4<small>bn</small></span><span class="ctx">2025 · −0.1%, the first decline since 2008 · exports to the US −19% · exports to the EU +4% (€12.1bn)</span>
+      <span class="sowhat"><b>So what</b>French brand manufacturers face flat volumes and tariff pressure, which puts cost per order at their DCs under scrutiny.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> FEBEA, 06 Feb 2026<sup class="ref"><a href="#s6">6</a></sup></span></div>
+    <div class="card kpi"><span class="label">L'Oréal European e-commerce orders at Dimolog, Bain-de-Bretagne</span><span class="value">1.7–2<small>m / yr</small></span><span class="ctx">Target at full capacity (Q2 2026), up from 1m · 24 brands · 13 countries · 32 Scallog robots</span>
+      <span class="sowhat"><b>So what</b>The largest beauty group has centralised European D2C picking in one automated 3PL site in France.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Voxlog, 09 Nov 2025<sup class="ref"><a href="#s14">14</a></sup></span></div>
+    <div class="card kpi"><span class="label">Aroma-Zone new logistics site, Cavaillon</span><span class="value">22,000<small>m²</small></span><span class="ctx">Delivery Q3 2026 (another source says end-2026) · 3m parcels/yr, ≈4m expected in 2025 · revenue +52% in 2025</span>
+      <span class="sowhat"><b>So what</b>This is the fastest-growing French beauty D2C brand in the evidence set, and it is adding capacity now.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Vaucluse Hebdo, 21 Oct 2025; e-commerce mag, 16 Mar 2026<sup class="ref"><a href="#s15">15</a></sup><sup class="ref"><a href="#s16">16</a></sup></span></div>
+  </div>
+</section>
+
+<!-- 3 MARKET CONTEXT -->
+<section id="market">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Market context</h2></div>
+  <p class="lede">Each chart is titled with the sentence it proves. There is no monthly official retail series for French beauty or perfumery stores (Eurostat publishes no G47.75 series for France). Charts therefore use total retail, online retail and personal-care prices. This proxy limitation is recorded in §9.</p>
+
+  <div class="grid g2">
+<!-- CHART SPEC
+CHART ID: 3.1
+MESSAGE: French online retail volumes have recovered strongly in 2026 and caught up with total retail.
+DECISION RELEVANCE: Q1 market state; Q3 where fulfilment activity concentrates
+DATA REQUIRED: Monthly real sales volume, total retail vs online retail, same source and definition, France
+DATA USED: Eurostat sts_trtu_m, G47 & G4791, VOL_SLS, SCA, I21, FR, 2019-01..2026-07 (online to 2026-06) (Reported)
+TEST RESULT: supports. Online H1-2026 mean 106.7 vs 99.5 in H1-2025 (+7.2%, Calculated); total 108.1 vs 105.6 (+2.4%). Both indices at 108.3 in May 2026.
+FORM + WHY: line chart, trend over time, single axis (common index base)
+LIMITATIONS: all retail, not beauty-specific; online includes all product categories; 2021 base inflated online by lockdowns
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.1 · Q1, Q3</span></p>
+      <h4>French online retail volumes have rebounded in 2026 and caught up with total retail</h4>
+      <p class="msg">The online index averaged 106.7 in H1 2026, up from 99.5 in H1 2025 (+7.2%). Total retail rose +2.4% over the same period. Both indices stood at 108.3 in May 2026.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>Total retail (G47)</span><span><i style="background:var(--series-2)"></i>Mail order &amp; internet retail (G47.91)</span></div>
+      <div class="chart" id="c-retail"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>sts_trtu_m</i>, updated 26 Sep 2026<sup class="ref"><a href="#s1">1</a></sup> · <span class="tag t-fact">Reported</span>; H1 averages <span class="tag t-calc">Calculated</span> (mean of six monthly values)</div>
+        <div><b>Period:</b> Jan 2019 – Jul 2026 (online to Jun 2026), monthly · <b>Geography:</b> France</div>
+        <div><b>Metric definition:</b> Volume of sales index (price-adjusted), 2021 = 100, seasonally and calendar adjusted.</div>
+        <div><b>Limitations:</b> Covers all of retail, not beauty. The online series covers all product categories. Lockdowns inflated the 2021 base for online, so online appears to trail total retail through 2024.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-retail"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.2
+MESSAGE: Beauty has little pricing power: personal-care product prices fell through 2024–25 and still rise far below headline inflation.
+DECISION RELEVANCE: Q1 market state (margin pressure → cost focus)
+DATA REQUIRED: Monthly annual inflation, all items vs personal-care products, same index, France
+DATA USED: Eurostat prc_hicp_minr, TOTAL & CP1312 (ECOICOP v2), RCH_A, FR, 2023-01..2026-08 (Reported)
+TEST RESULT: supports (CP1312 negative in 20 of 21 months Jun-2024..Feb-2026; Aug-2026 +0.9% vs +2.6% headline)
+FORM + WHY: line chart, trend, single axis, zero line visible
+LIMITATIONS: CP1312 includes non-beauty personal-care goods (e.g. razors, toiletries); HICP ≠ INSEE national CPI
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.2 · Q1</span></p>
+      <h4>Beauty has little pricing power: personal-care product prices fell through 2024–25 and are still rising well below headline inflation</h4>
+      <p class="msg">Personal-care product prices fell year-on-year in 20 of the 21 months from June 2024 to February 2026. In August 2026 they were up +0.9%, against headline inflation of +2.6%.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>HICP all items</span><span><i style="background:var(--series-2)"></i>HICP personal-care products (CP1312)</span></div>
+      <div class="chart" id="c-hicp"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>prc_hicp_minr</i>, updated 17 Sep 2026<sup class="ref"><a href="#s2">2</a></sup> · <span class="tag t-fact">Reported</span>; month count <span class="tag t-calc">Calculated</span></div>
+        <div><b>Period:</b> Jan 2023 – Aug 2026 · <b>Geography:</b> France</div>
+        <div><b>Metric definition:</b> Harmonised Index of Consumer Prices (HICP), annual rate of change, %. CP1312 = "other appliances, articles and products for personal care" (ECOICOP v2).</div>
+        <div><b>Limitations:</b> CP1312 also includes non-beauty toiletries and small appliances. The HICP is not INSEE's national CPI, and the two are not combined.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-hicp"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.3
+MESSAGE: Online beauty buying among French consumers has not grown since 2021 and is now below the EU average.
+DECISION RELEVANCE: Q3 where fulfilment activity concentrates (reach of beauty e-commerce)
+DATA REQUIRED: Share of individuals buying cosmetics/beauty online, France vs EU27, same survey
+DATA USED: Eurostat isoc_ec_ibgs, I_BCBW, PC_IND, IND_TOTAL, FR & EU27_2020, 2021–2024 (Reported)
+TEST RESULT: supports (FR 17.7% → 17.8%; EU27 15.3% → 18.8%)
+FORM + WHY: grouped bar, comparison of two geographies across four years (few points)
+LIMITATIONS: measures reach (share of people), not spend; FR 2020 not published; latest year 2024
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.3 · Q3</span></p>
+      <h4>The share of French consumers buying beauty online has not grown since 2021 and is now below the EU average</h4>
+      <p class="msg">17.8% of individuals bought cosmetics, beauty or wellness products online in 2024, up from 17.7% in 2021. The EU27 share rose from 15.3% to 18.8% over the same period.</p>
+      <div class="legend"><span><i class="sq" style="background:var(--series-1)"></i>France</span><span><i class="sq" style="background:var(--series-2)"></i>EU27 (benchmark)</span></div>
+      <div class="chart" id="c-ibcbw"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>isoc_ec_ibgs</i>, updated 17 Apr 2026<sup class="ref"><a href="#s4">4</a></sup> · <span class="tag t-fact">Reported</span></div>
+        <div><b>Period:</b> 2021–2024, annual · <b>Geography:</b> France; EU27 as benchmark</div>
+        <div><b>Metric definition:</b> % of all individuals (16–74) who bought cosmetics, beauty or wellness products online in the last 3 months.</div>
+        <div><b>Limitations:</b> This measures reach, not spend or order frequency. Circana's 18% prestige online share (§2) is a different metric (value share of one channel), so the two are not combined. There is no 2020 value for France, and 2024 is the latest year.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-ibcbw"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.4
+MESSAGE: French consumer confidence fell in April 2026 to its lowest since 2022 and has stayed below the EU average.
+DECISION RELEVANCE: Q2 what changed
+DATA REQUIRED: Monthly consumer confidence, France with EU27 benchmark, same survey
+DATA USED: Eurostat ei_bsco_m BS-CSMCI SA BAL, FR & EU27_2020, 2022-01..2026-08 (Reported)
+TEST RESULT: supports (FR −21.8 in Apr 2026, lowest since Sep 2022 −22.3; FR below EU27 every month since Feb 2024; Aug 2026 −17.8 vs −15.0)
+FORM + WHY: line chart, trend with benchmark
+LIMITATIONS: general confidence, not beauty-specific; not the INSEE household confidence series
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.4 · Q2</span></p>
+      <h4>French consumer confidence fell in spring 2026 to its lowest level since 2022 and remains below the EU average</h4>
+      <p class="msg">It reached −21.8 in April 2026, the lowest since September 2022. France has been below the EU27 every month since February 2024, and stood at −17.8 against −15.0 in August 2026.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>France</span><span><i style="background:var(--series-2)"></i>EU27 (benchmark)</span></div>
+      <div class="chart" id="c-conf"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat / European Commission surveys, <i>ei_bsco_m</i>, updated 28 Aug 2026<sup class="ref"><a href="#s3">3</a></sup> · <span class="tag t-fact">Reported</span></div>
+        <div><b>Period:</b> Jan 2022 – Aug 2026 · <b>Geography:</b> France; EU27 as benchmark</div>
+        <div><b>Metric definition:</b> Consumer confidence indicator, balance (positive minus negative answers), seasonally adjusted.</div>
+        <div><b>Limitations:</b> General consumer confidence, not beauty-specific. This is the harmonised EU survey, not INSEE's national household confidence indicator.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-conf"></div></details>
+    </div>
+  </div>
+
+  <h3>Supporting indicators</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Indicator</th><th class="num">Value</th><th>Period</th><th>Geography</th><th>Label</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Prestige beauty by category, value change: fragrance / makeup / skincare / haircare</td><td class="num">−3% / 0% / −4% / +29%</td><td>2025 vs 2024</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>Circana via Premium Beauty News<sup class="ref"><a href="#s7">7</a></sup> (sizes: €2.3bn / €1.2bn / €0.8bn / &lt;€0.2bn)</td></tr>
+        <tr><td>Prestige beauty, value change: UK / Spain / Italy / Germany / France</td><td class="num">+8% / +6% / +6% / +1% / −1%</td><td>2025 vs 2024</td><td>Benchmarks and France</td><td><span class="tag t-fact">Reported</span></td><td>Circana via Premium Beauty News<sup class="ref"><a href="#s7">7</a></sup></td></tr>
+        <tr><td>Prestige beauty, physical stores / e-commerce, value change</td><td class="num">−4% / +12%</td><td>2025 vs 2024</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>Circana via Premium Beauty News<sup class="ref"><a href="#s7">7</a></sup></td></tr>
+        <tr><td>E-commerce sales, all categories</td><td class="num">€196.4bn (+7%)</td><td>2025</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>FEVAD<sup class="ref"><a href="#s5">5</a></sup> (products €76.1bn, +4%; average basket €62, −3%)</td></tr>
+        <tr><td>Beauty sales growth, FEVAD iCE100 panel of leading sites</td><td class="num">+2.0%</td><td>2025</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>FEVAD<sup class="ref"><a href="#s5">5</a></sup> (panel, not whole market)</td></tr>
+        <tr><td>Pharmacy consumer-health (OTC) market</td><td class="num">≈€17bn</td><td>2025</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>IQVIA<sup class="ref"><a href="#s8">8</a></sup>. Growth driven by beauty, hygiene and supplements.</td></tr>
+        <tr><td>Pharmacy OTC market growth</td><td class="num">+3–4%</td><td>2026</td><td>France</td><td><span class="tag t-est">Forecast</span></td><td>IQVIA<sup class="ref"><a href="#s8">8</a></sup></td></tr>
+        <tr><td>Cosmetics exports: makeup &amp; skincare / perfumery</td><td class="num">€11bn (−2.1%) / €8bn (+1.9%)</td><td>2025</td><td>France</td><td><span class="tag t-fact">Reported</span></td><td>FEBEA<sup class="ref"><a href="#s6">6</a></sup></td></tr>
+        <tr><td>Douglas group e-commerce share of sales</td><td class="num">33.1%</td><td>Q3 FY2025/26</td><td>Group (not France only)</td><td><span class="tag t-fact">Reported</span></td><td>Douglas<sup class="ref"><a href="#s9">9</a></sup>. Cross-channel services +18.2%.</td></tr>
+        <tr><td>LVMH Selective Retailing (incl. Sephora), organic growth</td><td class="num">+5%</td><td>H1 2026</td><td>Global (no France split)</td><td><span class="tag t-fact">Reported</span></td><td>LVMH<sup class="ref"><a href="#s12">12</a></sup> (€8,406m revenue)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 4 SEGMENTS -->
+<section id="segments">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Segment intelligence</h2></div>
+  <p class="lede">At most three developments per segment. Evidence is Reported; "Why it matters" and "Logistics implication" are Analysis.</p>
+
+  <div class="seg-title"><h3>Selective / prestige retail (perfumery chains)</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>The selective channel is shrinking, and all its growth is online</h4><dl>
+      <dt>What happened</dt><dd>Prestige beauty fell to €4.3bn (−1% value, −3% units) in 2025. Stores fell −4% while e-commerce grew +12%, taking the online share to 18%<sup class="ref"><a href="#s7">7</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>Volume is moving from store replenishment to single-order parcel fulfilment.</dd>
+      <dt>Affected</dt><dd>Sephora, NOCIBÉ, Marionnaud; prestige brand houses</dd>
+      <dt>Logistics implication</dt><dd>More unit-picking and returns volume, and fewer store cases.</dd></dl></div>
+    <div class="card dev"><h4>Two of the three national chains are under financial or ownership stress</h4><dl>
+      <dt>What happened</dt><dd>Douglas impaired NOCIBÉ goodwill and cut its guidance<sup class="ref"><a href="#s10">10</a></sup><sup class="ref"><a href="#s11">11</a></sup>. CK Hutchison is negotiating a sale of Marionnaud (372 stores, ≈€536m revenue in 2024) to the owner of Bogart<sup class="ref"><a href="#s13">13</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>Store networks will shrink or be reorganised, and capex is likely to be constrained.</dd>
+      <dt>Affected</dt><dd>NOCIBÉ (Douglas), Marionnaud, Bogart group</dd>
+      <dt>Logistics implication</dt><dd>Possible network consolidation or a change of 3PL. New automated capacity is unlikely in the near term.</dd></dl></div>
+    <div class="card dev"><h4>Sephora keeps gaining share at group level</h4><dl>
+      <dt>What happened</dt><dd>LVMH Selective Retailing grew +5% organically in H1 2026. LVMH says Sephora gained "further market share … in many countries"<sup class="ref"><a href="#s12">12</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>Sephora is the likely consolidator of share lost by weaker chains. France is not broken out.</dd>
+      <dt>Affected</dt><dd>Sephora (LVMH)</dd>
+      <dt>Logistics implication</dt><dd>There is no current evidence of new French DC capacity. The last verified site is Escrennes (FM Logistic, 2018)<sup class="ref"><a href="#s20">20</a></sup>.</dd></dl></div>
+  </div>
+
+  <div class="seg-title"><h3>Pharmacy &amp; dermocosmetics</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>Pharmacy beauty is the growth driver of consumer health</h4><dl>
+      <dt>What happened</dt><dd>The French OTC market reached ≈€17bn in 2025, with growth driven by beauty, hygiene and supplements. IQVIA forecasts +3–4% for 2026<sup class="ref"><a href="#s8">8</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>This is the one beauty channel with positive momentum and a very large number of delivery points (pharmacies).</dd>
+      <dt>Affected</dt><dd>Pierre Fabre, L'Oréal Dermatological Beauty, pharmacy wholesalers</dd>
+      <dt>Logistics implication</dt><dd>Many small, frequent pharmacy orders favour dense goods-to-person picking.</dd></dl></div>
+    <div class="card dev"><h4>Pierre Fabre cancels a €70m greenfield DC and retrofits instead</h4><dl>
+      <dt>What happened</dt><dd>A 73,000 m² platform planned for Muret (due to open in 2028) was cancelled in Sep 2025. The existing 36,000 m² site on route de Seysses will be modernised to absorb all Muret-basin logistics by 2028<sup class="ref"><a href="#s17">17</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>Capex was deferred and the project redirected to an existing building, where space constraints favour density.</dd>
+      <dt>Affected</dt><dd>Pierre Fabre</dd>
+      <dt>Logistics implication</dt><dd>A retrofit into an existing footprint suggests a need for storage density and phased deployment (Analysis).</dd></dl></div>
+    <div class="card dev" style="border-style:dashed"><h4>Evidence gap: pharmacy e-commerce and wholesaler logistics</h4><p style="font-size:13.5px;margin:8px 0 0">No tier 1–2 figure was retrieved for the online share of pharmacy dermocosmetics, or for 2025–26 DC investment by French pharmacy wholesalers. A search summary cited IQVIA at ≈3% online, but the source was not opened, so the figure is <span class="tag t-unconf">Unconfirmed</span> and not used. See §9 G04.</p></div>
+  </div>
+
+  <div class="seg-title"><h3>Mass, digital-native &amp; cross-border</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>Aroma-Zone is growing fast and adding capacity</h4><dl>
+      <dt>What happened</dt><dd>Revenue grew +52% in 2025 (+56% in 2024). The company has 36 stores, with 15 more planned for 2026. It had 4.5m customers in 2025. It is building a 22,000 m² site in Cavaillon<sup class="ref"><a href="#s15">15</a></sup><sup class="ref"><a href="#s16">16</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>This is the clearest volume-growth signal in French beauty. An omnichannel mix (e-commerce ≈50% of revenue) is emerging.</dd>
+      <dt>Affected</dt><dd>Aroma-Zone</dd>
+      <dt>Logistics implication</dt><dd>A new site plus fast growth plus rising store replenishment points to demand for scalable picking (Analysis).</dd></dl></div>
+    <div class="card dev"><h4>Cross-border parcels now carry an EU €3 duty</h4><dl>
+      <dt>What happened</dt><dd>France applied a €2 fee per item category on non-EU parcels under €150 from 1 Mar 2026<sup class="ref"><a href="#s23">23</a></sup>. It was superseded by the EU €3 duty from 1 Jul 2026<sup class="ref"><a href="#s22">22</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>It narrows the landed-cost gap between Shein/Temu and EU-stocked beauty sellers.</dd>
+      <dt>Affected</dt><dd>Shein, Temu, AliExpress; French mass beauty sellers</dd>
+      <dt>Logistics implication</dt><dd>It could push platforms towards EU-based stock, but no French beauty warehouse move has been reported.</dd></dl></div>
+    <div class="card dev" style="border-style:dashed"><h4>Evidence gap: social commerce and mass-market (GMS) volumes</h4><p style="font-size:13.5px;margin:8px 0 0">TikTok Shop (launched in France in 2025) and "dupe" retailers are named as disruptors<sup class="ref"><a href="#s7">7</a></sup>. The only size estimates found are agency blogs (tier 5), so none are used. No 2025 NielsenIQ hygiene-beauty figure for French supermarkets and hypermarkets (GMS) was opened. See §9 G05.</p></div>
+  </div>
+</section>
+
+<!-- 5 UNIVERSE -->
+<section id="universe">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Account universe</h2></div>
+  <p class="lede"><span class="tag t-unconf">Interim — not from account-mapping database</span> <code>data/accounts.csv</code> holds no accounts yet. <b>Inclusion criteria:</b> (a) a national beauty retail chain named in a tier 1–4 source; (b) a beauty brand or group with a French logistics site verified in a source; (c) a 3PL with a verified beauty contract in France; (d) a cross-border platform affected by 2026 regulation. No cited ranking of French beauty retailers or brands was retrieved (§9 G06), so major houses with no retrieved source (e.g. Chanel, Clarins, Groupe Rocher, Coty) are listed with "Unknown" footprints rather than omitted. HQ country is reference data and is not individually sourced.</p>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>Company</th><th>Role</th><th>Segment</th><th>HQ</th><th>Known French logistics footprint</th><th>Reason for inclusion</th><th>Active signal</th><th>Last verified</th></tr></thead>
+    <tbody id="univ-body"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 6 ACTIVE SIGNALS -->
+<section id="active">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Active account signals</h2></div>
+  <p class="lede">These are verified developments in the research window (Jun 2025 – Sep 2026). <b>Being listed here does not make an account a sales opportunity.</b> Intelligence Priority shows where more intelligence gathering is justified. <b>No signal reaches High:</b> the two strongest (Aroma-Zone and L'Oréal / Dimolog, 11 points each) fail the evidence gate because their sources are tier 3–4.</p>
+  <p class="legend-inline"><b>Score key</b> (each 0–2, <span class="tag t-analysis">Analysis</span>): F facility · V volume · T technology · P operational pain · S timing/stage · E evidence strength · A automation relevance. Bands: High ≥10 with E=2 and A≥1 · Medium 6–9, or ≥10 failing a gate · Low ≤5. A signal with E=0 or A=0 cannot score above Low.</p>
+  <div class="tbl-wrap">
+  <table class="wide" id="active-table">
+    <thead><tr><th>Account</th><th>Signal <span class="tag t-fact">Reported</span></th><th>Date</th><th>Signal categories</th><th>Evidence (tier)</th><th>Logistics implication <span class="tag t-analysis">Analysis</span></th><th style="min-width:190px">Intelligence Priority</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 7 FULFILMENT -->
+<section id="fulfilment">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Fulfilment intelligence</h2></div>
+  <p class="lede">Operational themes with evidence. Themes without verified French beauty evidence (returns, labour, peak) are listed in §9, not here.</p>
+  <div class="tbl-wrap">
+    <div class="sig"><div class="sig-head">Theme</div><div class="sig-head">Observed signal <span class="tag t-fact">Reported</span></div><div class="sig-head">Operational implication <span class="tag t-analysis">Analysis</span></div></div>
+    <div class="sig"><div class="theme">Distribution centres</div><div>New sites: Aroma-Zone Cavaillon, 22,000 m² (Q3/end-2026)<sup class="ref"><a href="#s15">15</a></sup>; Dior / ID Logistics, Aube, 26,400 m², €45m, early 2027<sup class="ref"><a href="#s18">18</a></sup>. Cancelled: Pierre Fabre Muret, 73,000 m²<sup class="ref"><a href="#s17">17</a></sup>.</div><div>New capacity comes from brands, not retailers. Capex discipline is visible, with retrofits preferred to greenfield builds.</div></div>
+    <div class="sig"><div class="theme">E-commerce fulfilment</div><div>L'Oréal centralised its European e-commerce orders (24 brands, 14,000 SKUs, 100+ websites) at Dimolog, Bain-de-Bretagne: 1m orders rising to 1.7–2m a year<sup class="ref"><a href="#s14">14</a></sup>. Aroma-Zone ships ≈15,000 orders a day<sup class="ref"><a href="#s15">15</a></sup>.</div><div>This is a high-SKU, small-item, single-order profile, the classic goods-to-person case.</div></div>
+    <div class="sig"><div class="theme">3PL relationships</div><div>Dimolog (L'Oréal e-commerce), ID Logistics (Dior), FM Logistic (Sephora Escrennes, 2018)<sup class="ref"><a href="#s14">14</a></sup><sup class="ref"><a href="#s18">18</a></sup><sup class="ref"><a href="#s20">20</a></sup>. The NOCIBÉ–Viapost contract was last verified in 2016<sup class="ref"><a href="#s21">21</a></sup>.</div><div>Beauty brands outsource heavily, so 3PLs are the decision point for automation in many sites.</div></div>
+    <div class="sig"><div class="theme">Omnichannel</div><div>Douglas cross-channel services grew +18.2% in Q3<sup class="ref"><a href="#s9">9</a></sup>. Aroma-Zone plans 15 store openings in 2026<sup class="ref"><a href="#s16">16</a></sup>.</div><div>Sites must handle both store replenishment and D2C from shared stock.</div></div>
+    <div class="sig"><div class="theme">SKU complexity</div><div>L'Oréal: 14,000 references at one site<sup class="ref"><a href="#s14">14</a></sup>. Aroma-Zone: 1,700 references<sup class="ref"><a href="#s15">15</a></sup>.</div><div>Long-tail slow movers drive storage-density needs. Dimolog uses its robots specifically for slow movers.</div></div>
+    <div class="sig"><div class="theme">Automation</div><div>Dimolog runs a Scallog goods-to-person system (6 stations, 32 robots) integrated by AB Process<sup class="ref"><a href="#s14">14</a></sup>. L'Oréal's Vennecy DC (37,000 m², inaugurated in September 2022 or 2023, depending on the source) serves the Luxe and Consumer Products divisions<sup class="ref"><a href="#s19">19</a></sup>. Its automation scope was not verified.</div><div>Mobile-robot goods-to-person is already proven in French beauty e-commerce, so buyers will benchmark against it.</div></div>
+    <div class="sig"><div class="theme">Inventory / cost</div><div>Cosmetics exports were flat, and US exports fell −19%<sup class="ref"><a href="#s6">6</a></sup>. Personal-care prices are rising below inflation<sup class="ref"><a href="#s2">2</a></sup>.</div><div>Margin pressure pushes cost per order to the top of the agenda.</div></div>
+  </div>
+</section>
+
+<!-- 8 CHAINS -->
+<section id="chains">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Commercial intelligence chains</h2></div>
+  <p class="lede">No signal reached High, so the framework does not require a chain. Two optional chains are built for the strongest Medium signals, because each could reach High once tier 1–2 evidence is found. Steps 3–5 are always Analysis.</p>
+  <div class="grid" id="chain-grid"></div>
+  <div class="callout"><b>No source states that any account requires a Geek+ solution.</b> These chains are analytical. Public Geek+ references cited only as capability evidence: (1) a goods-to-person deployment with <b>GXO for a French sports retailer in France</b>: 500 AMRs, 12,000 m², up to 70,000 bins (published 24 Jun 2025)<sup class="ref"><a href="#s24">24</a></sup>; (2) a tote-to-person system with SSI Schaefer for <b>Dr.Max at Telgate, Italy</b>, handling medication, cosmetics and supplements (published 25 Jun 2025)<sup class="ref"><a href="#s25">25</a></sup>. Neither is a French beauty reference.</div>
+</section>
+
+<!-- 9 GAPS & CONFLICTS -->
+<section id="gaps">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Evidence gaps &amp; source conflicts</h2></div>
+  <h3 style="margin-top:0">Evidence gaps</h3>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>ID</th><th>What is missing</th><th>Why it matters</th><th>Where it might be found</th><th>Watch item</th></tr></thead>
+    <tbody>
+      <tr><td><code class="id">G01</code></td><td>Tier 1–2 confirmation of Aroma-Zone Cavaillon (status, automation scope, vendor)</td><td>One of two signals scoring ≥10 points; both are gated to Medium on evidence</td><td>Aroma-Zone press room; Cavaillon/Luberon Monts de Vaucluse agglomeration; building permit; careers page</td><td><code class="id">W02</code></td></tr>
+      <tr><td><code class="id">G02</code></td><td>Whether Dimolog's full-capacity target (Q2 2026) was reached, and the scope of any Scallog extension</td><td>Shows whether the automation decision at L'Oréal's European e-commerce hub is closed or still open</td><td>Dimolog / Scallog newsrooms; L'Oréal France</td><td><code class="id">W01</code></td></tr>
+      <tr><td><code class="id">G03</code></td><td>France prestige beauty data for 2026 (H1)</td><td>The market-state verdict rests on 2025 data; Q1 2026 was reported only for Europe</td><td>Circana France releases; Premium Beauty News</td><td><code class="id">W09</code></td></tr>
+      <tr><td><code class="id">G04</code></td><td>Online share of pharmacy dermocosmetics; logistics investment by pharmacy wholesalers</td><td>This is the growth channel, but its fulfilment model is not evidenced</td><td>IQVIA Pharmastat; OCP, CERP, Alliance Healthcare France press</td><td><code class="id">W10</code></td></tr>
+      <tr><td><code class="id">G05</code></td><td>Size of TikTok Shop, Shein and Temu beauty sales, and of supermarket (GMS) hygiene-beauty, in France</td><td>Channel shift in mass beauty cannot be quantified</td><td>NielsenIQ, Circana, FEVAD</td><td><code class="id">W08</code></td></tr>
+      <tr><td><code class="id">G06</code></td><td>A cited ranking of French beauty retailers and brands by revenue</td><td>The Account Universe is interim, with unranked inclusion</td><td>FEBEA; Circana; company filings; account-mapping database (planned)</td><td><code class="id">W10</code></td></tr>
+      <tr><td><code class="id">G07</code></td><td>Current French logistics footprint of Sephora, NOCIBÉ, Marionnaud, Chanel, Clarins, Groupe Rocher and Coty</td><td>Most universe footprints are Unknown or more than 5 years old</td><td>Company careers pages; 3PL press releases; ICPE warehouse filings</td><td><code class="id">W10</code></td></tr>
+      <tr><td><code class="id">G08</code></td><td>Beauty e-commerce return rates, warehouse labour shortage and peak labour in France</td><td>Returns and labour are main reasons to automate</td><td>FEVAD; DARES / France Travail; AFILOG</td><td><code class="id">W11</code></td></tr>
+      <tr><td><code class="id">G09</code></td><td>Automation scope at the Dior Aube site and the Pierre Fabre retrofit</td><td>Both are live projects with open design decisions</td><td>ID Logistics IR; Pierre Fabre press room; local press</td><td><code class="id">W05</code>, <code class="id">W06</code></td></tr>
+      <tr><td><code class="id">G10</code></td><td>Monthly official beauty retail series for France (no Eurostat G47.75 series for FR)</td><td>Charts use all-retail proxies</td><td>INSEE retail indices by NAF 47.75; Banque de France</td><td>n/a</td></tr>
+      <tr><td><code class="id">G11</code></td><td>Any existing Geek+ relationship with the accounts listed</td><td>Needed before any outreach</td><td>Geek+ CRM (Sales Ops)</td><td>n/a</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Source conflicts</h3>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>Claim</th><th>Source A</th><th>Source B</th><th>More authoritative</th><th>Explanation</th></tr></thead>
+    <tbody>
+      <tr><td>Aroma-Zone Cavaillon delivery date</td><td>Q3 2026 (Vaucluse Hebdo, Oct 2025)<sup class="ref"><a href="#s15">15</a></sup></td><td>End of 2026 (e-commerce mag, Mar 2026)<sup class="ref"><a href="#s16">16</a></sup></td><td>Neither is tier 1; B is more recent</td><td><span class="tag t-unconf">Unresolved</span> Possible slippage; tracked in W02</td></tr>
+      <tr><td>L'Oréal Vennecy DC surface</td><td>37,000 m² (Arefim / Voxlog)<sup class="ref"><a href="#s19">19</a></sup></td><td>35,000 m² (ICI regional radio, search summary)</td><td>Arefim (the developer)</td><td><span class="tag t-unconf">Unresolved</span> May be gross vs net area</td></tr>
+      <tr><td>L'Oréal Vennecy inauguration date</td><td>27 Sep 2022 (Arefim page text)<sup class="ref"><a href="#s19">19</a></sup></td><td>27 Sep 2023 (Batinfo / Supply Chain Village, search summaries)</td><td>Arefim (the developer)</td><td><span class="tag t-unconf">Unresolved</span> The Arefim page URL is dated 2023/10 while its text reads 2022. This does not affect the analysis.</td></tr>
+      <tr><td>Beauty online penetration in France</td><td>18% of prestige sales value (Circana)<sup class="ref"><a href="#s7">7</a></sup></td><td>17.8% of individuals bought beauty online (Eurostat)<sup class="ref"><a href="#s4">4</a></sup></td><td>Both valid</td><td>Different metrics (share of value vs share of people) that happen to be close. They are not combined.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 10 WATCHLIST -->
+<section id="watchlist">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Intelligence watchlist</h2></div>
+  <p class="lede">Each item has a testable signal condition, a source and a cadence. The table is generated from a machine-readable JSON block (<code>#watchlist-data</code>). The "Known dates" column lists only dates reported by a source. Analytical expectations are marked as unconfirmed.</p>
+  <div class="tbl-wrap">
+  <table class="wide" id="watch-table">
+    <thead><tr><th>ID</th><th>Account / market</th><th>What to monitor</th><th>Meaningful signal</th><th>Why it matters</th><th>Expected source</th><th>Cadence</th><th>Known dates <span class="tag t-fact">Reported</span></th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 11 SOURCES -->
+<section id="sources">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Sources &amp; methodology</h2></div>
+  <div class="grid g2">
+    <div class="card"><h4>Methodology</h4><ul class="clean" style="font-size:13px">
+      <li>Produced with the <code>retail-research</code> skill V0.2: <code>report-spec.md</code>, <code>evidence-policy.md</code>, <code>visualization-guidelines.md</code> and <code>commercial-intelligence-framework.md</code>.</li>
+      <li>Research date 28 Sep 2026. Research window for account signals: Jun 2025 – Sep 2026. Web search was used to find leads; figures are cited only from pages actually opened. Search-summary-only facts are marked Unconfirmed or excluded.</li>
+      <li>Chart data was downloaded from the Eurostat dissemination API (JSON-stat) on 28 Sep 2026 and embedded in the page. Chart spec blocks are in HTML comments above each chart.</li>
+      <li>Calculated values: H1 averages in chart 3.1 (arithmetic mean of six monthly index values); the count of negative months in chart 3.2 (months with CP1312 &lt; 0, Jun 2024 – Feb 2026).</li>
+      <li>Circana figures were accessed via Premium Beauty News (trade press), because the Circana release itself was not retrieved. Circana is the originating source.</li>
+      <li>Conflicts show both values and name the more authoritative source; unresolved conflicts are carried to the watchlist.</li>
+      <li>Intelligence Priority scores are Analysis, based on the anchors in the framework. They are not a sales priority, and no CRM data was used.</li>
+    </ul></div>
+    <div class="card"><h4>Links to check by hand</h4><p style="font-size:13px;margin:4px 0">L'Usine Nouvelle returned 403 on automated access on 28 Sep 2026 and contributes no figures. Boursorama (AFP), Voxlog and the regional press pages were read in full. The EU €3 duty source (22) was verified in the Germany Fashion V0.2 session on the same date.</p></div>
+  </div>
+  <h3>Sources <span style="font-weight:400;color:var(--muted);font-size:13px">(accessed 28 Sep 2026)</span></h3>
+  <div class="card"><ol class="sources" id="source-list"></ol></div>
+</section>
+</main>
+<footer><div class="wrap">France Beauty &amp; Personal Care Retail Intelligence · V0.2 · Geek+ EMEA Retail Practice · 28 Sep 2026 · Internal. Must be validated by a human analyst before external use.</div></footer>
+
+<script type="application/json" id="watchlist-data">
+[
+ {"id":"FR-BEAU-W01","account_or_market":"L'Oréal / Dimolog","monitor":"Ramp-up and automation extensions at Bain-de-Bretagne","signal_condition":"Dimolog, Scallog or L'Oréal announces an extension of robots or stations, a new equipment vendor, or confirms that the 1.7–2m orders target has been reached","why_it_matters":"Shows whether automation decisions at L'Oréal's EU e-commerce hub are still open","expected_source":"voxlog.fr; scallog.com/fr/cas-clients; Dimolog LinkedIn; L'Oréal France newsroom","cadence":"Monthly","known_dates":"Full capacity targeted Q2 2026 (Reported, Voxlog)","linked_signal":"§6 L'Oréal / Dimolog; G02","status":"Open"},
+ {"id":"FR-BEAU-W02","account_or_market":"Aroma-Zone","monitor":"Cavaillon site delivery and automation scope","signal_condition":"Aroma-Zone or a supplier names an automation vendor, goods-to-person system or WMS for Cavaillon, or the site's inauguration is announced","why_it_matters":"Joint highest-scoring signal (11); a tier 1–2 confirmation would lift it to High","expected_source":"Aroma-Zone press room / LinkedIn; mesinfos.fr (Vaucluse); job postings in Cavaillon","cadence":"Weekly","known_dates":"Delivery Q3 2026 (Reported) vs end-2026 (Reported) — conflict","linked_signal":"§6 Aroma-Zone; G01","status":"Open"},
+ {"id":"FR-BEAU-W03","account_or_market":"Marionnaud / Bogart","monitor":"Completion of the sale and the post-deal network plan","signal_condition":"Signing or closing is announced, or the buyer states store closures, DC consolidation or a change of 3PL","why_it_matters":"Network consolidation can move volume between DCs","expected_source":"AFP wires; CK Hutchison / A.S. Watson announcements; union communications","cadence":"Weekly","known_dates":"","linked_signal":"§6 Marionnaud","status":"Open"},
+ {"id":"FR-BEAU-W04","account_or_market":"NOCIBÉ (Douglas)","monitor":"FY2025/26 results and France store review","signal_condition":"Douglas announces NOCIBÉ store closures, a French DC change or an omnichannel fulfilment change (ship-from-store, new 3PL)","why_it_matters":"The financially stressed #2 chain; the fulfilment model could change","expected_source":"douglas.group/en/newsroom/press-releases","cadence":"Event-driven (earnings)","known_dates":"FY results date not confirmed (Unconfirmed: usually December)","linked_signal":"§6 NOCIBÉ","status":"Open"},
+ {"id":"FR-BEAU-W05","account_or_market":"Pierre Fabre","monitor":"Modernisation of the route de Seysses site","signal_condition":"Pierre Fabre publishes the retrofit scope, or a supplier announces automation for the Muret site","why_it_matters":"A retrofit in an existing footprint favours high-density systems","expected_source":"Pierre Fabre press room; lejournaldesentreprises.com; toulouse press","cadence":"Monthly","known_dates":"Consolidation by 2028 (Reported)","linked_signal":"§6 Pierre Fabre; G09","status":"Open"},
+ {"id":"FR-BEAU-W06","account_or_market":"Parfums Christian Dior / ID Logistics","monitor":"Aube site fit-out","signal_condition":"ID Logistics or Dior names equipment or automation for the Aube warehouse","why_it_matters":"A new 3PL site where the equipment spec is not yet public","expected_source":"ID Logistics IR / newsroom; logistique-grandest.fr","cadence":"Monthly","known_dates":"Opening early 2027 (Reported)","linked_signal":"§6 Dior; G09","status":"Open"},
+ {"id":"FR-BEAU-W07","account_or_market":"Sephora (LVMH)","monitor":"French DC and e-commerce fulfilment changes","signal_condition":"Sephora announces a new French DC, an Escrennes extension, or a new 3PL or automation partner in France","why_it_matters":"The share-gaining leader; its French footprint was last verified in 2018","expected_source":"LVMH IR (Q3 revenue release); jobs.sephora.com logistics postings; Loiret press","cadence":"Monthly","known_dates":"LVMH Q3 revenue date not confirmed (Unconfirmed: usually mid-October)","linked_signal":"§6 Sephora; G07","status":"Open"},
+ {"id":"FR-BEAU-W08","account_or_market":"Cross-border platforms (Shein, Temu, TikTok Shop)","monitor":"Effect of the €3 duty on beauty flows into France","signal_condition":"A platform announces an EU or French warehouse holding beauty stock, or FEVAD/NIQ publishes beauty share data for these platforms","why_it_matters":"Stock held in the EU would create new fulfilment demand","expected_source":"European Commission customs updates; FEVAD indicators; platform newsrooms","cadence":"Monthly","known_dates":"EU duty in force from 1 Jul 2026 (Reported)","linked_signal":"§6 Shein / Temu; G05","status":"Open"},
+ {"id":"FR-BEAU-W09","account_or_market":"France prestige beauty market","monitor":"2026 Circana data for France","signal_condition":"Circana reports France H1 or 9M 2026 prestige value change; a return above 0% would revise the Q1 verdict","why_it_matters":"The market-state verdict rests on 2025 data","expected_source":"circana.com; premiumbeautynews.com","cadence":"Quarterly","known_dates":"","linked_signal":"G03","status":"Open"},
+ {"id":"FR-BEAU-W10","account_or_market":"Universe accounts with no signal (Chanel, Clarins, Groupe Rocher, pharmacy wholesalers)","monitor":"DC, 3PL or automation announcements","signal_condition":"Any universe account announces a French DC opening, extension, 3PL change or automation project","why_it_matters":"Fills the footprint gaps; accounts are not excluded for lack of news","expected_source":"Company newsrooms; voxlog.fr; supplychain-village.com; ICPE filings","cadence":"Monthly","known_dates":"","linked_signal":"G04, G06, G07","status":"Open"},
+ {"id":"FR-BEAU-W11","account_or_market":"France logistics labour & returns","monitor":"Warehouse labour tightness and e-commerce return rates","signal_condition":"An official or association source publishes a French warehouse vacancy rate or a beauty e-commerce return rate","why_it_matters":"Labour and returns are core reasons to automate","expected_source":"DARES; France Travail BMO survey; FEVAD; AFILOG","cadence":"Quarterly","known_dates":"","linked_signal":"G08","status":"Open"}
+]
+</script>
+<script>
+const DATA = {"retail":[["2019-01",92.9,72.6],["2019-02",93.4,74.2],["2019-03",93.2,78.6],["2019-04",93.6,77.8],["2019-05",93.3,76.0],["2019-06",93.8,76.7],["2019-07",93.3,77.1],["2019-08",94.7,78.0],["2019-09",93.7,77.5],["2019-10",94.1,76.3],["2019-11",94.8,76.0],["2019-12",94.8,79.4],["2020-01",95.3,76.9],["2020-02",94.9,77.4],["2020-03",79.0,75.7],["2020-04",64.7,80.0],["2020-05",88.7,93.3],["2020-06",96.1,92.8],["2020-07",94.2,76.9],["2020-08",99.5,88.1],["2020-09",96.1,88.6],["2020-10",98.6,92.4],["2020-11",81.8,94.5],["2020-12",102.3,107.7],["2021-01",97.2,95.5],["2021-02",97.9,104.5],["2021-03",98.1,107.0],["2021-04",92.9,111.9],["2021-05",99.0,109.5],["2021-06",101.3,98.9],["2021-07",101.4,93.8],["2021-08",101.5,95.4],["2021-09",101.6,94.9],["2021-10",102.8,95.9],["2021-11",102.9,98.3],["2021-12",103.4,94.4],["2022-01",102.8,98.7],["2022-02",103.2,98.8],["2022-03",103.5,97.4],["2022-04",103.9,95.1],["2022-05",104.1,94.2],["2022-06",103.4,98.2],["2022-07",101.7,93.6],["2022-08",102.8,94.7],["2022-09",104.8,96.5],["2022-10",103.0,94.5],["2022-11",102.0,93.3],["2022-12",102.2,93.8],["2023-01",101.6,93.8],["2023-02",101.7,94.1],["2023-03",101.4,96.0],["2023-04",99.9,93.7],["2023-05",100.9,95.5],["2023-06",101.5,92.2],["2023-07",102.2,95.7],["2023-08",99.9,93.8],["2023-09",100.9,93.8],["2023-10",100.8,95.4],["2023-11",102.0,100.2],["2023-12",101.9,94.2],["2024-01",102.2,94.9],["2024-02",103.3,96.1],["2024-03",102.5,97.4],["2024-04",102.7,96.7],["2024-05",102.6,95.8],["2024-06",102.0,95.4],["2024-07",102.7,95.5],["2024-08",105.3,107.4],["2024-09",104.5,108.6],["2024-10",103.9,98.4],["2024-11",104.2,97.9],["2024-12",104.0,99.4],["2025-01",104.8,98.0],["2025-02",105.2,98.0],["2025-03",105.4,99.3],["2025-04",106.2,99.2],["2025-05",106.0,99.6],["2025-06",106.1,102.6],["2025-07",106.1,101.2],["2025-08",107.0,102.9],["2025-09",106.9,103.3],["2025-10",107.5,104.5],["2025-11",107.7,105.5],["2025-12",107.8,105.2],["2026-01",108.2,106.1],["2026-02",107.1,105.7],["2026-03",107.9,106.0],["2026-04",108.5,106.4],["2026-05",108.3,108.3],["2026-06",108.7,107.6],["2026-07",109.7,null]],"hicp":[["2023-01",7.0,8.2],["2023-02",7.3,8.7],["2023-03",6.7,8.8],["2023-04",6.9,9.1],["2023-05",6.0,9.6],["2023-06",5.3,9.5],["2023-07",5.1,8.2],["2023-08",5.7,7.8],["2023-09",5.7,7.2],["2023-10",4.5,6.3],["2023-11",3.9,5.6],["2023-12",4.1,4.0],["2024-01",3.4,3.0],["2024-02",3.2,1.9],["2024-03",2.4,1.4],["2024-04",2.4,0.1],["2024-05",2.6,0.1],["2024-06",2.5,-0.2],["2024-07",2.7,0.2],["2024-08",2.2,-0.4],["2024-09",1.4,-0.4],["2024-10",1.6,-0.8],["2024-11",1.7,-1.0],["2024-12",1.8,-0.5],["2025-01",1.8,-0.2],["2025-02",0.9,-0.7],["2025-03",0.9,-1.3],["2025-04",0.9,-0.7],["2025-05",0.6,-1.1],["2025-06",0.9,-0.9],["2025-07",0.9,-0.8],["2025-08",0.8,-1.3],["2025-09",1.1,-0.6],["2025-10",0.8,-0.9],["2025-11",0.8,-1.1],["2025-12",0.7,-0.6],["2026-01",0.4,-1.1],["2026-02",1.1,-0.8],["2026-03",2.0,0.6],["2026-04",2.5,0.4],["2026-05",2.8,0.6],["2026-06",2.0,0.5],["2026-07",2.4,0.9],["2026-08",2.6,0.9]],"conf":[["2022-01",-9.5,-9.3],["2022-02",-8.6,-9.1],["2022-03",-21.2,-21.1],["2022-04",-19.0,-21.2],["2022-05",-18.8,-20.9],["2022-06",-21.2,-23.7],["2022-07",-21.8,-26.6],["2022-08",-18.8,-24.6],["2022-09",-22.3,-28.4],["2022-10",-20.9,-27.3],["2022-11",-18.8,-23.8],["2022-12",-20.6,-22.1],["2023-01",-20.6,-20.6],["2023-02",-21.5,-18.9],["2023-03",-20.6,-18.7],["2023-04",-18.7,-16.6],["2023-05",-17.0,-16.4],["2023-06",-14.7,-15.4],["2023-07",-14.2,-14.4],["2023-08",-14.8,-15.2],["2023-09",-15.8,-16.9],["2023-10",-16.7,-16.8],["2023-11",-13.5,-15.7],["2023-12",-13.5,-13.9],["2024-01",-11.7,-14.2],["2024-02",-14.7,-13.9],["2024-03",-13.4,-13.0],["2024-04",-15.3,-12.5],["2024-05",-13.5,-12.4],["2024-06",-14.4,-12.0],["2024-07",-15.4,-11.5],["2024-08",-13.0,-11.8],["2024-09",-11.6,-11.4],["2024-10",-12.8,-11.0],["2024-11",-15.3,-11.9],["2024-12",-17.7,-12.4],["2025-01",-14.1,-12.5],["2025-02",-13.2,-12.5],["2025-03",-14.8,-13.3],["2025-04",-16.3,-15.2],["2025-05",-17.4,-13.7],["2025-06",-17.4,-14.0],["2025-07",-16.9,-13.8],["2025-08",-18.5,-14.3],["2025-09",-19.3,-13.6],["2025-10",-15.5,-12.8],["2025-11",-15.8,-12.9],["2025-12",-16.3,-13.1],["2026-01",-15.7,-12.5],["2026-02",-14.2,-12.2],["2026-03",-17.1,-15.8],["2026-04",-21.8,-19.8],["2026-05",-21.1,-18.2],["2026-06",-19.2,-17.0],["2026-07",-16.9,-15.1],["2026-08",-17.8,-15.0]],"ibcbw":[["2021",17.7,15.3],["2022",14.6,14.9],["2023",16.0,16.4],["2024",17.8,18.8]]};
+const SOURCES = [
+ {n:1,org:"Eurostat",title:"sts_trtu_m – Turnover and volume of sales in wholesale and retail trade, monthly",date:"Updated 26 Sep 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/sts_trtu_m/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:2,org:"Eurostat",title:"prc_hicp_minr – HICP (ECOICOP ver.2), monthly",date:"Updated 17 Sep 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_minr/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:3,org:"Eurostat / European Commission (DG ECFIN surveys)",title:"ei_bsco_m – Consumers confidence indicator, monthly",date:"Updated 28 Aug 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:4,org:"Eurostat",title:"isoc_ec_ibgs – Internet purchases by individuals: goods or services (I_BCBW cosmetics, beauty or wellness)",date:"Updated 17 Apr 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/isoc_ec_ibgs/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:5,org:"FEVAD",title:"Bilan du e-commerce en France : les Français ont dépensé près de 200 milliards d'euros sur internet en 2025",date:"11 Feb 2026",url:"https://www.fevad.com/bilan-du-e-commerce-en-france-les-francais-ont-depense-pres-de-200-milliards-deuros-sur-internet-en-2025/",note:"",tier:"Tier 2 · Industry association"},
+ {n:6,org:"FEBEA",title:"Coup de frein sur les exportations de cosmétiques français en 2025",date:"06 Feb 2026",url:"https://www.febea.fr/presse/coup-frein-exportations-cosmetiques-francais-2025-le-secteur-demeure-deuxieme-contributeur-a",note:"",tier:"Tier 2 · Industry association"},
+ {n:7,org:"Premium Beauty News (reporting Circana data)",title:"Beauté prestige 2025 : La France recule, dans un marché européen en hausse",date:"03 Mar 2026",url:"https://www.premiumbeautynews.com/fr/beaute-prestige-2025-la-france,27211",note:"Circana release not retrieved directly.",tier:"Tier 3 · Trade press (tier 2 origin)"},
+ {n:8,org:"IQVIA France",title:"Bilan et perspectives du marché de la vente libre en 2025-2026",date:"24 Feb 2026",url:"https://www.iqvia.com/fr-fr/locations/france/blogs/2026/02/bilan-et-perspectives-du-marche-de-la-vente-libre-en-2025-2026",note:"",tier:"Tier 2 · Strategic research"},
+ {n:9,org:"DOUGLAS Group",title:"Q3 2025/26 results",date:"12 Aug 2026",url:"https://douglas.group/en/newsroom/press-releases/q3-2025-26",note:"",tier:"Tier 1 · Company IR"},
+ {n:10,org:"DOUGLAS Group",title:"DOUGLAS Group increases sales in Q2 2025/26 and accelerates strategy execution",date:"12 May 2026",url:"https://douglas.group/en/newsroom/press-releases/q2-2025-26",note:"",tier:"Tier 1 · Company IR"},
+ {n:11,org:"DOUGLAS Group",title:"DOUGLAS Group adjusts guidance, focus on strategic priorities",date:"18 Jun 2026",url:"https://douglas.group/en/newsroom/press-releases/douglas-group-adjusts-guidance-focus-on-strategic-priorities",note:"Seen via the press-release index only.",tier:"Tier 1 · Company IR"},
+ {n:12,org:"LVMH",title:"Accelerating growth in the second quarter – solid first-half results",date:"27 Jul 2026",url:"https://www.lvmh.com/en/publications/accelerating-growth-in-the-second-quarter---solid-first-half-results",note:"",tier:"Tier 1 · Company IR"},
+ {n:13,org:"Boursorama (AFP)",title:"Marionnaud : des rideaux baissés samedi pour protester contre le flou du plan de reprise",date:"05 Sep 2026",url:"https://www.boursorama.com/actualite-economique/actualites/marionnaud-des-rideaux-baisses-samedi-pour-protester-contre-le-flou-du-plan-de-reprise-34e5e00b4e113b3331669dccba4d208e",note:"",tier:"Tier 4 · General press (wire)"},
+ {n:14,org:"Voxlog",title:"Dimolog inaugure son nouveau site breton, centrale de distribution e-commerce de L'Oréal en Europe",date:"09 Nov 2025",url:"https://www.voxlog.fr/actualite/10369/dimolog-inaugure-son-nouveau-site-breton-centrale-de-distribution-e-commerce-de-l-oreal-en-europe",note:"",tier:"Tier 3 · Trade press"},
+ {n:15,org:"Vaucluse Hebdo (mesinfos.fr)",title:"Aroma-Zone se donne les moyens de son ascension via un nouveau site en 2026",date:"21 Oct 2025",url:"https://mesinfos.fr/84220-cabrieres-davignon/aroma-zone-se-donne-les-moyens-de-son-ascension-avec-un-nouveau-site-232063.html",note:"",tier:"Tier 4 · Regional press"},
+ {n:16,org:"e-commerce mag",title:"Aroma-Zone confirme sa trajectoire de croissance",date:"16 Mar 2026",url:"https://www.ecommercemag.fr/retail-1220/aroma-zone-confirme-sa-trajectoire-de-croissance-56545",note:"",tier:"Tier 3 · Trade press"},
+ {n:17,org:"Le Journal des Entreprises",title:"Les Laboratoires Pierre Fabre renoncent à leur projet de nouvelle plateforme logistique à Muret",date:"05 Sep 2025",url:"https://www.lejournaldesentreprises.com/article/les-laboratoires-pierre-fabre-renoncent-leur-projet-de-nouvelle-plateforme-logistique-muret-2125732",note:"",tier:"Tier 3 · Business trade press"},
+ {n:18,org:"Portail Logistique Grand Est",title:"Parfums Christian Dior et ID Logistics s'implantent au sud de Troyes",date:"30 Jun 2025",url:"https://www.logistique-grandest.fr/parfums-christian-dior-et-id-logistics-simplantent-au-sud-de-troyes/",note:"",tier:"Tier 3 · Trade press"},
+ {n:19,org:"Arefim",title:"Inauguration du centre de distribution de L'Oréal à Vennecy (45)",date:"Date conflicting (see §9)",url:"https://arefim-ge.com/2023/10/inauguration-du-centre-de-distribution-de-loreal-a-vennecy-45/",note:"Developer's page.",tier:"Tier 3 · Developer publication"},
+ {n:20,org:"ICI (France Bleu Orléans)",title:"Une nouvelle plateforme logistique pour Sephora à Escrennes, près de Pithiviers",date:"03 Jul 2018",url:"https://www.ici.fr/infos/economie-social/une-nouvelle-plateforme-logistique-pour-sephora-a-escrennes-pres-de-pithiviers-1530630019",note:"Outside the research window; footprint reference only.",tier:"Tier 4 · Regional press"},
+ {n:21,org:"Voxlog",title:"Nocibé renouvelle pour trois ans son partenariat logistique avec Viapost",date:"09 Sep 2016",url:"https://www.voxlog.fr/actualite/1249/nocibe-renouvelle-pour-trois-ans-son-partenariat-logistique-avec-viapost",note:"Outside the research window; current status unknown.",tier:"Tier 3 · Trade press"},
+ {n:22,org:"European Commission",title:"Ensuring fairness and safety: €3 customs duty for low-value parcels",date:"29 Jun 2026",url:"https://commission.europa.eu/news-and-media/news/ensuring-fairness-and-safety-eur3-customs-duty-low-value-parcels-2026-06-29_en",note:"",tier:"Tier 1 · Official (EU)"},
+ {n:23,org:"MoneyVox",title:"2 euros par type d'articles, Shein, Temu, 1er mars 2026… 7 questions sur la nouvelle taxe sur les petits colis",date:"Date not captured",url:"https://www.moneyvox.fr/votre-argent/actualites/107765/2-euros-par-type-articles-shein-temu-1er-mars-2026-7-questions-sur-la-nouvelle-taxe-sur-les-petits-colis",note:"",tier:"Tier 4 · General press"},
+ {n:24,org:"Geek+",title:"GXO and Geek+ revolutionized warehouse operations for a leading French sports retailer",date:"24 Jun 2025",url:"https://www.geekplus.com/case-studies/gxo-and-geek-revolutionized-warehouse-operations-for-a-leading-french-sports-retailer",note:"Capability evidence only.",tier:"Tier 1 · Geek+ public source"},
+ {n:25,org:"Geek+",title:"Geek+ and Dr.Max transform fulfillment with tote-to-person robotics",date:"25 Jun 2025",url:"https://www.geekplus.com/case-studies/geek-and-dr.max-transform-fulfillment-with-tote-to-person-robotics",note:"Capability evidence only.",tier:"Tier 1 · Geek+ public source"}
+];
+
+const ACTIVE = [
+ {account:"Aroma-Zone",signal:"Building a 22,000 m² logistics, R&D and office site at Cavaillon (Vaucluse) to add to Châteauneuf-de-Gadagne and Cabrières-d'Avignon. Ships 3m parcels a year (≈4m expected in 2025), ≈15,000 orders a day. Revenue +52% in 2025; 15 store openings planned for 2026.",refs:[15,16],date:"Oct 2025 – Mar 2026",cats:"Facility / expansion; Fulfilment model change (omnichannel)",evidence:"Regional press (T4) + trade press (T3)",impl:"The new site plus fast D2C growth plus rising store replenishment make picking capacity and flexibility the constraint.",scores:[2,2,1,1,2,1,2],why:"F2 new site under construction · V2 parcel volumes quantified · S2 delivery in 2026 · A2 D2C unit picking. <b>Gated to Medium: E=1.</b>"},
+ {account:"L'Oréal / Dimolog (3PL)",signal:"Dimolog's 19,000 m² Bain-de-Bretagne site (9,000 m² for L'Oréal) is L'Oréal's single European e-commerce DC: 24 brands, 14,000 SKUs, 100+ websites, 13 countries. Orders are rising from 1m to 1.7–2m a year at full capacity (Q2 2026). Scallog goods-to-person system: 6 stations, 32 robots, for slow movers.",refs:[14],date:"Nov 2025 (site live Mar 2025)",cats:"Facility / expansion; Automation / technology investment",evidence:"Trade press (T3)",impl:"Automation has been chosen for slow movers. Fast movers and any further expansion are open questions.",scores:[2,2,2,0,2,1,2],why:"F2 new site ramping · V2 order volume quantified · T2 vendor named · S2 ramp within 0–18 months · A2 goods-to-person. <b>Gated to Medium: E=1.</b>"},
+ {account:"Parfums Christian Dior (LVMH) / ID Logistics",signal:"26,400 m² warehouse in the Parc logistique de l'Aube (south of Troyes) for European distribution of Dior perfumes and cosmetics. €45m, ≈100 jobs, opening early 2027.",refs:[18],date:"30 Jun 2025",cats:"Facility / expansion; Fulfilment model change (3PL)",evidence:"Trade press (T3)",impl:"A new 3PL-run DC with the equipment spec not public. The design window may still be open.",scores:[2,1,0,0,2,1,1],why:"F2 new site · S2 opens within 18 months."},
+ {account:"Marionnaud",signal:"CK Hutchison is in talks to sell the chain (372 French stores, ≈2,400 staff, ≈€536m revenue in 2024) to David Konckier, principal shareholder of the Bogart group. Unions report a six-month observation period before decisions on unprofitable stores. Strike on 5 Sep 2026.",refs:[13],date:"Jul – Sep 2026",cats:"M&A; Financial pressure; Labour",evidence:"AFP via Boursorama (T4)",impl:"Store network rationalisation and possible integration of Marionnaud and Bogart logistics. The DC footprint is Unknown.",scores:[0,1,0,1,2,1,1],why:"S2 deal in progress."},
+ {account:"Pierre Fabre",signal:"Cancelled a planned 73,000 m², €70m automated platform at Muret (due early 2028), citing an 'unstable geopolitical and economic context'. It will instead modernise the existing 36,000 m² route de Seysses site (in use since 2016) to handle all Muret-basin logistics by 2028.",refs:[17],date:"05 Sep 2025",cats:"Facility / expansion (retrofit); Financial pressure",evidence:"Trade press (T3)",impl:"The retrofit into an existing building is sized for consolidated volume, so density and phased deployment matter.",scores:[1,1,0,1,1,1,1],why:"No dimension scored 2."},
+ {account:"Shein / Temu (cross-border platforms)",signal:"An EU €3 customs duty per item category on parcels ≤€150 applies from 1 Jul 2026. It replaced the French €2 fee in force from 1 Mar 2026.",refs:[22,23],date:"1 Mar & 1 Jul 2026",cats:"Regulatory",evidence:"European Commission (T1) + press (T4)",impl:"This may push cross-border sellers towards EU-held stock. No French beauty warehouse move has been reported.",scores:[0,1,0,0,2,2,1],why:"S2 in force · E2 official source."},
+ {account:"NOCIBÉ (Douglas)",signal:"€99m goodwill impairment on NOCIBÉ and Parfumdreams (Q2). France Q3 sales €169.1m (−2.1% reported, −4.3% like-for-like). Group guidance cut in June. Stores are 'under review with regard to profitability targets'.",refs:[9,10,11],date:"May – Aug 2026",cats:"Financial pressure",evidence:"Douglas IR (T1)",impl:"Cost focus on the store network. No DC signal. Group cross-channel services +18.2%.",scores:[0,0,0,1,1,2,1],why:"E2 company IR."},
+ {account:"Sephora (LVMH)",signal:"LVMH Selective Retailing +5% organic in H1 2026. Sephora recorded 'further market share gains in many countries'. No France split.",refs:[12],date:"27 Jul 2026",cats:"Context (growth; no France-specific operational signal)",evidence:"LVMH IR (T1)",impl:"A likely share consolidator in France, but there is no current evidence of French DC change.",scores:[0,1,0,0,1,2,1],why:"E2 company IR."}
+];
+
+const UNIVERSE = [
+ ["Sephora","LVMH","Retailer (store-led)","Selective","FR","Escrennes (Loiret): 24,000 m² reception and shipping platform for Sephora Collection, run by FM Logistic, opened end-2018<sup class=\"ref\"><a href=\"#s20\">20</a></sup>. Current status not re-verified.","National perfumery chain; LVMH Selective Retailing<sup class=\"ref\"><a href=\"#s12\">12</a></sup>","Low"],
+ ["NOCIBÉ","Douglas","Retailer (store-led)","Selective","FR","Viapost, Hénin-Beaumont &amp; Villeneuve-d'Ascq (e-commerce + 67 stores), 2016 contract<sup class=\"ref\"><a href=\"#s21\">21</a></sup>. Current status <span class=\"unknown\">Unknown</span>.","Douglas France segment, €678.9m in 9M 2025/26<sup class=\"ref\"><a href=\"#s9\">9</a></sup>","Low"],
+ ["Marionnaud","CK Hutchison (sale in progress)","Retailer (store-led)","Selective","FR","<span class=\"unknown\">Unknown</span>","372 French stores, ≈€536m revenue in 2024<sup class=\"ref\"><a href=\"#s13\">13</a></sup>","Medium"],
+ ["Bogart group","—","Brand (D2C + wholesale)","Selective","<span class=\"unknown\">Unknown</span>","<span class=\"unknown\">Unknown</span>","Principal shareholder is the prospective acquirer of Marionnaud<sup class=\"ref\"><a href=\"#s13\">13</a></sup>","Medium (via Marionnaud)"],
+ ["L'Oréal","—","Brand (D2C + wholesale)","All","FR","Vennecy (Loiret): 37,000 m² DC, Luxe + Consumer Products<sup class=\"ref\"><a href=\"#s19\">19</a></sup>. Bain-de-Bretagne: European e-commerce hub at Dimolog (9,000 m²)<sup class=\"ref\"><a href=\"#s14\">14</a></sup>.","European e-commerce hub located in France<sup class=\"ref\"><a href=\"#s14\">14</a></sup>","Medium"],
+ ["Parfums Christian Dior","LVMH","Brand (D2C + wholesale)","Selective","FR","Aube (south of Troyes): 26,400 m² site with ID Logistics, opening early 2027<sup class=\"ref\"><a href=\"#s18\">18</a></sup>. Current sites <span class=\"unknown\">Unknown</span>.","New French DC<sup class=\"ref\"><a href=\"#s18\">18</a></sup>","Medium"],
+ ["Pierre Fabre","—","Brand (D2C + wholesale)","Pharmacy &amp; dermo","FR","Muret, route de Seysses: 36,000 m² (since 2016). The historic 1975 site is to be sold<sup class=\"ref\"><a href=\"#s17\">17</a></sup>.","Dermocosmetics brand with a live logistics project<sup class=\"ref\"><a href=\"#s17\">17</a></sup>","Medium"],
+ ["Aroma-Zone","—","Brand (D2C + retail)","Digital-native","FR","Châteauneuf-de-Gadagne; Cabrières-d'Avignon; Cavaillon, 22,000 m² (under construction)<sup class=\"ref\"><a href=\"#s15\">15</a></sup><sup class=\"ref\"><a href=\"#s16\">16</a></sup>","Fastest-growing French beauty brand in the evidence set<sup class=\"ref\"><a href=\"#s16\">16</a></sup>","Medium"],
+ ["Chanel","—","Brand (D2C + wholesale)","Selective","<span class=\"unknown\">Unknown</span>","<span class=\"unknown\">Unknown</span>","Major prestige house. Inclusion not sourced (G06).","No verified signal in research window"],
+ ["Clarins","—","Brand (D2C + wholesale)","Selective","<span class=\"unknown\">Unknown</span>","<span class=\"unknown\">Unknown</span>","Major prestige house. Inclusion not sourced (G06).","No verified signal in research window"],
+ ["Groupe Rocher (Yves Rocher)","—","Brand (D2C + retail)","Mass / D2C","<span class=\"unknown\">Unknown</span>","<span class=\"unknown\">Unknown</span> (only pre-2022 sources seen for La Gacilly)","Major French D2C beauty brand. Inclusion not sourced (G06).","No verified signal in research window"],
+ ["Dimolog","—","3PL / fulfilment provider","E-commerce","FR","Bain-de-Bretagne: 19,000 m², Scallog goods-to-person system<sup class=\"ref\"><a href=\"#s14\">14</a></sup>","Runs L'Oréal's European e-commerce fulfilment<sup class=\"ref\"><a href=\"#s14\">14</a></sup>","Medium (via L'Oréal)"],
+ ["ID Logistics","—","3PL / fulfilment provider","Selective","<span class=\"unknown\">Unknown</span>","Aube site for Dior (opening early 2027)<sup class=\"ref\"><a href=\"#s18\">18</a></sup>","Verified beauty contract in France<sup class=\"ref\"><a href=\"#s18\">18</a></sup>","Medium (via Dior)"],
+ ["FM Logistic","—","3PL / fulfilment provider","Selective","<span class=\"unknown\">Unknown</span>","Escrennes, for Sephora (2018)<sup class=\"ref\"><a href=\"#s20\">20</a></sup>","Beauty contract in France (not re-verified)","No verified signal in research window"],
+ ["Viapost","—","3PL / fulfilment provider","Selective","<span class=\"unknown\">Unknown</span>","Hénin-Beaumont; Villeneuve-d'Ascq (2016)<sup class=\"ref\"><a href=\"#s21\">21</a></sup>","Former or current NOCIBÉ 3PL (status unknown)","No verified signal in research window"],
+ ["Shein / Temu","—","Cross-border platform","Mass","<span class=\"unknown\">Unknown</span>","<span class=\"unknown\">Unknown</span>","Subject to the EU €3 duty from 1 Jul 2026<sup class=\"ref\"><a href=\"#s22\">22</a></sup>","Medium"]
+];
+
+const CHAINS = [
+ {title:"Aroma-Zone: new Cavaillon site during rapid D2C growth",band:"Medium",steps:[
+  ["R","A 22,000 m² Cavaillon site is due in 2026. The company ships ≈15,000 orders a day and 3–4m parcels a year, and revenue grew +52% in 2025<sup class=\"ref\"><a href=\"#s15\">15</a></sup><sup class=\"ref\"><a href=\"#s16\">16</a></sup>."],
+  ["A","Volume growing about 50% a year across three Vaucluse sites, plus 15 new stores, creates a need to scale picking and to add store replenishment to D2C."],
+  ["A","Picking capacity that can scale without a proportional rise in headcount, and that can serve both D2C parcels and store replenishment from shared stock."],
+  ["A","Goods-to-person picking for a 1,700-SKU catalogue, AMR transport between zones, and outbound sorting."],
+  ["A","Possible fit: goods-to-person / shelf-to-person and AMR families. Stated as a possibility only; no company statement supports it."],
+  ["","Whether the Cavaillon automation scope is already awarded (the 'computerised picking system' is unspecified); site status after the Q3 vs end-2026 conflict; tier 1–2 confirmation."],
+  ["","Check the Aroma-Zone press room and LinkedIn for a Cavaillon inauguration notice; search Cavaillon logistics job postings for 'automatisme' or 'robot'; Sales Ops to run a CRM check on existing contact."]]},
+ {title:"L'Oréal / Dimolog: European e-commerce hub ramping to 2m orders",band:"Medium",steps:[
+  ["R","Dimolog's Bain-de-Bretagne site handles L'Oréal's European e-commerce: 24 brands, 14,000 SKUs, 1m orders rising to 1.7–2m a year by Q2 2026. It uses Scallog goods-to-person (32 robots) for slow movers<sup class=\"ref\"><a href=\"#s14\">14</a></sup>."],
+  ["A","Nearly doubling order volume on one site with a long-tail range puts pressure on storage density and on fast-mover picking rates."],
+  ["A","Additional high-throughput picking for fast movers, and density for a growing SKU count."],
+  ["A","Goods-to-person for fast movers, sorting for multi-country parcel flows, and returns handling."],
+  ["A","Possible fit: sorting and goods-to-person families. A goods-to-person incumbent (Scallog) is already present, so any fit would be complementary."],
+  ["","Whether Q2 2026 full capacity was reached; how fast movers are picked today; whether Dimolog or L'Oréal decides on equipment."],
+  ["","Monitor the Scallog and Dimolog newsrooms for an extension notice (a Scallog client page already mentions one); find L'Oréal's European e-commerce supply-chain lead via LinkedIn; Sales Ops to run a CRM check on Dimolog."]]}
+];
+
+const ref = n => `<sup class="ref"><a href="#s${n}">${n}</a></sup>`;
+const refs = a => a.map(ref).join('');
+
+// Sources
+document.getElementById('source-list').innerHTML = SOURCES.map(s=>`<li id="s${s.n}">${s.org} — "${s.title}". ${s.date}. <a href="${s.url}">${s.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60)}${s.url.length>70?'…':''}</a> ${s.note?s.note+' ':''}<span class="tier">${s.tier}</span></li>`).join('');
+
+// Active signals
+const DIM=['F','V','T','P','S','E','A'];
+function band(sc){ const t=sc.reduce((a,b)=>a+b,0), E=sc[5], A=sc[6]; let b = t>=10?'High':t>=6?'Medium':'Low'; if(b==='High' && !(E===2 && A>=1)) b='Medium'; if(E===0||A===0) b='Low'; return [t,b]; }
+document.querySelector('#active-table tbody').innerHTML = ACTIVE.map(r=>{ const [t,b]=band(r.scores); return `<tr><td class="co">${r.account}</td><td>${r.signal}${refs(r.refs)}</td><td>${r.date}</td><td>${r.cats}</td><td>${r.evidence}</td><td>${r.impl}</td><td><div class="score">${r.scores.map((v,i)=>`<span class="s${v}" title="${DIM[i]}">${DIM[i]}${v}</span>`).join('')}<span style="border:0;background:none">= ${t}</span></div><span class="band ${b.toLowerCase()}">${b}</span><div style="font-size:11.5px;color:var(--ink-2);margin-top:4px">${r.why}</div></td></tr>`; }).join('');
+
+// Chains
+const STEPS=['Observed signal','Operational challenge','Automation requirement','Relevant automation use case','Potential Geek+ capability','Evidence gap','Next intelligence action'];
+const LBL={R:'<span class="tag t-fact">Reported</span>',A:'<span class="tag t-analysis">Analysis</span>',U:'<span class="tag t-unconf">Unconfirmed</span>'};
+document.getElementById('chain-grid').innerHTML = CHAINS.map(c=>`<div class="card"><div class="chain-head"><h4>${c.title}</h4><span class="band ${c.band.toLowerCase()}">${c.band} intelligence priority</span></div><div class="chain">${c.steps.map((s,i)=>`<div class="step ${i===5?'gap':''} ${i===6?'act':''}"><span class="k">${i+1}</span><div class="lbl">${STEPS[i]}</div><div>${s[0]?LBL[s[0]]+' ':''}${s[1]}</div></div>`).join('')}</div></div>`).join('');
+
+// Watchlist
+const WATCH = JSON.parse(document.getElementById('watchlist-data').textContent);
+document.querySelector('#watch-table tbody').innerHTML = WATCH.map(w=>`<tr><td><code class="id">${w.id}</code></td><td class="co">${w.account_or_market}</td><td>${w.monitor}</td><td>${w.signal_condition}</td><td>${w.why_it_matters}</td><td>${w.expected_source}</td><td class="cad">${w.cadence}</td><td>${w.known_dates||'<span class="unknown">None confirmed</span>'}</td></tr>`).join('');
+
+// Charts
+const C1 = getComputedStyle(document.documentElement).getPropertyValue('--series-1').trim();
+const C2 = getComputedStyle(document.documentElement).getPropertyValue('--series-2').trim();
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtM = s => { const [y,m]=s.split('-'); return m ? MON[+m-1]+' '+y : y; };
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function niceTicks(min,max,count){ const span=max-min; const step0=span/count; const mag=Math.pow(10,Math.floor(Math.log10(step0))); const norm=step0/mag; const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag; const lo=Math.floor(min/step)*step, hi=Math.ceil(max/step)*step; const t=[]; for(let v=lo; v<=hi+1e-9; v+=step) t.push(+v.toFixed(6)); return t; }
+function tooltip(c){ let t=c.querySelector('.tip'); if(!t){ t=document.createElement('div'); t.className='tip'; c.appendChild(t);} return t; }
+function placeTip(tip,c,x,y){ const w=tip.offsetWidth, cw=c.clientWidth; let left=x+14; if(left+w>cw) left=x-w-14; tip.style.left=Math.max(0,left)+'px'; tip.style.top=Math.max(0,y-10)+'px'; tip.style.opacity=1; }
+function table(id,head,rows){ const w=document.getElementById(id); let h='<table><thead><tr>'+head.map((c,i)=>`<th class="${i?'num':''}">${c}</th>`).join('')+'</tr></thead><tbody>'; rows.forEach(r=>{ h+='<tr>'+r.map((c,i)=>`<td class="${i?'num':''}">${c==null?'–':c}</td>`).join('')+'</tr>'; }); w.innerHTML=h+'</tbody></table>'; }
+function lineChart(id,cfg){ const box=document.getElementById(id);
+  function draw(){ box.querySelectorAll('svg').forEach(s=>s.remove());
+    const W=Math.max(300,box.clientWidth),H=260,m={t:14,r:16,b:30,l:40}; const iw=W-m.l-m.r, ih=H-m.t-m.b, d=cfg.data, n=d.length;
+    const vals=d.flatMap(r=>r.slice(1)).filter(v=>v!=null); let lo=Math.min(...vals), hi=Math.max(...vals); if(cfg.zero){lo=Math.min(lo,0);hi=Math.max(hi,0);}
+    const ticks=niceTicks(lo,hi,5); lo=ticks[0]; hi=ticks[ticks.length-1];
+    const x=i=>m.l+i*iw/(n-1), y=v=>m.t+ih-(v-lo)/(hi-lo)*ih;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':cfg.aria,tabindex:0},box);
+    ticks.forEach(t=>{ el('line',{x1:m.l,x2:W-m.r,y1:y(t),y2:y(t),stroke:t===0?'#c3c2b7':'#e1e0d9'},svg); const tx=el('text',{x:m.l-6,y:y(t)+4,'text-anchor':'end','font-size':11,fill:'#7c818b'},svg); tx.textContent=cfg.yFmt(t); });
+    d.forEach((r,i)=>{ const [yy,mm]=r[0].split('-'); if(mm==='01'){ const tx=el('text',{x:x(i),y:H-8,'text-anchor':'middle','font-size':11,fill:'#7c818b'},svg); tx.textContent=yy; el('line',{x1:x(i),x2:x(i),y1:m.t+ih,y2:m.t+ih+4,stroke:'#c3c2b7'},svg);} });
+    (cfg.annotations||[]).forEach(a=>{ const i=d.findIndex(r=>r[0]===a.x); if(i<0) return; el('line',{x1:x(i),x2:x(i),y1:m.t,y2:m.t+ih,stroke:'#9aa0aa'},svg); const tx=el('text',{x:x(i)-5,y:m.t+ih-8,'text-anchor':'end','font-size':10.5,fill:'#4a5160'},svg); tx.textContent=a.label; });
+    const colors=[C1,C2];
+    cfg.series.forEach((s,k)=>{ let p=''; d.forEach((r,i)=>{ const v=r[k+1]; if(v==null) return; p+=(p?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1); }); el('path',{d:p,fill:'none',stroke:colors[k],'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'},svg);
+      let li=n-1; while(li>0 && d[li][k+1]==null) li--; el('circle',{cx:x(li),cy:y(d[li][k+1]),r:4,fill:colors[k],stroke:'#fff','stroke-width':2},svg);
+      const lt=el('text',{x:x(li)-8,y:y(d[li][k+1])+(k===cfg.labelBelow?18:-9),'text-anchor':'end','font-size':11,'font-weight':600,fill:'#0f1c2e'},svg); lt.textContent=cfg.yFmt(d[li][k+1],true); });
+    const cross=el('line',{y1:m.t,y2:m.t+ih,stroke:'#0f1c2e',opacity:0},svg); const dots=cfg.series.map((s,k)=>el('circle',{r:4,fill:colors[k],stroke:'#fff','stroke-width':2,opacity:0},svg));
+    const hit=el('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'transparent'},svg); const tip=tooltip(box); let cur=n-1;
+    function show(i){ cur=i; const r=d[i]; cross.setAttribute('x1',x(i)); cross.setAttribute('x2',x(i)); cross.setAttribute('opacity',.35); dots.forEach((dt,k)=>{ if(r[k+1]==null){dt.setAttribute('opacity',0);return;} dt.setAttribute('cx',x(i)); dt.setAttribute('cy',y(r[k+1])); dt.setAttribute('opacity',1); });
+      tip.innerHTML=`<b>${fmtM(r[0])}</b>`+cfg.series.map((s,k)=>`<div class="row"><span><i style="background:${colors[k]}"></i>${s}</span><strong>${r[k+1]==null?'n/a':cfg.yFmt(r[k+1],true)}</strong></div>`).join(''); const sc=box.clientWidth/W; placeTip(tip,box,x(i)*sc,y(Math.max(...r.slice(1).filter(v=>v!=null)))*sc); }
+    function hide(){ cross.setAttribute('opacity',0); dots.forEach(dt=>dt.setAttribute('opacity',0)); tip.style.opacity=0; }
+    hit.addEventListener('mousemove',ev=>{ const rect=svg.getBoundingClientRect(); const px=(ev.clientX-rect.left)*W/rect.width; show(Math.max(0,Math.min(n-1,Math.round((px-m.l)/iw*(n-1))))); }); hit.addEventListener('mouseleave',hide);
+    svg.addEventListener('keydown',ev=>{ if(ev.key==='ArrowLeft'){show(Math.max(0,cur-1));ev.preventDefault();} if(ev.key==='ArrowRight'){show(Math.min(n-1,cur+1));ev.preventDefault();} }); svg.addEventListener('focus',()=>show(cur)); svg.addEventListener('blur',hide); }
+  draw(); return draw; }
+
+
+// Universe
+document.getElementById('univ-body').innerHTML = UNIVERSE.map(u=>{ const sig=u[7]; const yes=/^(Medium|Low|High)/.test(sig); return `<tr><td class="co">${u[0]}${u[1]&&u[1]!=='—'?`<div style="font-weight:400;font-size:11.5px;color:var(--muted)">${u[1]}</div>`:''}</td><td>${u[2]}</td><td>${u[3]}</td><td>${u[4]}</td><td>${u[5]}</td><td>${u[6]}</td><td>${yes?`<a class="univ-yes" href="#active">Yes · ${sig}</a>`:`<span class="univ-no">${sig}</span>`}</td><td style="white-space:nowrap">2026-09-28</td></tr>`; }).join('');
+// Grouped bar (annual)
+function gbarChart(id,cfg){ const box=document.getElementById(id);
+  function draw(){ box.querySelectorAll('svg').forEach(s=>s.remove());
+    const W=Math.max(300,box.clientWidth),H=260,m={t:18,r:12,b:30,l:40}; const iw=W-m.l-m.r, ih=H-m.t-m.b, d=cfg.data, n=d.length;
+    const ticks=niceTicks(0,Math.max(...d.flatMap(r=>r.slice(1))),4); const hi=ticks[ticks.length-1]; const y=v=>m.t+ih-v/hi*ih;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':cfg.aria},box);
+    ticks.forEach(t=>{ el('line',{x1:m.l,x2:W-m.r,y1:y(t),y2:y(t),stroke:t===0?'#c3c2b7':'#e1e0d9'},svg); const tx=el('text',{x:m.l-6,y:y(t)+4,'text-anchor':'end','font-size':11,fill:'#7c818b'},svg); tx.textContent=t+'%'; });
+    const gw=iw/n, bw=Math.min(34,gw*0.32), colors=[C1,C2], tip=tooltip(box);
+    d.forEach((r,i)=>{ const cx=m.l+gw*i+gw/2; const tx=el('text',{x:cx,y:H-8,'text-anchor':'middle','font-size':11,fill:'#7c818b'},svg); tx.textContent=r[0];
+      [1,2].forEach(k=>{ const v=r[k]; const x0=cx+(k===1?-bw-1:1); el('rect',{x:x0,y:y(v),width:bw,height:y(0)-y(v),rx:3,fill:colors[k-1]},svg);
+        if(i===0||i===n-1){ const vt=el('text',{x:x0+bw/2,y:y(v)-5,'text-anchor':'middle','font-size':11,'font-weight':600,fill:'#0f1c2e'},svg); vt.textContent=v.toFixed(1); } });
+      const hr=el('rect',{x:cx-gw/2,y:m.t,width:gw,height:ih,fill:'transparent'},svg);
+      hr.addEventListener('mousemove',()=>{ tip.innerHTML=`<b>${r[0]}</b>`+cfg.series.map((s,k)=>`<div class="row"><span><i style="background:${colors[k]}"></i>${s}</span><strong>${r[k+1].toFixed(1)}%</strong></div>`).join(''); const sc=box.clientWidth/W; placeTip(tip,box,cx*sc,y(Math.max(r[1],r[2]))*sc); }); hr.addEventListener('mouseleave',()=>tip.style.opacity=0); }); }
+  draw(); return draw; }
+const pct=(v,l)=>(v>0?'+':'')+v.toFixed(1)+'%'; const num=(v,l)=>v.toFixed(l?1:0);
+const redraws=[
+  lineChart('c-retail',{data:DATA.retail,series:['Total retail','Mail order & internet'],yFmt:num,aria:'France retail volume index, total vs online, 2019 to July 2026',labelBelow:1}),
+  lineChart('c-hicp',{data:DATA.hicp,series:['HICP all items','Personal-care products'],yFmt:pct,zero:true,aria:'France HICP inflation, all items vs personal-care products',labelBelow:1}),
+  gbarChart('c-ibcbw',{data:DATA.ibcbw,series:['France','EU27'],aria:'Share of individuals buying cosmetics, beauty or wellness products online, France vs EU27, 2021 to 2024'}),
+  lineChart('c-conf',{data:DATA.conf,series:['France','EU27'],yFmt:num,zero:true,aria:'Consumer confidence indicator France vs EU27',labelBelow:0})
+];
+const cell=v=>v==null?null:v;
+table('t-retail',['Month','Total retail (G47)','Mail order & internet (G47.91)'],DATA.retail.map(r=>[fmtM(r[0]),cell(r[1]),cell(r[2])]));
+table('t-hicp',['Month','HICP all items (%)','Personal-care products CP1312 (%)'],DATA.hicp.map(r=>[fmtM(r[0]),r[1],r[2]]));
+table('t-ibcbw',['Year','France (% of individuals)','EU27 (% of individuals)'],DATA.ibcbw.map(r=>[r[0],r[1],r[2]]));
+table('t-conf',['Month','France (balance)','EU27 (balance)'],DATA.conf.map(r=>[fmtM(r[0]),r[1],r[2]]));
+let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>redraws.forEach(f=>f()),120); });
+const links=[...document.querySelectorAll('nav.toc a')];
+const obs=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)); }); },{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+
+</script>
+</body>
+</html>

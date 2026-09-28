@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Germany Furniture Retail Intelligence</title>
+<style>
+
+:root{
+  --paper:#ffffff; --page:#f6f6f3; --ink:#0f1c2e; --ink-2:#4a5160; --muted:#7c818b;
+  --rule:#e3e2dc; --rule-2:#cfcdc4; --navy:#13294b; --navy-soft:#e8edf5;
+  --series-1:#2a78d6; --series-2:#eb6834; --neutral-bar:#8a94a6;
+  --grid:#e1e0d9; --axis:#c3c2b7;
+  --fact:#1f5f3a; --fact-bg:#eaf4ee; --analysis:#6a4a0c; --analysis-bg:#fbf3e2;
+  --calc:#3d3a8c; --calc-bg:#eeedfa; --warn:#8a2c1e; --warn-bg:#fbecea;
+  --radius:10px;
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink); background:var(--page);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-size:15px;line-height:1.55}
+a{color:var(--series-1);overflow-wrap:anywhere}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+/* Header */
+header.report{background:var(--navy);color:#fff;padding-block:40px 32px}
+header.report .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin:0 0 10px}
+header.report h1{font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 22px;font-weight:650;letter-spacing:-.01em}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 28px;border-top:1px solid rgba(255,255,255,.2);padding-top:18px}
+.meta div{font-size:13px}
+.meta b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;font-weight:600;margin-bottom:2px}
+.disclaimer{margin-top:18px;font-size:12.5px;opacity:.8;max-width:900px}
+/* Nav */
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+nav.toc ul{list-style:none;margin:0 auto;padding:0 24px;max-width:1180px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+nav.toc a{display:block;padding:12px 10px;font-size:13px;color:var(--ink-2);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover,nav.toc a.active{color:var(--navy);border-bottom-color:var(--navy)}
+/* Sections */
+main{padding-block:12px 60px}
+section{padding-block:40px 8px;scroll-margin-top:52px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:22px}
+.sec-num{font-size:13px;font-weight:700;color:var(--navy);background:var(--navy-soft);border-radius:6px;padding:2px 8px}
+.sec-head h2{margin:0;font-size:22px;font-weight:650;letter-spacing:-.005em}
+.lede{color:var(--ink-2);max-width:880px;margin:0 0 20px}
+h3{font-size:17px;margin:28px 0 12px;font-weight:650}
+h4{font-size:14.5px;margin:0 0 6px;font-weight:650}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+/* Labels */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:2px 6px;vertical-align:1px;margin-right:4px;white-space:nowrap}
+.t-fact{background:var(--fact-bg);color:var(--fact)}
+.t-analysis{background:var(--analysis-bg);color:var(--analysis)}
+.t-calc{background:var(--calc-bg);color:var(--calc)}
+.t-unconf{background:var(--warn-bg);color:var(--warn)}
+.t-est{background:#eef1f4;color:#44505f}
+sup.ref a{font-size:10.5px;text-decoration:none;color:var(--series-1);font-weight:600;padding:0 1px}
+/* Exec summary */
+.exec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px}
+.finding{position:relative;padding-left:58px}
+.finding .n{position:absolute;left:20px;top:20px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.finding p{margin:6px 0 0;font-size:14px}
+.impl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px;margin-top:18px}
+.impl .card{border-top:3px solid var(--navy)}
+.impl h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy)}
+.impl ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+.impl li{margin-bottom:6px}
+.bottomline{margin-top:18px;background:var(--navy-soft);border-left:4px solid var(--navy);border-radius:6px;padding:14px 18px;font-size:14.5px}
+/* KPI */
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi .label{font-size:12.5px;color:var(--ink-2);font-weight:600}
+.kpi .value{font-size:30px;font-weight:650;letter-spacing:-.01em;line-height:1.1}
+.kpi .value small{font-size:14px;font-weight:600;color:var(--ink-2);margin-left:3px}
+.kpi .ctx{font-size:12.5px;color:var(--ink-2)}
+.kpi .src{margin-top:auto;padding-top:8px;border-top:1px solid var(--rule);font-size:11.5px;color:var(--muted);line-height:1.4}
+.kpi.neg .value{color:#9b2d20}
+.kpi-group{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 0 10px}
+/* Charts */
+.chart-card h4{font-size:15px;margin-bottom:2px}
+.chart-card .msg{font-size:13.5px;color:var(--ink-2);margin:0 0 10px}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2);margin:0 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.legend i.sq{height:10px;width:10px;border-radius:2px}
+.tip{position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-2);border-radius:8px;box-shadow:0 4px 14px rgba(15,28,46,.12);padding:8px 10px;font-size:12px;line-height:1.45;min-width:150px;opacity:0;transition:opacity .08s;z-index:5}
+.tip b{display:block;margin-bottom:2px}
+.tip .row{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.tip .row span{display:inline-flex;align-items:center;gap:6px}
+.tip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chart-meta{margin-top:10px;border-top:1px solid var(--rule);padding-top:8px;font-size:11.5px;color:var(--ink-2);display:grid;gap:2px}
+.chart-meta b{color:var(--ink);font-weight:600}
+details.data{margin-top:8px;font-size:12px}
+details.data summary{cursor:pointer;color:var(--series-1)}
+details.data .tbl-wrap{max-height:260px;overflow:auto;margin-top:6px}
+/* Tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{background:#f3f4f7;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-weight:700;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.wide{min-width:1000px}
+td.co{font-weight:650}
+.prio{display:inline-flex;align-items:center;gap:6px;font-weight:650;font-size:12.5px;white-space:nowrap}
+.prio i{width:9px;height:9px;border-radius:50%}
+.p-high i{background:#13294b}.p-med i{background:#6d86b0}.p-low i{background:#c5cfdf}
+/* Intelligence */
+.seg{margin-top:10px}
+.seg-title{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.seg-title h3{margin:0}
+.seg-title .line{flex:1;height:1px;background:var(--rule-2)}
+.dev dl{display:grid;grid-template-columns:128px 1fr;gap:6px 14px;margin:10px 0 0;font-size:13.5px}
+.dev dt{font-weight:650;color:var(--ink-2);font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.dev dd{margin:0}
+@media (max-width:560px){.dev dl{grid-template-columns:1fr}.dev dt{padding-top:6px}}
+.note{background:#f3f4f7;border-radius:8px;padding:12px 14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.callout{border-left:4px solid var(--series-2);background:#fff6f1;border-radius:6px;padding:12px 16px;font-size:13.5px;margin-top:16px}
+/* Logistics */
+.sig{display:grid;grid-template-columns:160px 1fr 1fr;gap:0;border-bottom:1px solid var(--rule)}
+.sig:last-child{border-bottom:0}
+.sig>div{padding:14px 16px;font-size:13.5px}
+.sig .theme{font-weight:650;color:var(--navy);background:#fafaf8}
+.sig-head{background:#f3f4f7!important;font-size:11.5px!important;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+@media (max-width:760px){.sig{grid-template-columns:1fr}.sig-head:not(:first-child){display:none}}
+/* Outlook */
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px}
+ul.clean{margin:0;padding-left:18px;font-size:14px}
+ul.clean li{margin-bottom:8px}
+/* Sources */
+ol.sources{font-size:12.5px;padding-left:26px;margin:0}
+ol.sources li{margin-bottom:8px;padding-left:4px}
+ol.sources li:target{background:#fff6d6;border-radius:4px}
+ol.sources .tier{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+footer{border-top:1px solid var(--rule);padding-block:24px;color:var(--muted);font-size:12px}
+@media print{nav.toc{display:none}section{break-inside:avoid-page}.card{break-inside:avoid}}
+
+
+/* ---- V0.2 additions ---- */
+.q{display:grid;grid-template-columns:44px 1fr;gap:0 14px;padding:16px 20px;border-bottom:1px solid var(--rule)}
+.q:last-child{border-bottom:0}
+.q .qn{font-size:12px;font-weight:700;color:var(--navy);background:var(--navy-soft);border-radius:6px;height:26px;display:grid;place-items:center}
+.q h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:3px 0 6px}
+.q p{margin:0;font-size:14.5px}
+.q ul{margin:4px 0 0;padding-left:18px;font-size:14px}
+.q li{margin-bottom:3px}
+.state{display:inline-flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:650;border-radius:999px;padding:3px 10px;border:1px solid var(--rule-2);background:#fff}
+.pill i{width:8px;height:8px;border-radius:50%}
+.pill.down i{background:#b5452f}.pill.flat i{background:#c79a2b}.pill.up i{background:#1f8a4c}
+.kpi .sowhat{font-size:12.5px;color:var(--ink);background:var(--analysis-bg);border-radius:6px;padding:6px 8px}
+.kpi .sowhat b{color:var(--analysis);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+.score{display:inline-flex;gap:3px;flex-wrap:wrap;align-items:center}
+.score span{font-size:11px;font-variant-numeric:tabular-nums;border:1px solid var(--rule-2);border-radius:4px;padding:1px 4px;background:#fff;color:var(--ink-2)}
+.score span.s2{background:#dfe7f3;border-color:#b9c8e0;color:var(--navy);font-weight:700}
+.score span.s0{color:#aab0ba}
+.band{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:4px;padding:2px 7px;margin-top:4px}
+.band.high{background:var(--navy);color:#fff}.band.medium{background:#6d86b0;color:#fff}.band.low{background:#e3e7ee;color:#44505f}
+.chain{display:grid;gap:0;margin-top:10px}
+.chain .step{display:grid;grid-template-columns:30px 190px 1fr;gap:0 12px;padding:10px 0;border-top:1px solid var(--rule);font-size:13.5px}
+.chain .step:first-child{border-top:0}
+.chain .step .k{width:24px;height:24px;border-radius:50%;background:var(--navy-soft);color:var(--navy);font-size:12px;font-weight:700;display:grid;place-items:center}
+.chain .step .lbl{font-weight:650;font-size:12.5px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em;padding-top:3px}
+.chain .step.gap .k{background:var(--warn-bg);color:var(--warn)}
+.chain .step.act .k{background:var(--navy);color:#fff}
+@media (max-width:640px){.chain .step{grid-template-columns:30px 1fr}.chain .step>div:last-child{grid-column:2}}
+.chain-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between}
+.chain-head h4{font-size:16px;margin:0}
+.univ-yes{font-weight:650;color:var(--navy)}
+.univ-no{color:var(--muted)}
+.unknown{color:var(--muted);font-style:italic}
+.legend-inline{font-size:12px;color:var(--ink-2);margin:8px 0 14px}
+code.id{font-size:11.5px;background:#eef1f4;border-radius:4px;padding:1px 5px;white-space:nowrap}
+.cad{white-space:nowrap;font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="report">
+  <div class="wrap">
+    <p class="eyebrow">Geek+ EMEA · Retail Practice · Market → Account → Fulfilment → Commercial Intelligence · V0.2</p>
+    <h1>Germany Furniture &amp; Furnishing Retail Intelligence</h1>
+    <div class="meta">
+      <div><b>Reporting date</b>28 September 2026</div>
+      <div><b>Last updated</b>2026-09-28</div>
+      <div><b>Geographic scope</b>Germany (DACH). EU27 appears only as a labelled benchmark.</div>
+      <div><b>Industry scope</b>Furniture &amp; furnishing: large-format furniture stores, discount and online furniture retail, and the domestic manufacturing and import supply base, including furniture e-commerce, two-person delivery and fulfilment</div>
+      <div><b>Data cut-off</b>Retail volumes: Jul 2026 · Prices: Aug 2026 · Purchase intentions: Aug 2026 · Online buying: 2024 · Industry sales: H1 2026 · Company news: to 28 Sep 2026</div>
+      <div><b>Research date / method</b>28 Sep 2026 · <code style="color:#fff;background:rgba(255,255,255,.12);padding:1px 5px;border-radius:4px">retail-research</code> skill V0.2</div>
+    </div>
+    <p class="disclaimer">Labels:
+      <span class="tag t-fact">Reported</span> as published by the named source ·
+      <span class="tag t-calc">Calculated</span> our arithmetic, method stated ·
+      <span class="tag t-est">Forecast</span> the source's own projection ·
+      <span class="tag t-analysis">Analysis</span> our interpretation, not a fact or a customer requirement ·
+      <span class="tag t-unconf">Unconfirmed</span> not verified against a tier 1–3 source.
+      No commercial relationship between Geek+ and any named company is implied. No public Geek+ furniture reference was found (§8). Intelligence Priority indicates where more intelligence gathering is justified. <b>It is not a sales priority</b>; no CRM data was used.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Report sections">
+  <ul>
+    <li><a href="#exec">1 Executive intelligence</a></li>
+    <li><a href="#signals">2 Headline signals</a></li>
+    <li><a href="#market">3 Market context</a></li>
+    <li><a href="#segments">4 Segments</a></li>
+    <li><a href="#universe">5 Account universe</a></li>
+    <li><a href="#active">6 Active signals</a></li>
+    <li><a href="#fulfilment">7 Fulfilment</a></li>
+    <li><a href="#chains">8 Commercial chains</a></li>
+    <li><a href="#gaps">9 Gaps &amp; conflicts</a></li>
+    <li><a href="#watchlist">10 Watchlist</a></li>
+    <li><a href="#sources">11 Sources</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 EXECUTIVE INTELLIGENCE -->
+<section id="exec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Executive intelligence</h2></div>
+  <div class="card" style="padding:0">
+    <div class="q"><span class="qn">Q1</span><div>
+      <h4>Current market state</h4>
+      <div class="state"><span class="pill down"><i></i>Furniture demand: contracting (4th year)</span><span class="pill up"><i></i>Online: growing slowly</span><span class="pill down"><i></i>Purchase intentions: weak</span></div>
+      <p><span class="tag t-analysis">Analysis</span> German furniture is in a prolonged downturn with no recovery in sight. Retail sales fell to €25.4bn in 2025 (−1%)<sup class="ref"><a href="#s5">5</a></sup>. Domestic industry sales fell −4.1% in H1 2026, and the industry expects about −3% for the full year<sup class="ref"><a href="#s7">7</a></sup>.</p>
+    </div></div>
+    <div class="q"><span class="qn">Q2</span><div>
+      <h4>What materially changed</h4>
+      <ul>
+        <li><b>7 Sep 2026:</b> XXXLutz formally notified the European Commission of its Porta acquisition (case M.11895, preliminary deadline 12 Oct). The Commission is also examining a possible breach of the standstill obligation<sup class="ref"><a href="#s11">11</a></sup><sup class="ref"><a href="#s12">12</a></sup>.</li>
+        <li><b>1 Sep 2026:</b> the furniture industry cut its 2026 outlook to about −3%, from "at least flat"<sup class="ref"><a href="#s6">6</a></sup><sup class="ref"><a href="#s7">7</a></sup>.</li>
+        <li><b>Apr 2026:</b> German consumers' major-purchase intentions fell to −31.5, the weakest since October 2023<sup class="ref"><a href="#s3">3</a></sup>.</li>
+      </ul>
+    </div></div>
+    <div class="q"><span class="qn">Q3</span><div>
+      <h4>Where fulfilment activity is concentrating</h4>
+      <p><span class="tag t-analysis">Analysis</span> Activity is concentrating in <b>large-item (two-person handling) networks and warehouse software upgrades at group operators</b>, not in new buildings. Examples: Otto Group's Hermes Fulfilment robots at Löhne, Poco's WMS rollout across 8 sites, and Westwing's system migration. No new German furniture DC announcement was found in the research window.</p>
+    </div></div>
+    <div class="q"><span class="qn">Q4</span><div>
+      <h4>Accounts with meaningful signals</h4>
+      <ul>
+        <li><b>Otto Group / Hermes Fulfilment</b> <span class="band high">High</span> Robot fleets for large items at Löhne</li>
+        <li><b>Poco (XXXLutz group)</b> <span class="band medium">Medium</span> WMS rollout; ERP-based warehouse control had reached its limits</li>
+        <li><b>XXXLutz / Porta · Westwing</b> <span class="band medium">Medium</span> Network consolidation under EU review; WMS migration</li>
+      </ul>
+    </div></div>
+    <div class="q"><span class="qn">Q5</span><div>
+      <h4>What Geek+ should monitor next</h4>
+      <ul>
+        <li>The Hermes Fulfilment robot rollout to Ansbach, and new fleets under Otto's coordination layer (<a href="#watchlist">W01</a>)</li>
+        <li>The Commission's Phase 1 decision on XXXLutz/Porta by 12 Oct 2026 (<a href="#watchlist">W02</a>)</li>
+        <li>Poco's second WMS site (end-2026) and any automation of its e-commerce fulfilment centre (<a href="#watchlist">W03</a>)</li>
+        <li>IKEA Deutschland's FY25/26 figures and German fulfilment changes (<a href="#watchlist">W05</a>)</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="bottomline"><b>Bottom line.</b> <span class="tag t-analysis">Analysis</span> The market is shrinking and consolidating, so automation activity is about efficiency inside existing networks, not new capacity. The strongest signal is at Otto Group / Hermes Fulfilment. XXXLutz is the account to watch once the Porta integration is decided.</div>
+</section>
+
+<!-- 2 HEADLINE SIGNALS -->
+<section id="signals">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Headline signals</h2></div>
+  <p class="lede">These six figures change how the market should be read. All other quantitative evidence is in §3.</p>
+  <div class="grid g3">
+    <div class="card kpi neg"><span class="label">Furniture retail market (excluding appliances)</span><span class="value">€25.4<small>bn</small></span><span class="ctx">2025 · Germany · −1.0% vs €25.7bn in 2024 · kitchens +1.7%, upholstery −2.3%</span>
+      <span class="sowhat"><b>So what</b>Retail value is shrinking, so retailers will look for share and cost savings, not new capacity.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> IFH Köln via BVDM, reported by MÖBELMARKT, 09 Mar 2026<sup class="ref"><a href="#s5">5</a></sup></span></div>
+    <div class="card kpi neg"><span class="label">Furniture industry domestic sales</span><span class="value">−4.1<small>%</small></span><span class="ctx">H1 2026 · Germany · €5.0bn · full-year 2026 forecast ≈ −3% (industry sales down ≈20% since 2023)</span>
+      <span class="sowhat"><b>So what</b>This is the fourth year of decline. Supplier insolvencies and short-time work shrink and reshape inbound flows.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> / <span class="tag t-est">Forecast</span> VDM via moebelfertigung, 01 Sep 2026<sup class="ref"><a href="#s7">7</a></sup></span></div>
+    <div class="card kpi"><span class="label">Imports as a share of domestic furniture sales</span><span class="value">60<small>%</small></span><span class="ctx">H1 2026 · Germany (44% in 2019) · China and Poland supply 60% of imports</span>
+      <span class="sowhat"><b>So what</b>Supply is dominated by imports (container and deconsolidation flows), so central import warehouses matter more than local suppliers.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> VDM via moebelfertigung, 01 Sep 2026<sup class="ref"><a href="#s7">7</a></sup></span></div>
+    <div class="card kpi"><span class="label">Online sales: furniture, lamps &amp; décor</span><span class="value">€5.6<small>bn</small></span><span class="ctx">2025 · Germany · +3.3% (all online goods +3.2%) · bevh definition</span>
+      <span class="sowhat"><b>So what</b>Online is growing, but slowly. It is not a volume wave that forces new fulfilment capacity.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> bevh, 22 Jan 2026<sup class="ref"><a href="#s8">8</a></sup></span></div>
+    <div class="card kpi"><span class="label">XXXLutz – Porta merger review</span><span class="value">12 Oct<small>2026</small></span><span class="ctx">EU Phase 1 preliminary deadline · case M.11895 · notified 7 Sep 2026 · announced Jan 2025</span>
+      <span class="sowhat"><b>So what</b>The largest consolidation in German furniture retail is decided this quarter, and the logistics networks will follow.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> möbelkultur, 10 Sep 2026<sup class="ref"><a href="#s11">11</a></sup></span></div>
+    <div class="card kpi"><span class="label">Hermes Fulfilment Löhne pallet robots</span><span class="value">25<small>AMRs</small></span><span class="ctx">100,000 m² large-item site · ≈1,000 transports/day · Ansbach next · Löhne is the blueprint for Otto's robot coordination layer (120 sites)</span>
+      <span class="sowhat"><b>So what</b>The main German large-item fulfilment operator is already automating with mobile robots from several vendors.</span>
+      <span class="src"><span class="tag t-fact">Reported</span> Hermes Fulfilment, 05 Jun 2025; Otto Group, 09 Jan 2026<sup class="ref"><a href="#s13">13</a></sup><sup class="ref"><a href="#s14">14</a></sup></span></div>
+  </div>
+</section>
+
+<!-- 3 MARKET CONTEXT -->
+<section id="market">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Market context</h2></div>
+  <p class="lede">Each chart is titled with the sentence it proves. Eurostat publishes no furniture-only retail series (G47.59) for Germany. Chart 3.1 therefore uses G47.5, "other household equipment in specialised stores", which includes furniture. The proxy is labelled in the chart and recorded in §9.</p>
+  <div class="grid g2">
+<!-- CHART SPEC
+CHART ID: 3.1
+MESSAGE: Sales volumes in household-equipment stores (incl. furniture) have fallen 13% since 2022 while total retail has grown.
+DECISION RELEVANCE: Q1 market state
+DATA REQUIRED: Monthly real sales volume, household-equipment specialists vs total retail, Germany, same source
+DATA USED: Eurostat sts_trtu_m, G47 & G475, VOL_SLS, SCA, I21, DE, 2019-01..2026-07 (Reported)
+TEST RESULT: supports. G475 annual mean 102.0 (2022) → 88.8 (2025), −12.9% (Calculated); G47 99.7 → 100.6 (+0.9%). Jul 2026 G475 86.4, lowest outside Jan–Feb 2021 lockdown.
+FORM + WHY: line chart, trend over time, single axis
+LIMITATIONS: G47.5 includes textiles, hardware, carpets, electrical household appliances as well as furniture; Aug 2024 online structural effect does not affect G47.5
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.1 · Q1</span></p>
+      <h4>Sales volumes in household-equipment stores (incl. furniture) have fallen 13% since 2022, while total retail has grown</h4>
+      <p class="msg">The annual average index fell from 102.0 in 2022 to 88.8 in 2025 (−12.9%), while total retail rose +0.9%. At 86.4 in July 2026, the index was at its lowest outside the 2021 lockdown months.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>Total retail (G47)</span><span><i style="background:var(--series-2)"></i>Household-equipment specialists (G47.5)</span></div>
+      <div class="chart" id="c-retail"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>sts_trtu_m</i>, updated 26 Sep 2026<sup class="ref"><a href="#s1">1</a></sup> · <span class="tag t-fact">Reported</span>; annual means and change <span class="tag t-calc">Calculated</span> (mean of 12 monthly values)</div>
+        <div><b>Period:</b> Jan 2019 – Jul 2026, monthly · <b>Geography:</b> Germany</div>
+        <div><b>Metric definition:</b> Volume of sales index (price-adjusted), 2021 = 100, seasonally and calendar adjusted.</div>
+        <div><b>Limitations:</b> G47.5 is a proxy. It also covers textiles, hardware, carpets and electrical household appliances. Germany has no furniture-only (G47.59) series. Online furniture sales are not in G47.5.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-retail"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.2
+MESSAGE: Furniture has no pricing power: furniture inflation has been close to zero since 2025 while headline inflation runs at 2–3%.
+DECISION RELEVANCE: Q1 market state (margin pressure → cost focus)
+DATA REQUIRED: Monthly annual inflation, all items vs furniture & furnishings, same index
+DATA USED: Eurostat prc_hicp_minr, TOTAL & CP0511, RCH_A, DE, 2023-01..2026-08 (Reported)
+TEST RESULT: supports (CP0511 −1.2%..+1.2% since Jan 2025; headline 1.9–2.9%)
+FORM + WHY: line chart, trend, single axis, zero line
+LIMITATIONS: HICP ≠ national CPI; CP0511 includes furnishings (e.g. lighting)
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.2 · Q1</span></p>
+      <h4>Furniture has no pricing power: furniture inflation has been close to zero since 2025, while headline inflation is 2–3%</h4>
+      <p class="msg">Since January 2025, furniture &amp; furnishings inflation has ranged from −1.2% to +1.2%, while headline inflation has been 1.9–2.9%. It was +0.3% in August 2026, against +2.9% for headline.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>HICP all items</span><span><i style="background:var(--series-2)"></i>HICP furniture &amp; furnishings (CP0511)</span></div>
+      <div class="chart" id="c-hicp"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>prc_hicp_minr</i>, updated 17 Sep 2026<sup class="ref"><a href="#s2">2</a></sup> · <span class="tag t-fact">Reported</span></div>
+        <div><b>Period:</b> Jan 2023 – Aug 2026 · <b>Geography:</b> Germany</div>
+        <div><b>Metric definition:</b> Harmonised Index of Consumer Prices (HICP), annual rate of change, %. CP0511 = furniture and furnishings (ECOICOP v2).</div>
+        <div><b>Limitations:</b> The HICP is not Destatis' national CPI, and the two are not combined. The category includes furnishings such as lighting as well as furniture.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-hicp"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.3
+MESSAGE: German households' major-purchase intentions fell in spring 2026 to the weakest since October 2023 and remain below 2025 levels.
+DECISION RELEVANCE: Q2 what changed
+DATA REQUIRED: Monthly survey balance on major purchases now, Germany + EU27 benchmark
+DATA USED: Eurostat ei_bsco_m, BS-MP-PR, SA, BAL, DE & EU27_2020, 2022-01..2026-08 (Reported)
+TEST RESULT: supports (DE −31.5 Apr 2026, last at/below that level Oct 2023; Jan–Aug 2026 mean −26.1 vs 2025 mean −22.8, Calculated)
+FORM + WHY: line chart, trend with benchmark
+LIMITATIONS: covers all major purchases (furniture, electronics, etc.), not furniture only
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.3 · Q2</span></p>
+      <h4>German households' major-purchase intentions fell in spring 2026 to their weakest since October 2023, and remain below 2025 levels</h4>
+      <p class="msg">The balance reached −31.5 in April 2026. It averaged −26.1 in January–August 2026, against −22.8 across 2025.</p>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>Germany</span><span><i style="background:var(--series-2)"></i>EU27 (benchmark)</span></div>
+      <div class="chart" id="c-mp"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat / European Commission surveys, <i>ei_bsco_m</i> (BS-MP-PR), updated 28 Aug 2026<sup class="ref"><a href="#s3">3</a></sup> · <span class="tag t-fact">Reported</span>; averages <span class="tag t-calc">Calculated</span> (mean of monthly values)</div>
+        <div><b>Period:</b> Jan 2022 – Aug 2026 · <b>Geography:</b> Germany; EU27 as benchmark</div>
+        <div><b>Metric definition:</b> "Major purchases at present" survey balance (positive minus negative answers), seasonally adjusted.</div>
+        <div><b>Limitations:</b> This covers all major durable purchases, not only furniture. The GfK consumer climate is a different measure and is not combined.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-mp"></div></details>
+    </div>
+<!-- CHART SPEC
+CHART ID: 3.4
+MESSAGE: Online furniture buying in Germany rebounded in 2024 and is well above the EU average, but remains below its 2020 peak.
+DECISION RELEVANCE: Q3 where fulfilment activity concentrates (channel shift)
+DATA REQUIRED: Share of individuals buying furniture/home online, DE vs EU27, same survey
+DATA USED: Eurostat isoc_ec_ibgs, I_BFURN1, PC_IND, IND_TOTAL, DE & EU27_2020, 2020–2024 (Reported)
+TEST RESULT: supports (DE 27.8 → 16.1 (2022) → 22.9 (2024); EU27 18.0 in 2024)
+FORM + WHY: grouped bar, two geographies across five years
+LIMITATIONS: category includes home accessories and gardening; reach not spend; latest 2024
+-->
+    <div class="card chart-card">
+      <p style="margin:0 0 4px"><span class="tag t-est" style="background:var(--navy-soft);color:var(--navy)">Chart 3.4 · Q3</span></p>
+      <h4>Online furniture buying in Germany rebounded in 2024 and is well above the EU average, but remains below its 2020 peak</h4>
+      <p class="msg">22.9% of Germans bought furniture, home accessories or garden products online in 2024 (EU27: 18.0%). That is up from 16.1% in 2022, but below 27.8% in 2020.</p>
+      <div class="legend"><span><i class="sq" style="background:var(--series-1)"></i>Germany</span><span><i class="sq" style="background:var(--series-2)"></i>EU27 (benchmark)</span></div>
+      <div class="chart" id="c-furn"></div>
+      <div class="chart-meta">
+        <div><b>Source:</b> Eurostat, <i>isoc_ec_ibgs</i> (I_BFURN1), updated 17 Apr 2026<sup class="ref"><a href="#s4">4</a></sup> · <span class="tag t-fact">Reported</span></div>
+        <div><b>Period:</b> 2020–2024, annual · <b>Geography:</b> Germany; EU27 as benchmark</div>
+        <div><b>Metric definition:</b> % of all individuals (16–74) who bought furniture, home accessories or gardening products online in the last 3 months.</div>
+        <div><b>Limitations:</b> This measures reach, not spend. The category is broader than furniture. 2024 is the latest year. The bevh online sales figure (§2) is a different metric and is not combined.</div>
+      </div>
+      <details class="data"><summary>Show data table</summary><div class="tbl-wrap" id="t-furn"></div></details>
+    </div>
+  </div>
+
+  <h3>Supporting indicators</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Indicator</th><th class="num">Value</th><th>Period</th><th>Geography</th><th>Label</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Furniture retail by category: kitchens / upholstery / office / mattresses / garden &amp; other</td><td class="num">+1.7% / −2.3% / −4.1% / −2.2% / −1.1%</td><td>2025 vs 2024</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>IFH Köln via BVDM<sup class="ref"><a href="#s5">5</a></sup></td></tr>
+        <tr><td>Furniture industry sales: total / domestic / foreign</td><td class="num">€15.8bn (−3.4%) / €10.4bn (−4.4%) / €5.4bn (−1.2%)</td><td>2025</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>VDM<sup class="ref"><a href="#s6">6</a></sup></td></tr>
+        <tr><td>Furniture industry employees / companies</td><td class="num">68,342 / 398 (−4%)</td><td>2025</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>VDM<sup class="ref"><a href="#s6">6</a></sup></td></tr>
+        <tr><td>Industry sales by segment: kitchens / living-dining-bedroom / upholstery</td><td class="num">+1.0% / −5.0% / −10.0%</td><td>H1 2026</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>VDM<sup class="ref"><a href="#s7">7</a></sup></td></tr>
+        <tr><td>Manufacturers planning short-time work</td><td class="num">40%</td><td>Q3 2026</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>VDM (union survey)<sup class="ref"><a href="#s7">7</a></sup></td></tr>
+        <tr><td>E-commerce goods revenue, total</td><td class="num">€83.1bn (+3.2%)</td><td>2025</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>bevh<sup class="ref"><a href="#s8">8</a></sup>. Marketplaces 56%.</td></tr>
+        <tr><td>E-commerce goods revenue growth</td><td class="num">+3.8%</td><td>2026</td><td>Germany</td><td><span class="tag t-est">Forecast</span></td><td>bevh / EHI<sup class="ref"><a href="#s8">8</a></sup></td></tr>
+        <tr><td>IKEA Deutschland revenue / online share (retail, excluding food)</td><td class="num">€6.161bn (−4.3%) / 25.1%</td><td>FY24 (Sep 2023 – Aug 2024)</td><td>Germany</td><td><span class="tag t-fact">Reported</span></td><td>IKEA Deutschland<sup class="ref"><a href="#s9">9</a></sup>. FY25 German figures not found (§9).</td></tr>
+        <tr><td>IKEA (Inter IKEA) revenue / online share</td><td class="num">€44.6bn (−1%) / 28%</td><td>FY25</td><td>Global (benchmark)</td><td><span class="tag t-fact">Reported</span></td><td>MÖBELMARKT<sup class="ref"><a href="#s10">10</a></sup></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 4 SEGMENTS -->
+<section id="segments">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Segment intelligence</h2></div>
+  <p class="lede">At most three developments per segment. Evidence is Reported; "Why it matters" and "Logistics implication" are Analysis.</p>
+
+  <div class="seg-title"><h3>Large-format furniture stores</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>XXXLutz–Porta: consolidation under EU review</h4><dl>
+      <dt>What happened</dt><dd>The deal was announced in January 2025 and notified to the Commission on 7 Sep 2026 (M.11895). The Commission is also examining whether the parties acted before approval<sup class="ref"><a href="#s11">11</a></sup><sup class="ref"><a href="#s12">12</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>The leading group would absorb the Porta network. Manufacturers' associations warn of buyer concentration.</dd>
+      <dt>Affected</dt><dd>XXXLutz group (incl. mömax, Poco, home24), Porta</dd>
+      <dt>Logistics implication</dt><dd>Two store-delivery and warehouse networks could be merged after clearance, which would mean network redesign rather than new build.</dd></dl></div>
+    <div class="card dev"><h4>The retail market keeps shrinking; only kitchens grow</h4><dl>
+      <dt>What happened</dt><dd>€25.4bn in 2025 (−1%). Kitchens +1.7%; all other categories fell<sup class="ref"><a href="#s5">5</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>The kitchen category is project-based and built to order, while the declining categories are stock-based.</dd>
+      <dt>Affected</dt><dd>All full-range furniture stores</dd>
+      <dt>Logistics implication</dt><dd>Less stock-based volume through regional warehouses. Cost per delivery becomes the lever.</dd></dl></div>
+    <div class="card dev" style="border-style:dashed"><h4>Evidence gap: IKEA Deutschland FY25 and store-chain logistics</h4><p style="font-size:13.5px;margin:8px 0 0">No FY25 German results for IKEA were found; the last figures are FY24<sup class="ref"><a href="#s9">9</a></sup>. No 2025–26 logistics announcements were found for Höffner (Krieger), Segmüller or Porta. See §9 G02 and G05.</p></div>
+  </div>
+
+  <div class="seg-title"><h3>Discount &amp; online furniture</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>Poco standardises warehouse control across its network</h4><dl>
+      <dt>What happened</dt><dd>Infios WMS went live at Trebbin as the template for 7 more sites, with the second site due by end-2026. The network has a central goods-in warehouse, regional DCs and an automated e-commerce fulfilment centre. It serves 127 stores<sup class="ref"><a href="#s15">15</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>The previous ERP-based warehouse control had reached its limits (Reported). A standard WMS is often a precondition for further automation (Analysis).</dd>
+      <dt>Affected</dt><dd>Poco (XXXLutz group)</dd>
+      <dt>Logistics implication</dt><dd>Site-by-site go-lives through 2027 create re-design moments.</dd></dl></div>
+    <div class="card dev"><h4>Westwing grows, but fulfilment cost rises during system migration</h4><dl>
+      <dt>What happened</dt><dd>Q2 2026: revenue €113m (+14%), DACH +9%. Adjusted EBITDA fell to €5.4m, partly because of the move to SaaS order and warehouse management systems<sup class="ref"><a href="#s16">16</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>This is one of the few German home-and-living online players that is growing.</dd>
+      <dt>Affected</dt><dd>Westwing</dd>
+      <dt>Logistics implication</dt><dd>With the new systems live, the next step would be productivity work in its warehouses. Their locations were not verified (G06).</dd></dl></div>
+    <div class="card dev"><h4>Online growth is modest; a US pure-play has exited</h4><dl>
+      <dt>What happened</dt><dd>Online furniture, lamps &amp; décor: €5.6bn (+3.3%) in 2025<sup class="ref"><a href="#s8">8</a></sup>. Wayfair left Germany in January 2025 and closed its Lich warehouse<sup class="ref"><a href="#s19">19</a></sup> (before the research window, so context only).</dd>
+      <dt>Why it matters</dt><dd>Online share gains accrue to omnichannel incumbents such as XXXLutz/home24 and Otto.</dd>
+      <dt>Affected</dt><dd>home24, Otto, Westwing, IKEA</dd>
+      <dt>Logistics implication</dt><dd>Large-item e-commerce volume concentrates in a few existing two-person handling networks.</dd></dl></div>
+  </div>
+
+  <div class="seg-title"><h3>Manufacturing &amp; import supply base</h3><span class="line"></span></div>
+  <div class="grid g3">
+    <div class="card dev"><h4>Domestic manufacturing keeps contracting</h4><dl>
+      <dt>What happened</dt><dd>H1 2026 sales were €7.7bn (−2.7%), with domestic sales −4.1%. 40% of manufacturers planned short-time work in Q3. The 2026 forecast is ≈ −3%<sup class="ref"><a href="#s7">7</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>The supply base is weakening, and capex will be minimal.</dd>
+      <dt>Affected</dt><dd>OWL furniture cluster; kitchen and upholstery makers</dd>
+      <dt>Logistics implication</dt><dd>Low likelihood of manufacturer DC investment in the near term.</dd></dl></div>
+    <div class="card dev"><h4>Imports now supply 60% of the domestic market</h4><dl>
+      <dt>What happened</dt><dd>Imports equal 60% of domestic sales (44% in 2019). China and Poland provide 60% of imports<sup class="ref"><a href="#s7">7</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>More stock arrives by container and passes through import warehouses before reaching regional DCs.</dd>
+      <dt>Affected</dt><dd>Retailers with their own import hubs (Poco, XXXLutz, IKEA)</dd>
+      <dt>Logistics implication</dt><dd>Deconsolidation and storage density at import hubs become more important.</dd></dl></div>
+    <div class="card dev"><h4>Supplier insolvencies continue</h4><dl>
+      <dt>What happened</dt><dd>Domo Collection (upholstery, Hude) went into provisional insolvency on 3 Aug 2026, affecting ≈270 staff, most of them in Poland<sup class="ref"><a href="#s17">17</a></sup>.</dd>
+      <dt>Why it matters</dt><dd>It is a signal of supplier fragility. No automation relevance.</dd>
+      <dt>Affected</dt><dd>Domo Collection; its retail customers</dd>
+      <dt>Logistics implication</dt><dd>No clear automation relevance identified.</dd></dl></div>
+  </div>
+</section>
+
+<!-- 5 UNIVERSE -->
+<section id="universe">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Account universe</h2></div>
+  <p class="lede"><span class="tag t-unconf">Interim — not from account-mapping database</span> <code>data/accounts.csv</code> holds no accounts yet. <b>Inclusion criteria:</b> (a) a furniture retailer or group named in a tier 1–4 source; (b) an online or omnichannel furniture player with verified German logistics; (c) a 3PL or fulfilment operator with a verified German furniture or large-item operation. No cited revenue ranking of German furniture retailers was retrieved (§9 G05), so major chains with no retrieved source (Höffner/Krieger, Segmüller, JYSK) are listed with "Unknown" footprints rather than omitted. HQ country is reference data and is not individually sourced.</p>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>Company</th><th>Role</th><th>Segment</th><th>HQ</th><th>Known German logistics footprint</th><th>Reason for inclusion</th><th>Active signal</th><th>Last verified</th></tr></thead>
+    <tbody id="univ-body"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 6 ACTIVE SIGNALS -->
+<section id="active">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Active account signals</h2></div>
+  <p class="lede">These are verified developments in the research window (Jun 2025 – Sep 2026). <b>Being listed here does not make an account a sales opportunity.</b> Intelligence Priority shows where more intelligence gathering is justified.</p>
+  <p class="legend-inline"><b>Score key</b> (each 0–2, <span class="tag t-analysis">Analysis</span>): F facility · V volume · T technology · P operational pain · S timing/stage · E evidence strength · A automation relevance. Bands: High ≥10 with E=2 and A≥1 · Medium 6–9, or ≥10 failing a gate · Low ≤5. A signal with E=0 or A=0 cannot score above Low.</p>
+  <div class="tbl-wrap">
+  <table class="wide" id="active-table">
+    <thead><tr><th>Account</th><th>Signal <span class="tag t-fact">Reported</span></th><th>Date</th><th>Signal categories</th><th>Evidence (tier)</th><th>Logistics implication <span class="tag t-analysis">Analysis</span></th><th style="min-width:190px">Intelligence Priority</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 7 FULFILMENT -->
+<section id="fulfilment">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Fulfilment intelligence</h2></div>
+  <p class="lede">Operational themes with evidence. Themes without verified evidence (returns, peak, warehouse labour) are listed in §9, not here.</p>
+  <div class="tbl-wrap">
+    <div class="sig"><div class="sig-head">Theme</div><div class="sig-head">Observed signal <span class="tag t-fact">Reported</span></div><div class="sig-head">Operational implication <span class="tag t-analysis">Analysis</span></div></div>
+    <div class="sig"><div class="theme">Distribution centres</div><div>No new German furniture DC announcement was found for Jun 2025 – Sep 2026. The existing large-item network includes Hermes Fulfilment Löhne (100,000 m²) and Ansbach<sup class="ref"><a href="#s13">13</a></sup>, home24 Walsrode (60,000 m², opened 2015)<sup class="ref"><a href="#s18">18</a></sup> and Poco Trebbin<sup class="ref"><a href="#s15">15</a></sup>.</div><div>Change happens inside existing buildings, as retrofits and systems projects.</div></div>
+    <div class="sig"><div class="theme">Automation</div><div>Hermes Fulfilment runs 25 Melkus pallet AMRs at Löhne (≈1,000 transports/day), with Ansbach next<sup class="ref"><a href="#s13">13</a></sup>. Otto's Robotic Coordination Layer uses Löhne as the blueprint for 120 sites<sup class="ref"><a href="#s14">14</a></sup>. Poco runs an automated e-commerce fulfilment centre (location not stated)<sup class="ref"><a href="#s15">15</a></sup>.</div><div>Large-item automation is moving from pilots to fleets, and orchestration across several vendors becomes a buying criterion.</div></div>
+    <div class="sig"><div class="theme">Warehouse systems</div><div>Poco: Infios WMS across 8 sites<sup class="ref"><a href="#s15">15</a></sup>. Westwing: SaaS order and warehouse management migration completed in Q2 2026<sup class="ref"><a href="#s16">16</a></sup>.</div><div>Once standard WMS platforms are in place, automation that integrates through standard interfaces can follow.</div></div>
+    <div class="sig"><div class="theme">E-commerce fulfilment</div><div>Online furniture, lamps &amp; décor +3.3% (2025)<sup class="ref"><a href="#s8">8</a></sup>. IKEA's online share in Germany is 25.1% (FY24)<sup class="ref"><a href="#s9">9</a></sup>. IKEA's German online orders are fulfilled partly through 3PL sites: DHL at Bergkamen (20,000 m², highly automated, opened 2022)<sup class="ref"><a href="#s20">20</a></sup>.</div><div>Small-parcel furnishings (décor, textiles, lighting) are the part of furniture e-commerce best suited to goods-to-person picking.</div></div>
+    <div class="sig"><div class="theme">Inventory / imports</div><div>Imports equal 60% of domestic sales<sup class="ref"><a href="#s7">7</a></sup>. Poco combines import and regional warehouse functions at one site<sup class="ref"><a href="#s15">15</a></sup>.</div><div>Import hubs hold deep stock of bulky SKUs, so storage density and pallet flows matter most.</div></div>
+    <div class="sig"><div class="theme">Omnichannel / consolidation</div><div>XXXLutz / Porta under EU review<sup class="ref"><a href="#s11">11</a></sup>. home24 is fully integrated into XXXLutz (squeeze-out March 2025, search summary)<sup class="ref"><a href="#s21">21</a></sup>.</div><div>Group-level network redesign is likely after clearance (Analysis).</div></div>
+    <div class="sig"><div class="theme">Last mile</div><div>IKEA: 35% of German customer deliveries locally emission-free, with 300 e-vehicles (FY24)<sup class="ref"><a href="#s9">9</a></sup>.</div><div>Delivery is being electrified. It is a cost and ESG lever, not a warehouse-automation one.</div></div>
+  </div>
+</section>
+
+<!-- 8 CHAINS -->
+<section id="chains">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Commercial intelligence chains</h2></div>
+  <p class="lede">A full chain for the one High-priority signal, plus an optional chain for the strongest Medium signal. Steps 3–5 are always Analysis.</p>
+  <div class="grid" id="chain-grid"></div>
+  <div class="callout"><b>No source states that any account requires a Geek+ solution.</b> These chains are analytical. <b>No public Geek+ reference in furniture or large-item fulfilment was found.</b> The closest public European retail references are apparel cases (e.g. Hunkemöller, Almere, Netherlands; NEXT, UK), which say nothing about bulky-goods handling. Large-item capability should be confirmed with the Geek+ product team (§9 G08).</div>
+</section>
+
+<!-- 9 GAPS & CONFLICTS -->
+<section id="gaps">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Evidence gaps &amp; source conflicts</h2></div>
+  <h3 style="margin-top:0">Evidence gaps</h3>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>ID</th><th>What is missing</th><th>Why it matters</th><th>Where it might be found</th><th>Watch item</th></tr></thead>
+    <tbody>
+      <tr><td><code class="id">G01</code></td><td>Status of the Hermes Fulfilment robot rollout to Ansbach, and new fleets connected to Otto's coordination layer</td><td>Confirms whether the High signal is progressing</td><td>Hermes Fulfilment and Otto Group newsrooms</td><td><code class="id">W01</code></td></tr>
+      <tr><td><code class="id">G02</code></td><td>IKEA Deutschland FY25 revenue, online share and German fulfilment changes</td><td>The largest single furniture retailer lacks current data</td><td>IKEA Deutschland newsroom (usually published in autumn)</td><td><code class="id">W05</code></td></tr>
+      <tr><td><code class="id">G03</code></td><td>Location and technology of Poco's automated e-commerce fulfilment centre</td><td>An existing automated site; shows the installed technology</td><td>Poco / Infios releases; careers pages</td><td><code class="id">W03</code></td></tr>
+      <tr><td><code class="id">G04</code></td><td>XXXLutz and Porta logistics footprints (central warehouses, e-commerce logistics)</td><td>Needed to judge post-merger network redesign</td><td>pr.xxxlutz.de (403 on automated access); careers pages; Porta press</td><td><code class="id">W02</code></td></tr>
+      <tr><td><code class="id">G05</code></td><td>A cited revenue ranking of German furniture retailers; footprints for Höffner, Segmüller and JYSK</td><td>The Account Universe is interim and unranked</td><td>MÖBELKULTUR / möbelmarkt top lists; company sites; account-mapping database (planned)</td><td><code class="id">W07</code></td></tr>
+      <tr><td><code class="id">G06</code></td><td>Westwing warehouse locations and fulfilment ratio from a primary source</td><td>Warehouse sites are unverified; the fulfilment ratio (+2.6pp) came only from an earnings-call summary</td><td>Westwing H1 2026 report</td><td><code class="id">W04</code></td></tr>
+      <tr><td><code class="id">G07</code></td><td>Furniture return rates, two-person delivery labour shortages and peak data</td><td>These are main reasons to automate large-item handling</td><td>EHI, bevh, BVL, Bundesagentur für Arbeit</td><td><code class="id">W08</code></td></tr>
+      <tr><td><code class="id">G08</code></td><td>Geek+ capability and references for bulky and large-item goods</td><td>No public furniture reference exists, so relevance claims stay generic</td><td>Geek+ product team (internal)</td><td>n/a</td></tr>
+      <tr><td><code class="id">G09</code></td><td>Furniture-only official retail series (G47.59) for Germany</td><td>Chart 3.1 uses a broader proxy</td><td>Destatis retail statistics by WZ 47.59 (GENESIS 45212)</td><td>n/a</td></tr>
+      <tr><td><code class="id">G10</code></td><td>Any existing Geek+ relationship with the accounts listed</td><td>Needed before any outreach</td><td>Geek+ CRM (Sales Ops)</td><td>n/a</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Source conflicts</h3>
+  <div class="tbl-wrap">
+  <table class="wide">
+    <thead><tr><th>Claim</th><th>Source A</th><th>Source B</th><th>More authoritative</th><th>Explanation</th></tr></thead>
+    <tbody>
+      <tr><td>2026 furniture industry outlook</td><td>At least flat, up to low single-digit growth (VDM, 17 Feb 2026)<sup class="ref"><a href="#s6">6</a></sup></td><td>≈ −3% (VDM, 1 Sep 2026)<sup class="ref"><a href="#s7">7</a></sup></td><td>The later release (same source)</td><td>A revision, not a conflict. The Feb forecast was superseded after the weak H1.</td></tr>
+      <tr><td>IKEA online share</td><td>25.1% of German retail sales excl. food, FY24 (IKEA Deutschland)<sup class="ref"><a href="#s9">9</a></sup></td><td>28% of global revenue, FY25 (Inter IKEA via MÖBELMARKT)<sup class="ref"><a href="#s10">10</a></sup></td><td>Both valid</td><td>Different geography, year and base. They are not combined.</td></tr>
+      <tr><td>Online furniture penetration</td><td>€5.6bn online furniture/lamps/décor (bevh)<sup class="ref"><a href="#s8">8</a></sup></td><td>22.9% of individuals bought furniture/home/garden online (Eurostat)<sup class="ref"><a href="#s4">4</a></sup></td><td>Both valid</td><td>Different metrics (value vs reach) and category definitions</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 10 WATCHLIST -->
+<section id="watchlist">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Intelligence watchlist</h2></div>
+  <p class="lede">Each item has a testable signal condition, a source and a cadence. The table is generated from a machine-readable JSON block (<code>#watchlist-data</code>). The "Known dates" column lists only dates reported by a source. Analytical expectations are marked as unconfirmed.</p>
+  <div class="tbl-wrap">
+  <table class="wide" id="watch-table">
+    <thead><tr><th>ID</th><th>Account / market</th><th>What to monitor</th><th>Meaningful signal</th><th>Why it matters</th><th>Expected source</th><th>Cadence</th><th>Known dates <span class="tag t-fact">Reported</span></th></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 11 SOURCES -->
+<section id="sources">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Sources &amp; methodology</h2></div>
+  <div class="grid g2">
+    <div class="card"><h4>Methodology</h4><ul class="clean" style="font-size:13px">
+      <li>Produced with the <code>retail-research</code> skill V0.2: <code>report-spec.md</code>, <code>evidence-policy.md</code>, <code>visualization-guidelines.md</code> and <code>commercial-intelligence-framework.md</code>.</li>
+      <li>Research date 28 Sep 2026. Research window for account signals: Jun 2025 – Sep 2026. Web search was used to find leads; figures are cited only from pages actually opened. Search-summary-only facts are marked as such.</li>
+      <li>Chart data was downloaded from the Eurostat dissemination API (JSON-stat) on 28 Sep 2026 and embedded in the page. Chart spec blocks are in HTML comments above each chart.</li>
+      <li>Calculated values: annual means of G47 / G47.5 (mean of 12 monthly values) and the 2022→2025 change; 2025 and Jan–Aug 2026 means of the major-purchases balance.</li>
+      <li>IFH/BVDM and VDM figures were read via trade press (MÖBELMARKT, moebelfertigung, verbaende.com). The associations are the originating sources.</li>
+      <li>Otto Group sources (14, 22) were also used in the Germany Fashion V0.2 report on the same date. Löhne's large-item role is confirmed by Hermes Fulfilment (13).</li>
+      <li>Intelligence Priority scores are Analysis. They are not a sales priority, and no CRM data was used.</li>
+    </ul></div>
+    <div class="card"><h4>Links to check by hand</h4><p style="font-size:13px;margin:4px 0">The XXXLutz press centre (pr.xxxlutz.de) returned 403 on automated access on 28 Sep 2026 and contributes no figures. The Handelsblatt article on the Commission review was seen only as a search result. The ID Logistics Dortmund (IKEA) automation item was seen only as a search summary and is not used.</p></div>
+  </div>
+  <h3>Sources <span style="font-weight:400;color:var(--muted);font-size:13px">(accessed 28 Sep 2026)</span></h3>
+  <div class="card"><ol class="sources" id="source-list"></ol></div>
+</section>
+</main>
+<footer><div class="wrap">Germany Furniture &amp; Furnishing Retail Intelligence · V0.2 · Geek+ EMEA Retail Practice · 28 Sep 2026 · Internal. Must be validated by a human analyst before external use.</div></footer>
+
+<script type="application/json" id="watchlist-data">
+[
+ {"id":"DE-FURN-W01","account_or_market":"Otto Group / Hermes Fulfilment","monitor":"Large-item robot rollout (Ansbach) and new fleets under the Robotic Coordination Layer","signal_condition":"Hermes Fulfilment announces AMRs live at Ansbach, or Otto names a second site or a new robot vendor for the coordination layer","why_it_matters":"The only High signal; shows whether large-item automation is scaling","expected_source":"hermes-fulfilment.de/news; ottogroup.com newsroom","cadence":"Monthly","known_dates":"","linked_signal":"§6 Otto Group / Hermes Fulfilment; G01","status":"Open"},
+ {"id":"DE-FURN-W02","account_or_market":"XXXLutz / Porta","monitor":"EU merger decision and post-deal network plan","signal_condition":"The Commission clears the deal (with or without remedies) or opens Phase 2; XXXLutz announces warehouse or delivery-network integration","why_it_matters":"The largest consolidation in German furniture retail; networks will be redesigned","expected_source":"EC competition case M.11895; möbelkultur; XXXLutz press centre","cadence":"Weekly","known_dates":"Phase 1 preliminary deadline 12 Oct 2026 (Reported)","linked_signal":"§6 XXXLutz / Porta; G04","status":"Open"},
+ {"id":"DE-FURN-W03","account_or_market":"Poco","monitor":"Second WMS go-live and e-commerce fulfilment centre","signal_condition":"Infios/Poco announce the second site live, or Poco names automation for its e-commerce fulfilment centre or import hub","why_it_matters":"Each go-live is a moment to re-design processes","expected_source":"Infios newsroom; loginfo24; Poco careers","cadence":"Monthly","known_dates":"Second site targeted end-2026 (Reported)","linked_signal":"§6 Poco; G03","status":"Open"},
+ {"id":"DE-FURN-W04","account_or_market":"Westwing","monitor":"Warehouse productivity after the systems migration","signal_condition":"Westwing reports a fulfilment-ratio change, a warehouse automation or relocation, or a new German 3PL","why_it_matters":"A growing online player with new systems live","expected_source":"Westwing IR (Q3 results)","cadence":"Event-driven (earnings)","known_dates":"Q3 results date not confirmed (Unconfirmed: usually November)","linked_signal":"§6 Westwing; G06","status":"Open"},
+ {"id":"DE-FURN-W05","account_or_market":"IKEA Deutschland","monitor":"FY25 and FY26 German results and fulfilment network","signal_condition":"IKEA Deutschland publishes German revenue and online share, or announces a German DC or e-commerce fulfilment change","why_it_matters":"The largest furniture retailer; its German data is out of date","expected_source":"ikea.com/de/de/newsroom","cadence":"Quarterly","known_dates":"","linked_signal":"§6 IKEA; G02","status":"Open"},
+ {"id":"DE-FURN-W06","account_or_market":"German furniture market","monitor":"Industry and retail demand","signal_condition":"VDM or BVDM revise the 2026 outlook, or Eurostat G47.5 volume rises above 90 for three consecutive months","why_it_matters":"Tests the 'prolonged downturn' verdict","expected_source":"moebelindustrie.de/presse; BVDM; Eurostat sts_trtu_m","cadence":"Monthly","known_dates":"","linked_signal":"§3 chart 3.1","status":"Open"},
+ {"id":"DE-FURN-W07","account_or_market":"Universe accounts with no signal (Höffner, Segmüller, JYSK, home24, DHL/IKEA)","monitor":"DC, 3PL or automation announcements","signal_condition":"Any of these accounts announces a German DC opening, extension, 3PL change or automation project","why_it_matters":"Fills the footprint gaps; accounts are not excluded for lack of news","expected_source":"Company newsrooms; logistik-heute.de; moebelmarkt.de","cadence":"Monthly","known_dates":"","linked_signal":"G05","status":"Open"},
+ {"id":"DE-FURN-W08","account_or_market":"Large-item logistics labour & returns","monitor":"Labour shortages and return rates in two-person handling","signal_condition":"An official or association source publishes warehouse or two-person delivery vacancy data, or a furniture e-commerce return rate","why_it_matters":"Labour and returns are core reasons to automate large-item handling","expected_source":"Bundesagentur für Arbeit; BVL; EHI; bevh","cadence":"Quarterly","known_dates":"","linked_signal":"G07","status":"Open"}
+]
+</script>
+<script>
+const DATA = {"retail":[["2019-01",94.3,98.8],["2019-02",95.2,100.0],["2019-03",93.6,98.4],["2019-04",94.9,101.9],["2019-05",93.1,99.1],["2019-06",96.0,100.6],["2019-07",94.6,100.7],["2019-08",95.3,100.4],["2019-09",95.4,100.9],["2019-10",94.1,99.4],["2019-11",94.9,100.7],["2019-12",95.1,100.9],["2020-01",96.5,103.2],["2020-02",98.0,101.8],["2020-03",94.7,91.2],["2020-04",91.0,89.8],["2020-05",101.5,114.2],["2020-06",100.5,114.0],["2020-07",100.0,115.3],["2020-08",102.4,114.5],["2020-09",100.9,113.6],["2020-10",103.3,114.6],["2020-11",103.7,120.5],["2020-12",100.0,105.6],["2021-01",90.3,61.9],["2021-02",94.3,70.5],["2021-03",102.2,101.5],["2021-04",97.1,92.4],["2021-05",101.0,98.5],["2021-06",105.4,115.6],["2021-07",100.0,109.8],["2021-08",102.3,113.4],["2021-09",99.9,106.8],["2021-10",102.0,108.3],["2021-11",102.0,108.5],["2021-12",101.5,105.8],["2022-01",103.6,107.5],["2022-02",103.6,107.6],["2022-03",101.9,106.9],["2022-04",100.0,104.4],["2022-05",99.3,102.7],["2022-06",99.0,101.1],["2022-07",99.5,100.4],["2022-08",98.2,99.5],["2022-09",99.5,100.1],["2022-10",97.4,97.8],["2022-11",97.7,98.1],["2022-12",96.7,97.5],["2023-01",96.1,95.4],["2023-02",96.4,94.3],["2023-03",94.7,91.9],["2023-04",95.8,92.2],["2023-05",97.1,93.9],["2023-06",97.7,94.5],["2023-07",97.0,91.9],["2023-08",95.7,92.1],["2023-09",95.2,90.2],["2023-10",96.5,91.0],["2023-11",96.0,89.3],["2023-12",95.5,89.5],["2024-01",95.5,87.6],["2024-02",95.6,88.8],["2024-03",96.8,90.5],["2024-04",96.8,90.2],["2024-05",96.8,88.4],["2024-06",95.9,88.3],["2024-07",96.9,88.8],["2024-08",98.5,88.5],["2024-09",99.8,89.5],["2024-10",98.9,90.0],["2024-11",99.4,89.0],["2024-12",98.1,87.7],["2025-01",99.9,90.0],["2025-02",100.0,88.2],["2025-03",100.4,88.5],["2025-04",101.2,90.2],["2025-05",99.8,88.2],["2025-06",101.2,90.1],["2025-07",100.8,88.7],["2025-08",100.3,88.5],["2025-09",100.4,88.2],["2025-10",100.9,87.9],["2025-11",100.7,88.5],["2025-12",101.2,88.9],["2026-01",101.3,86.3],["2026-02",101.1,87.4],["2026-03",101.2,88.4],["2026-04",100.8,87.7],["2026-05",101.9,87.2],["2026-06",101.9,86.9],["2026-07",98.4,86.4]],"hicp":[["2023-01",9.2,9.4],["2023-02",9.3,9.3],["2023-03",7.7,9.4],["2023-04",7.5,9.1],["2023-05",6.3,7.2],["2023-06",6.7,6.5],["2023-07",6.5,6.0],["2023-08",6.4,5.8],["2023-09",4.3,5.3],["2023-10",2.9,4.1],["2023-11",2.3,3.6],["2023-12",3.7,2.9],["2024-01",3.0,2.3],["2024-02",2.7,0.9],["2024-03",2.4,0.6],["2024-04",2.4,0.4],["2024-05",2.8,0.2],["2024-06",2.6,-0.5],["2024-07",2.6,-1.0],["2024-08",2.1,-1.1],["2024-09",1.9,-1.5],["2024-10",2.4,-1.2],["2024-11",2.4,-0.8],["2024-12",2.8,0.0],["2025-01",2.8,-1.2],["2025-02",2.6,-0.7],["2025-03",2.3,-0.7],["2025-04",2.2,-0.8],["2025-05",2.1,-0.6],["2025-06",2.0,0.1],["2025-07",1.9,0.6],["2025-08",2.0,0.5],["2025-09",2.3,1.2],["2025-10",2.3,0.9],["2025-11",2.5,0.5],["2025-12",2.0,-0.5],["2026-01",2.1,1.0],["2026-02",2.0,0.4],["2026-03",2.8,0.3],["2026-04",2.9,0.0],["2026-05",2.7,0.5],["2026-06",2.4,0.2],["2026-07",2.8,-0.4],["2026-08",2.9,0.3]],"mp":[["2022-01",-15.8,-18.7],["2022-02",-18.2,-19.9],["2022-03",-22.3,-27.2],["2022-04",-29.5,-32.4],["2022-05",-29.4,-31.7],["2022-06",-32.7,-36.5],["2022-07",-35.8,-38.5],["2022-08",-35.1,-37.6],["2022-09",-41.3,-41.0],["2022-10",-39.2,-42.0],["2022-11",-38.9,-40.5],["2022-12",-34.8,-39.1],["2023-01",-39.0,-42.1],["2023-02",-35.3,-39.8],["2023-03",-34.8,-39.9],["2023-04",-30.3,-38.1],["2023-05",-31.5,-38.3],["2023-06",-29.8,-37.6],["2023-07",-29.5,-37.0],["2023-08",-32.5,-36.9],["2023-09",-31.1,-36.8],["2023-10",-32.3,-36.9],["2023-11",-29.7,-32.8],["2023-12",-24.1,-31.4],["2024-01",-31.0,-32.3],["2024-02",-29.4,-32.0],["2024-03",-27.0,-30.0],["2024-04",-24.5,-28.8],["2024-05",-25.5,-29.0],["2024-06",-25.3,-28.4],["2024-07",-22.8,-27.2],["2024-08",-23.9,-27.3],["2024-09",-22.0,-24.8],["2024-10",-21.3,-24.5],["2024-11",-21.9,-24.8],["2024-12",-21.1,-24.4],["2025-01",-25.9,-26.4],["2025-02",-26.3,-24.9],["2025-03",-23.1,-25.3],["2025-04",-21.4,-24.7],["2025-05",-21.3,-25.2],["2025-06",-20.7,-25.1],["2025-07",-22.7,-25.4],["2025-08",-24.2,-25.4],["2025-09",-22.7,-24.8],["2025-10",-23.4,-24.0],["2025-11",-20.4,-23.0],["2025-12",-21.8,-21.6],["2026-01",-21.7,-23.7],["2026-02",-23.5,-23.7],["2026-03",-27.2,-26.5],["2026-04",-31.5,-32.2],["2026-05",-28.6,-30.8],["2026-06",-27.6,-31.1],["2026-07",-23.7,-28.5],["2026-08",-25.1,-29.4]],"furn":[["2020",27.8,15.2],["2021",18.6,16.6],["2022",16.1,14.7],["2023",16.4,15.2],["2024",22.9,18.0]]};
+const SOURCES = [
+ {n:1,org:"Eurostat",title:"sts_trtu_m – Turnover and volume of sales in wholesale and retail trade, monthly",date:"Updated 26 Sep 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/sts_trtu_m/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:2,org:"Eurostat",title:"prc_hicp_minr – HICP (ECOICOP ver.2), monthly",date:"Updated 17 Sep 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_minr/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:3,org:"Eurostat / European Commission (DG ECFIN surveys)",title:"ei_bsco_m – Consumer survey: major purchases at present (BS-MP-PR)",date:"Updated 28 Aug 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:4,org:"Eurostat",title:"isoc_ec_ibgs – Internet purchases by individuals (I_BFURN1 furniture, home accessories or gardening products)",date:"Updated 17 Apr 2026",url:"https://ec.europa.eu/eurostat/databrowser/view/isoc_ec_ibgs/default/table",note:"Retrieved via API 28 Sep 2026.",tier:"Tier 1 · Official statistics"},
+ {n:5,org:"MÖBELMARKT (reporting BVDM / IFH Köln)",title:"Deutscher Möbelhandel 2025 verzeichnet leichten Umsatzrückgang",date:"09 Mar 2026",url:"https://www.moebelmarkt.de/beitrag/deutscher-m%C3%B6belhandel-2025-verzeichnet-leichten-umsatzr%C3%BCckgang",note:"",tier:"Tier 3 · Trade press (tier 2 origin)"},
+ {n:6,org:"VDM / Verbände der Deutschen Möbelindustrie (via verbaende.com)",title:"Deutsche Möbelindustrie verzeichnet im Jahr 2025 ein Umsatzminus von 3,4 Prozent",date:"17 Feb 2026",url:"https://www.verbaende.com/news/pressemitteilung/deutsche-moebelindustrie-verzeichnet-im-jahr-2025-ein-umsatzminus-von-34-prozent-171051/",note:"Association press release.",tier:"Tier 2 · Industry association"},
+ {n:7,org:"moebelfertigung (reporting VDM)",title:"Umsatzminus von 2,7 Prozent im ersten Halbjahr – Schwache Inlandsnachfrage, hohe Kosten und wachsende Regulierung belasten",date:"01 Sep 2026",url:"https://www.moebelfertigung.com/news/umsatzminus-von-27-prozent-im-ersten-halbjahr-schwache-inlandsnachfrage-hohe-kosten-und-wachsende-regulierung-belasten",note:"",tier:"Tier 3 · Trade press (tier 2 origin)"},
+ {n:8,org:"bevh",title:"Wachstum im E-Commerce: Lichtblick in der deutschen Wirtschaft",date:"22 Jan 2026",url:"https://bevh.org/detail/wachstum-im-e-commerce-lichtblick-in-der-deutschen-wirtschaft",note:"",tier:"Tier 2 · Industry association"},
+ {n:9,org:"IKEA Deutschland",title:"IKEA Deutschland verteidigt im 50. Jubiläumsjahr 6 Mrd. Umsatzmarke",date:"04 Nov 2024",url:"https://www.ikea.com/de/de/newsroom/corporate-news/ikea-deutschland-verteidigt-im-50-jubilaeumsjahr-6-mrd-umsatzmarke-pub0f7754d0/",note:"FY24; FY25 German release not found.",tier:"Tier 1 · Company newsroom"},
+ {n:10,org:"MÖBELMARKT",title:"Ikea verzeichnet stabile Umsätze",date:"20 Oct 2025",url:"https://www.moebelmarkt.de/beitrag/ikea-verzeichnet-stabile-ums%C3%A4tze",note:"Global Inter IKEA figures.",tier:"Tier 3 · Trade press"},
+ {n:11,org:"möbelkultur",title:"Anmeldung ist erfolgt, Verfahren läuft (XXXLutz / Porta, EU case M.11895)",date:"10 Sep 2026",url:"https://www.moebelkultur.de/news/anmeldung-ist-erfolgt-verfahren-laeuft/",note:"",tier:"Tier 3 · Trade press"},
+ {n:12,org:"Handelsblatt",title:"Möbelhandel: EU-Kommission prüft Porta-Übernahme durch XXXLutz",date:"Date not captured (2026)",url:"https://www.handelsblatt.com/politik/deutschland/moebelhandel-eu-kommission-prueft-porta-uebernahme-durch-xxxlutz/100239461.html",note:"Seen as search result only; standstill-investigation detail corroborated by source 11.",tier:"Tier 4 · Business press"},
+ {n:13,org:"Hermes Fulfilment",title:"Autonome Roboter in Löhne",date:"05 Jun 2025",url:"https://www.hermes-fulfilment.de/news/autonome-roboter-in-loehne/",note:"",tier:"Tier 1 · Company newsroom"},
+ {n:14,org:"Otto Group",title:"Next Level Intelligent Automation: Otto Group Enhances Robotic Coordination with NVIDIA AI",date:"09 Jan 2026",url:"https://www.ottogroup.com/en/medien/newsroom/meldungen/next-level-intelligent-automation-otto-group-enhances-robotic-coordination-with-nvidia-ai.php",note:"Also used in Germany Fashion V0.2.",tier:"Tier 1 · Company newsroom"},
+ {n:15,org:"Loginfo24 (reporting Infios / POCO release)",title:"Infios implementiert Warehouse Management Systems bei POCO",date:"23 Apr 2026",url:"https://loginfo24.com/2026/04/23/infios-implementiert-warehouse-management-systems-bei-poco/",note:"Vendor press release republished.",tier:"Tier 3 · Trade press"},
+ {n:16,org:"Westwing Group SE (via EQS News)",title:"Westwing delivers a strong 15% GMV growth in Q2 2026 amid a challenging macro environment",date:"06 Aug 2026",url:"https://www.eqs-news.com/news/corporate/westwing-delivers-a-strong-15-gmv-growth-in-q2-2026-amid-a-challenging-macro-environment/7fbbc038-4529-452c-a8f7-fe43077bae47_en",note:"",tier:"Tier 1 · Company release"},
+ {n:17,org:"t-online",title:"Ausgepolstert: Deutscher Polster-Möbelhersteller ist insolvent",date:"12 Aug 2026 (updated)",url:"https://www.t-online.de/finanzen/aktuelles/wirtschaft/id_101382734/deutscher-moebelhersteller-aus-niedersachsen-ist-insolvent.html",note:"",tier:"Tier 4 · General press"},
+ {n:18,org:"VerkehrsRundschau",title:"Home24 nimmt neues Logistikzentrum in Betrieb",date:"07 Oct 2015",url:"https://www.verkehrsrundschau.de/nachrichten/lager-umschlag/home24-nimmt-neues-logistikzentrum-in-betrieb-2994791",note:"Footprint reference; current use not re-verified.",tier:"Tier 3 · Trade press"},
+ {n:19,org:"hessenschau",title:"Wayfair macht Logistikzentrum in Lich dicht",date:"Jan 2025 (exact date not captured)",url:"https://www.hessenschau.de/wirtschaft/wayfair-macht-logistikzentrum-in-lich-dicht-schliessung-weckt-alte-aengste-v1,wayfair-logistikzentrum-lich-100.html",note:"Seen as search result only; context outside research window.",tier:"Tier 4 · Regional press"},
+ {n:20,org:"LOGISTIK HEUTE",title:"Projekte-News Möbel: Ikea bezieht Center in Bergkamen",date:"15 Jul 2022",url:"https://logistik-heute.de/fachmagazin/fachartikel/projekte-news-moebel-ikea-bezieht-center-bergkamen-37461.html",note:"Footprint reference.",tier:"Tier 3 · Trade press"},
+ {n:21,org:"XXXLutz press centre",title:"Bieterinnen um die XXXLutz Gruppe schließen Übernahme von home24 erfolgreich ab",date:"28 Apr 2023",url:"https://pr.xxxlutz.de/articles/2023/04/28/bieterinnen-um-die-xxxlutz-gruppe-schliessen-uebernahme-von-home24-erfolgreich-ab/",note:"Returned 403; seen as search result only. The March 2025 squeeze-out comes from a search summary (Unconfirmed).",tier:"Tier 1 · Company (not retrieved)"},
+ {n:22,org:"Otto Group",title:"Rooted in Germany, at home in Europe – Logistics of the future",date:"03 May 2024",url:"https://www.ottogroup.com/en/stories/story/rooted-in-germany-at-home-in-europe-logistics-of-the-future.php",note:"Used in Germany Fashion V0.2.",tier:"Tier 1 · Company newsroom"}
+];
+
+const ACTIVE = [
+ {account:"Otto Group / Hermes Fulfilment",signal:"Hermes Fulfilment runs 25 Melkus Mechatronic pallet AMRs at its 100,000 m² Löhne large-item site (≈1,000 transports/day; furniture, upholstery, mattresses, white goods). Rollout to the Ansbach two-person handling site follows the pilot. Otto's Robotic Coordination Layer (NVIDIA, Reply, Google Cloud) uses Löhne as the blueprint for 120 logistics locations; initial investment in the double-digit millions.",refs:[13,14],date:"05 Jun 2025; 09 Jan 2026",cats:"Automation / technology investment; Partnership",evidence:"Hermes Fulfilment + Otto Group newsrooms (T1)",impl:"Large-item robot fleets are being scaled and orchestrated. New fleets must plug into a common layer.",scores:[1,0,2,1,2,2,2],why:"T2 vendor and partners named · S2 Ansbach rollout and coordination-layer rollout ahead · E2 company sources · A2 direct AMR/robotics."},
+ {account:"Poco (XXXLutz group)",signal:"Infios WMS live at the Trebbin logistics centre as the template for 7 further sites. The second site (combined import + regional warehouse) is due by end-2026. The previous ERP-based warehouse solutions had 'reached their limits'. The network includes an automated e-commerce fulfilment centre and serves 127 stores.",refs:[15],date:"23 Apr 2026",cats:"Automation / technology investment; Fulfilment model change",evidence:"Vendor release via trade press (T3)",impl:"Rolling go-lives across 8 sites create moments to re-design processes. Import and regional flows are pallet- and bulky-heavy.",scores:[1,0,2,2,2,1,1],why:"T2 vendor named · P2 system limits directly reported · S2 next go-live end-2026."},
+ {account:"XXXLutz / Porta",signal:"The XXXLutz acquisition of Porta (announced Jan 2025) was notified to the EU Commission on 7 Sep 2026 (M.11895; Phase 1 deadline 12 Oct 2026). The Commission is examining a possible standstill breach. The CEO cites a buying slump and Far-East online competition.",refs:[11,12],date:"07–10 Sep 2026",cats:"M&A; Financial pressure",evidence:"Trade press (T3) + business press (T4)",impl:"Post-clearance integration of two store-delivery and warehouse networks. Scale of consolidation not yet quantified.",scores:[0,1,0,1,2,1,1],why:"S2 decision due within weeks."},
+ {account:"Westwing",signal:"Q2 2026 revenue €113m (+14%), DACH +9%, GMV +15%. Adjusted EBITDA €5.4m (down from €6.2m), burdened partly by the migration to SaaS order and warehouse management systems. FY26 revenue guidance €470–495m (upper half expected).",refs:[16],date:"06 Aug 2026",cats:"Automation / technology investment; Financial pressure",evidence:"Company release (T1)",impl:"With the systems migration done, the next focus is warehouse productivity. German warehouse locations are unverified.",scores:[0,1,1,2,2,2,1],why:"P2 migration cost directly reported · S2 just completed · E2 company release."},
+ {account:"IKEA Deutschland (Ingka)",signal:"The last German figures are FY24: €6.161bn (−4.3%), online share 25.1%. Inter IKEA FY25 global revenue €44.6bn (−1%), online 28%. No German FY25 release or 2025–26 German DC announcement was found.",refs:[9,10],date:"Nov 2024; Oct 2025",cats:"Context (no current German operational signal)",evidence:"IKEA newsroom (T1) + trade press (T3)",impl:"The largest furniture retailer's German fulfilment plans are unknown.",scores:[0,0,0,1,1,2,1],why:"E2 company newsroom."},
+ {account:"Domo Collection",signal:"Provisional insolvency administration ordered on 3 Aug 2026 (Oldenburg). ≈270 staff, of whom ≈245 are in Poland.",refs:[17],date:"03 Aug 2026",cats:"Financial pressure",evidence:"General press (T4)",impl:"No clear automation relevance identified.",scores:[0,0,0,1,2,1,0],why:"Relevance gate: A=0 → Low."}
+];
+
+const U = s=>`<span class="unknown">${s||'Unknown'}</span>`;
+const R = n=>`<sup class="ref"><a href="#s${n}">${n}</a></sup>`;
+const UNIVERSE = [
+ ["IKEA Deutschland","Ingka Group","Retailer (store-led)","Full-range furniture","SE (group)",`55 stores + 15 planning studios${R(9)}. E-commerce fulfilment: DHL Supply Chain, Bergkamen, 20,000 m², highly automated (2022)${R(20)}. Other German DCs ${U()}.`,`Largest single furniture retailer; €6.161bn (FY24)${R(9)}`,"Low"],
+ ["XXXLutz Deutschland","XXXLutz Group","Retailer (store-led)","Full-range furniture","AT (group)",U(),`Consolidator; acquiring Porta${R(11)}`,"Medium"],
+ ["Porta","Porta Holding (sale pending)","Retailer (store-led)","Full-range furniture","DE",U(),`Acquisition target under EU review${R(11)}`,"Medium (via XXXLutz)"],
+ ["Poco","XXXLutz Group","Retailer (discount)","Discount furniture &amp; home","DE",`Trebbin logistics centre; central goods-in warehouse; regional DCs; automated e-commerce fulfilment centre (location ${U('not stated')})${R(15)}`,`127 stores; WMS rollout${R(15)}`,"Medium"],
+ ["home24","XXXLutz Group","Retailer (online-led)","Online furniture","DE",`Walsrode: 60,000 m² large-item logistics centre (opened 2015; current use not re-verified)${R(18)}`,`Online furniture pure-play owned by XXXLutz${R(21)}`,"No verified signal in research window"],
+ ["Westwing","—","Retailer (online-led)","Online home &amp; living","DE",U(),`Growing listed home-and-living e-commerce player${R(16)}`,"Medium"],
+ ["Otto (home &amp; living)","Otto Group","Marketplace / platform","Online furniture","DE",`Large-item fulfilment via Hermes Fulfilment Löhne and Ansbach${R(13)}${R(22)}`,`Major online furniture seller; group logistics automation${R(14)}`,"High (via Hermes Fulfilment)"],
+ ["Hermes Fulfilment","Otto Group","3PL / fulfilment provider","Large-item fulfilment","DE",`Löhne: 100,000 m², 25 AMRs; Ansbach: two-person handling site${R(13)}`,`Operator of the main German large-item fulfilment sites${R(13)}`,"High"],
+ ["Höffner (Krieger group)","Krieger","Retailer (store-led)","Full-range furniture",U(),U(),"Major German furniture chain. Inclusion not sourced (G05).","No verified signal in research window"],
+ ["Segmüller","—","Retailer (store-led)","Full-range furniture",U(),U(),"Major German furniture chain. Inclusion not sourced (G05).","No verified signal in research window"],
+ ["JYSK","—","Retailer (store-led)","Home furnishings",U(),U(),"Large furnishings chain. Inclusion not sourced (G05).","No verified signal in research window"],
+ ["DHL Supply Chain","DHL Group","3PL / fulfilment provider","E-commerce fulfilment","DE",`Bergkamen: IKEA e-commerce fulfilment centre (2022)${R(20)}`,`Verified furniture e-commerce contract${R(20)}`,"No verified signal in research window"]
+];
+
+const CHAINS = [
+ {title:"Otto Group / Hermes Fulfilment: scaling large-item robot fleets",band:"High",steps:[
+  ["R",`25 pallet AMRs (Melkus) at the 100,000 m² Löhne large-item site; Ansbach is next. Löhne is the blueprint for Otto's multi-vendor Robotic Coordination Layer across 120 sites${R(13)}${R(14)}.`],
+  ["A","Bulky, heavy goods (&gt;31.5 kg) are moved by hand pallet jacks and forklifts across very large sites. About 20% of transports still use hand pallet jacks at Löhne (Reported). Peak management is a stated goal of the coordination layer (Reported)."],
+  ["A","Robot capacity for heavy-load internal transport and storage that can integrate with a common orchestration layer and scale for peaks."],
+  ["A","AMR pallet and heavy-load transport; storage for large items; goods-to-person for small furnishings SKUs in the same network."],
+  ["A","Possible fit: AMR / mobile-robot families for heavy loads. Stated as a possibility only. Geek+ large-item capability and integration with the NVIDIA-based coordination layer are unverified (G08)."],
+  ["","Ansbach rollout status and vendor; whether the coordination layer is open to further vendors; the scope of the other 120 sites (how many are large-item)."],
+  ["","Watch the Hermes Fulfilment and Otto Group newsrooms for Ansbach and new fleet announcements; ask the Geek+ product team about heavy-load AMR and orchestration interfaces; Sales Ops to run a CRM check on Otto Group / Hermes Fulfilment."]]},
+ {title:"Poco: WMS standardisation across an 8-site network",band:"Medium",steps:[
+  ["R",`Infios WMS live at Trebbin as the template for 7 further sites; the second site (import + regional) is due by end-2026. ERP-based warehouse control had "reached its limits"${R(15)}.`],
+  ["R","Increasing multi-channel complexity across the central goods-in, regional DC and e-commerce fulfilment sites (stated by the source)."],
+  ["A","Process standardisation first. Then possibly automation of storage and e-commerce picking, integrated through the new WMS."],
+  ["A","Goods-to-person for small home and furnishings SKUs; AMR transport in regional DCs."],
+  ["A","Possible fit: goods-to-person / shelf-to-person and AMR families. Stated as a possibility only."],
+  ["","Location and incumbent technology of the automated e-commerce fulfilment centre; whether automation decisions are made by Poco or at XXXLutz group level."],
+  ["","Track Infios and Poco releases for the second go-live; check Poco careers pages for automation roles; Sales Ops to run a CRM check at XXXLutz group level."]]}
+];
+
+const ref = n => `<sup class="ref"><a href="#s${n}">${n}</a></sup>`;
+const refs = a => a.map(ref).join('');
+
+// Sources
+document.getElementById('source-list').innerHTML = SOURCES.map(s=>`<li id="s${s.n}">${s.org} — "${s.title}". ${s.date}. <a href="${s.url}">${s.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60)}${s.url.length>70?'…':''}</a> ${s.note?s.note+' ':''}<span class="tier">${s.tier}</span></li>`).join('');
+
+// Active signals
+const DIM=['F','V','T','P','S','E','A'];
+function band(sc){ const t=sc.reduce((a,b)=>a+b,0), E=sc[5], A=sc[6]; let b = t>=10?'High':t>=6?'Medium':'Low'; if(b==='High' && !(E===2 && A>=1)) b='Medium'; if(E===0||A===0) b='Low'; return [t,b]; }
+document.querySelector('#active-table tbody').innerHTML = ACTIVE.map(r=>{ const [t,b]=band(r.scores); return `<tr><td class="co">${r.account}</td><td>${r.signal}${refs(r.refs)}</td><td>${r.date}</td><td>${r.cats}</td><td>${r.evidence}</td><td>${r.impl}</td><td><div class="score">${r.scores.map((v,i)=>`<span class="s${v}" title="${DIM[i]}">${DIM[i]}${v}</span>`).join('')}<span style="border:0;background:none">= ${t}</span></div><span class="band ${b.toLowerCase()}">${b}</span><div style="font-size:11.5px;color:var(--ink-2);margin-top:4px">${r.why}</div></td></tr>`; }).join('');
+
+// Chains
+const STEPS=['Observed signal','Operational challenge','Automation requirement','Relevant automation use case','Potential Geek+ capability','Evidence gap','Next intelligence action'];
+const LBL={R:'<span class="tag t-fact">Reported</span>',A:'<span class="tag t-analysis">Analysis</span>',U:'<span class="tag t-unconf">Unconfirmed</span>'};
+document.getElementById('chain-grid').innerHTML = CHAINS.map(c=>`<div class="card"><div class="chain-head"><h4>${c.title}</h4><span class="band ${c.band.toLowerCase()}">${c.band} intelligence priority</span></div><div class="chain">${c.steps.map((s,i)=>`<div class="step ${i===5?'gap':''} ${i===6?'act':''}"><span class="k">${i+1}</span><div class="lbl">${STEPS[i]}</div><div>${s[0]?LBL[s[0]]+' ':''}${s[1]}</div></div>`).join('')}</div></div>`).join('');
+
+// Watchlist
+const WATCH = JSON.parse(document.getElementById('watchlist-data').textContent);
+document.querySelector('#watch-table tbody').innerHTML = WATCH.map(w=>`<tr><td><code class="id">${w.id}</code></td><td class="co">${w.account_or_market}</td><td>${w.monitor}</td><td>${w.signal_condition}</td><td>${w.why_it_matters}</td><td>${w.expected_source}</td><td class="cad">${w.cadence}</td><td>${w.known_dates||'<span class="unknown">None confirmed</span>'}</td></tr>`).join('');
+
+// Charts
+const C1 = getComputedStyle(document.documentElement).getPropertyValue('--series-1').trim();
+const C2 = getComputedStyle(document.documentElement).getPropertyValue('--series-2').trim();
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtM = s => { const [y,m]=s.split('-'); return m ? MON[+m-1]+' '+y : y; };
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function niceTicks(min,max,count){ const span=max-min; const step0=span/count; const mag=Math.pow(10,Math.floor(Math.log10(step0))); const norm=step0/mag; const step=(norm<1.5?1:norm<3?2:norm<7?5:10)*mag; const lo=Math.floor(min/step)*step, hi=Math.ceil(max/step)*step; const t=[]; for(let v=lo; v<=hi+1e-9; v+=step) t.push(+v.toFixed(6)); return t; }
+function tooltip(c){ let t=c.querySelector('.tip'); if(!t){ t=document.createElement('div'); t.className='tip'; c.appendChild(t);} return t; }
+function placeTip(tip,c,x,y){ const w=tip.offsetWidth, cw=c.clientWidth; let left=x+14; if(left+w>cw) left=x-w-14; tip.style.left=Math.max(0,left)+'px'; tip.style.top=Math.max(0,y-10)+'px'; tip.style.opacity=1; }
+function table(id,head,rows){ const w=document.getElementById(id); let h='<table><thead><tr>'+head.map((c,i)=>`<th class="${i?'num':''}">${c}</th>`).join('')+'</tr></thead><tbody>'; rows.forEach(r=>{ h+='<tr>'+r.map((c,i)=>`<td class="${i?'num':''}">${c==null?'–':c}</td>`).join('')+'</tr>'; }); w.innerHTML=h+'</tbody></table>'; }
+function lineChart(id,cfg){ const box=document.getElementById(id);
+  function draw(){ box.querySelectorAll('svg').forEach(s=>s.remove());
+    const W=Math.max(300,box.clientWidth),H=260,m={t:14,r:16,b:30,l:40}; const iw=W-m.l-m.r, ih=H-m.t-m.b, d=cfg.data, n=d.length;
+    const vals=d.flatMap(r=>r.slice(1)).filter(v=>v!=null); let lo=Math.min(...vals), hi=Math.max(...vals); if(cfg.zero){lo=Math.min(lo,0);hi=Math.max(hi,0);}
+    const ticks=niceTicks(lo,hi,5); lo=ticks[0]; hi=ticks[ticks.length-1];
+    const x=i=>m.l+i*iw/(n-1), y=v=>m.t+ih-(v-lo)/(hi-lo)*ih;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':cfg.aria,tabindex:0},box);
+    ticks.forEach(t=>{ el('line',{x1:m.l,x2:W-m.r,y1:y(t),y2:y(t),stroke:t===0?'#c3c2b7':'#e1e0d9'},svg); const tx=el('text',{x:m.l-6,y:y(t)+4,'text-anchor':'end','font-size':11,fill:'#7c818b'},svg); tx.textContent=cfg.yFmt(t); });
+    d.forEach((r,i)=>{ const [yy,mm]=r[0].split('-'); if(mm==='01'){ const tx=el('text',{x:x(i),y:H-8,'text-anchor':'middle','font-size':11,fill:'#7c818b'},svg); tx.textContent=yy; el('line',{x1:x(i),x2:x(i),y1:m.t+ih,y2:m.t+ih+4,stroke:'#c3c2b7'},svg);} });
+    (cfg.annotations||[]).forEach(a=>{ const i=d.findIndex(r=>r[0]===a.x); if(i<0) return; el('line',{x1:x(i),x2:x(i),y1:m.t,y2:m.t+ih,stroke:'#9aa0aa'},svg); const tx=el('text',{x:x(i)-5,y:m.t+ih-8,'text-anchor':'end','font-size':10.5,fill:'#4a5160'},svg); tx.textContent=a.label; });
+    const colors=[C1,C2];
+    cfg.series.forEach((s,k)=>{ let p=''; d.forEach((r,i)=>{ const v=r[k+1]; if(v==null) return; p+=(p?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1); }); el('path',{d:p,fill:'none',stroke:colors[k],'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'},svg);
+      let li=n-1; while(li>0 && d[li][k+1]==null) li--; el('circle',{cx:x(li),cy:y(d[li][k+1]),r:4,fill:colors[k],stroke:'#fff','stroke-width':2},svg);
+      const lt=el('text',{x:x(li)-8,y:y(d[li][k+1])+(k===cfg.labelBelow?18:-9),'text-anchor':'end','font-size':11,'font-weight':600,fill:'#0f1c2e'},svg); lt.textContent=cfg.yFmt(d[li][k+1],true); });
+    const cross=el('line',{y1:m.t,y2:m.t+ih,stroke:'#0f1c2e',opacity:0},svg); const dots=cfg.series.map((s,k)=>el('circle',{r:4,fill:colors[k],stroke:'#fff','stroke-width':2,opacity:0},svg));
+    const hit=el('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'transparent'},svg); const tip=tooltip(box); let cur=n-1;
+    function show(i){ cur=i; const r=d[i]; cross.setAttribute('x1',x(i)); cross.setAttribute('x2',x(i)); cross.setAttribute('opacity',.35); dots.forEach((dt,k)=>{ if(r[k+1]==null){dt.setAttribute('opacity',0);return;} dt.setAttribute('cx',x(i)); dt.setAttribute('cy',y(r[k+1])); dt.setAttribute('opacity',1); });
+      tip.innerHTML=`<b>${fmtM(r[0])}</b>`+cfg.series.map((s,k)=>`<div class="row"><span><i style="background:${colors[k]}"></i>${s}</span><strong>${r[k+1]==null?'n/a':cfg.yFmt(r[k+1],true)}</strong></div>`).join(''); const sc=box.clientWidth/W; placeTip(tip,box,x(i)*sc,y(Math.max(...r.slice(1).filter(v=>v!=null)))*sc); }
+    function hide(){ cross.setAttribute('opacity',0); dots.forEach(dt=>dt.setAttribute('opacity',0)); tip.style.opacity=0; }
+    hit.addEventListener('mousemove',ev=>{ const rect=svg.getBoundingClientRect(); const px=(ev.clientX-rect.left)*W/rect.width; show(Math.max(0,Math.min(n-1,Math.round((px-m.l)/iw*(n-1))))); }); hit.addEventListener('mouseleave',hide);
+    svg.addEventListener('keydown',ev=>{ if(ev.key==='ArrowLeft'){show(Math.max(0,cur-1));ev.preventDefault();} if(ev.key==='ArrowRight'){show(Math.min(n-1,cur+1));ev.preventDefault();} }); svg.addEventListener('focus',()=>show(cur)); svg.addEventListener('blur',hide); }
+  draw(); return draw; }
+
+
+// Universe
+document.getElementById('univ-body').innerHTML = UNIVERSE.map(u=>{ const sig=u[7]; const yes=/^(Medium|Low|High)/.test(sig); return `<tr><td class="co">${u[0]}${u[1]&&u[1]!=='—'?`<div style="font-weight:400;font-size:11.5px;color:var(--muted)">${u[1]}</div>`:''}</td><td>${u[2]}</td><td>${u[3]}</td><td>${u[4]}</td><td>${u[5]}</td><td>${u[6]}</td><td>${yes?`<a class="univ-yes" href="#active">Yes · ${sig}</a>`:`<span class="univ-no">${sig}</span>`}</td><td style="white-space:nowrap">2026-09-28</td></tr>`; }).join('');
+// Grouped bar (annual)
+function gbarChart(id,cfg){ const box=document.getElementById(id);
+  function draw(){ box.querySelectorAll('svg').forEach(s=>s.remove());
+    const W=Math.max(300,box.clientWidth),H=260,m={t:18,r:12,b:30,l:40}; const iw=W-m.l-m.r, ih=H-m.t-m.b, d=cfg.data, n=d.length;
+    const ticks=niceTicks(0,Math.max(...d.flatMap(r=>r.slice(1))),4); const hi=ticks[ticks.length-1]; const y=v=>m.t+ih-v/hi*ih;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':cfg.aria},box);
+    ticks.forEach(t=>{ el('line',{x1:m.l,x2:W-m.r,y1:y(t),y2:y(t),stroke:t===0?'#c3c2b7':'#e1e0d9'},svg); const tx=el('text',{x:m.l-6,y:y(t)+4,'text-anchor':'end','font-size':11,fill:'#7c818b'},svg); tx.textContent=t+'%'; });
+    const gw=iw/n, bw=Math.min(34,gw*0.32), colors=[C1,C2], tip=tooltip(box);
+    d.forEach((r,i)=>{ const cx=m.l+gw*i+gw/2; const tx=el('text',{x:cx,y:H-8,'text-anchor':'middle','font-size':11,fill:'#7c818b'},svg); tx.textContent=r[0];
+      [1,2].forEach(k=>{ const v=r[k]; const x0=cx+(k===1?-bw-1:1); el('rect',{x:x0,y:y(v),width:bw,height:y(0)-y(v),rx:3,fill:colors[k-1]},svg);
+        if(i===0||i===n-1){ const vt=el('text',{x:x0+bw/2,y:y(v)-5,'text-anchor':'middle','font-size':11,'font-weight':600,fill:'#0f1c2e'},svg); vt.textContent=v.toFixed(1); } });
+      const hr=el('rect',{x:cx-gw/2,y:m.t,width:gw,height:ih,fill:'transparent'},svg);
+      hr.addEventListener('mousemove',()=>{ tip.innerHTML=`<b>${r[0]}</b>`+cfg.series.map((s,k)=>`<div class="row"><span><i style="background:${colors[k]}"></i>${s}</span><strong>${r[k+1].toFixed(1)}%</strong></div>`).join(''); const sc=box.clientWidth/W; placeTip(tip,box,cx*sc,y(Math.max(r[1],r[2]))*sc); }); hr.addEventListener('mouseleave',()=>tip.style.opacity=0); }); }
+  draw(); return draw; }
+const pct=(v,l)=>(v>0?'+':'')+v.toFixed(1)+'%'; const num=(v,l)=>v.toFixed(l?1:0);
+const redraws=[
+  lineChart('c-retail',{data:DATA.retail,series:['Total retail','Household-equipment specialists'],yFmt:num,aria:'Germany retail volume index, total retail vs household-equipment specialists, 2019 to July 2026',labelBelow:1}),
+  lineChart('c-hicp',{data:DATA.hicp,series:['HICP all items','Furniture & furnishings'],yFmt:pct,zero:true,aria:'Germany HICP inflation, all items vs furniture and furnishings',labelBelow:1}),
+  lineChart('c-mp',{data:DATA.mp,series:['Germany','EU27'],yFmt:num,zero:true,aria:'Major purchases at present, survey balance, Germany vs EU27',labelBelow:1}),
+  gbarChart('c-furn',{data:DATA.furn,series:['Germany','EU27'],aria:'Share of individuals buying furniture, home or garden products online, Germany vs EU27, 2020 to 2024'})
+];
+table('t-retail',['Month','Total retail (G47)','Household-equipment specialists (G47.5)'],DATA.retail.map(r=>[fmtM(r[0]),r[1],r[2]]));
+table('t-hicp',['Month','HICP all items (%)','Furniture & furnishings CP0511 (%)'],DATA.hicp.map(r=>[fmtM(r[0]),r[1],r[2]]));
+table('t-mp',['Month','Germany (balance)','EU27 (balance)'],DATA.mp.map(r=>[fmtM(r[0]),r[1],r[2]]));
+table('t-furn',['Year','Germany (% of individuals)','EU27 (% of individuals)'],DATA.furn.map(r=>[r[0],r[1],r[2]]));
+let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>redraws.forEach(f=>f()),120); });
+const links=[...document.querySelectorAll('nav.toc a')];
+const obs=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)); }); },{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+
+</script>
+</body>
+</html>

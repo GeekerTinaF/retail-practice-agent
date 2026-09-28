@@ -1,0 +1,70 @@
+# Retail Practice — country coverage
+# Tiers set by Geek+ EMEA Retail Practice requirements.
+# `id` is the key other data files reference (e.g. accounts.csv hq_country / operating_countries).
+# Group entries (Nordics, CEE) list member countries; member ISO codes are
+# what accounts.csv should use.
+# `region` = grouping from the retail-research skill taxonomy (.claude/skills/retail-research/taxonomy.md).
+
+version: 0.1
+last_updated: 2026-09-28
+
+tiers:
+  1: Priority markets
+  2: Secondary markets
+
+countries:
+  - id: GB
+    name: United Kingdom
+    tier: 1
+    region: UK & Ireland
+  - id: FR
+    name: France
+    tier: 1
+    region: Southern Europe
+  - id: ES
+    name: Spain
+    tier: 1
+    region: Southern Europe
+  - id: DE
+    name: Germany
+    tier: 1
+    region: DACH
+  - id: NL
+    name: Netherlands
+    tier: 1
+    region: Benelux
+  - id: PL
+    name: Poland
+    tier: 1
+    region: CEE
+    note: Tier 1 in its own right; not counted inside the Tier 2 CEE group.
+  - id: IT
+    name: Italy
+    tier: 2
+    region: Southern Europe
+
+groups:
+  - id: NORDICS
+    name: Nordics
+    tier: 2
+    region: Nordics
+    members:
+      - {id: SE, name: Sweden}
+      - {id: NO, name: Norway}
+      - {id: DK, name: Denmark}
+      - {id: FI, name: Finland}
+  - id: CEE
+    name: Central and Eastern Europe
+    tier: 2
+    region: CEE
+    members:
+      - {id: CZ, name: Czechia}
+    excludes: [PL]
+    note: >-
+      The requirements name only Czechia plus "other Central/Eastern
+      European markets". Add further members here once they are confirmed.
+      Poland is excluded because it is Tier 1.
+
+# Countries in the skill taxonomy with no tier assigned (not a priority, but
+# still valid for tagging):
+# AT, CH (DACH); BE, LU (Benelux); IE (UK & Ireland); PT (Southern Europe).

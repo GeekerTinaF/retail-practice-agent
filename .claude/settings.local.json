@@ -1,0 +1,5 @@
+{
+  "skillOverrides": {
+    "retail-research": "user-invocable-only"
+  }
+}

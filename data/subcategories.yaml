@@ -1,0 +1,42 @@
+# Retail Practice — retail subcategory taxonomy
+# `id` is the key other data files reference (accounts.csv subcategory_id / segment_id).
+# Top-level entries are subcategories; `segments` are optional children.
+# Every account gets exactly one primary subcategory, and a segment where
+# one applies.
+
+version: 0.1
+last_updated: 2026-09-28
+
+subcategories:
+  - id: beauty_personal_care
+    name: Beauty and Personal Care
+
+  - id: fashion
+    name: Fashion
+    segments:
+      - id: fashion_apparel
+        name: Apparel
+      - id: fashion_luxury
+        name: Luxury Goods
+      - id: fashion_accessories_jewelry
+        name: Accessories and Jewelry
+
+  - id: consumer_electronics
+    name: Consumer Electronics
+
+  - id: furniture_furnishing
+    name: Furniture and Furnishing
+
+  - id: diy_hardware
+    name: DIY and Hardware
+
+  - id: pet_care
+    name: Pet Care
+
+  - id: marketplace
+    name: Marketplace
+    segments:
+      - id: marketplace_department_stores
+        name: Department Stores
+      - id: marketplace_ecommerce_specialists
+        name: Ecommerce Marketplace Specialists
