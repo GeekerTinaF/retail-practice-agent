@@ -8,6 +8,7 @@ table that retail-research outputs draw on.
 | `countries.yaml` | Country coverage. Assigns Tier 1 and Tier 2 markets; group entries (Nordics, CEE) list their member countries. |
 | `subcategories.yaml` | Retail subcategory taxonomy, with optional segments beneath each subcategory. |
 | `sources.yaml` | Source registry: each source's tier (per the skill's evidence policy), type, country and date last used. |
+| `competitors.yaml` | Tracked warehouse-automation vendors (list set by Geek+ EMEA) and their sourced observations at retail accounts. Method: the skill's `competitor-observation.md`. |
 | `accounts.csv` | Account-mapping table, the future basis for a report's Account Universe. **The schema is set; no companies have been added yet.** |
 
 ## accounts.csv data dictionary

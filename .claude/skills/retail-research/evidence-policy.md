@@ -118,3 +118,24 @@ could not be captured, write "date not captured". Do not guess it.
 - A public Geek+ reference case may be cited as capability evidence. State
   its location and scope exactly, and do not generalise it to other
   countries or business units.
+
+## 10. Competitor claims
+
+These rules apply on top of §1–§8 to anything said about an automation
+vendor. The method is in `competitor-observation.md`.
+
+- **Source tiers are unchanged.** A vendor's own press release or case page
+  is a primary company source (tier 1) for the fact that a deployment
+  exists. A retailer's or 3PL's statement about the same deployment is also
+  tier 1.
+- **Performance figures** published by a vendor (throughput, density,
+  accuracy, payback) are labelled **Reported (vendor-reported)** and are
+  never restated as an independent fact.
+- **Never compare** vendors with each other or with Geek+ on performance,
+  price, reliability or fit.
+- **Never state or imply** that a vendor's customer is dissatisfied, at
+  risk, or looking to switch.
+- **Never infer** a vendor from a technology description, or market share
+  from a set of observations.
+- If a vendor is reported only by tier 5 sources, record it as an evidence
+  gap, not an observation.

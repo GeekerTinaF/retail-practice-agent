@@ -49,7 +49,7 @@ chart:
 ```
 CHART ID:
 MESSAGE (one sentence):
-DECISION RELEVANCE: which executive question (report-spec §1) this chart supports
+DECISION RELEVANCE: which executive question (report-spec §1a) this chart supports
 DATA REQUIRED:
 DATA USED: source · dataset/title · period · geography · definition · label
 TEST RESULT: supports / partially supports (message revised to: …) / does not support (dropped)
@@ -64,9 +64,9 @@ LIMITATIONS:
 - If two charts prove the same sentence, keep the stronger one.
 - The chart title **is** the message sentence. The subtitle adds the
   quantitative proof, e.g. "gap of X points in [month]".
-- Charts belong in the Market Context section. They do not go in the
-  Executive Intelligence section, which uses text and signal indicators
-  only.
+- Charts belong in the Market & Fulfilment Context section (report-spec
+  §2a). They do not go in the Executive Intelligence section, which uses
+  text, KPI cards and signal indicators only.
 
 ## 4. Build standards
 

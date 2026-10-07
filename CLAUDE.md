@@ -42,4 +42,10 @@ and how Geek+ is relevant to them.
 
 ## Status
 
-Project skeleton only. No research, no accounts, no skills implemented yet.
+- Skill: `retail-research` V0.2 (report spec, evidence policy, Intelligence
+  Priority, commercial chains, competitor observation).
+- Outputs: three V0.2 reports (France Beauty, Germany Furniture, Spain
+  Fashion), all dated 28 Sep 2026, written before the 2026-10-07 spec update.
+- Data: reference taxonomies, source registry, and tracked competitors are
+  set up. `accounts.csv` is still empty.
+- Not built yet: news monitoring, playbooks, growth action matrix.

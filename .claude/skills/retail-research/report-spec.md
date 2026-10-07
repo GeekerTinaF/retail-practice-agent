@@ -13,22 +13,27 @@ and Sales Ops answer: what changed, who is affected, why it matters
 operationally, where automation may be relevant, what we don't know, and
 what to monitor next.
 
+The spec is market-neutral. Replace `[country]`, `[subcategory]` and the
+segment names with the report's scope (segments come from `taxonomy.md` §1
+and `data/subcategories.yaml`).
+
 ## Architecture
 
 | # | Section | Answers |
 |---|---|---|
-| 0 | Header | Scope, dates, data cut-off, label key |
-| 1 | Executive Intelligence | The five executive questions |
-| 2 | Headline Signals (4–6 KPIs) | Which numbers change the interpretation? |
-| 3 | Market Context | Quantitative proof, with charts that each prove one sentence |
-| 4 | Segment Intelligence | Apparel / Luxury / Accessories & Jewellery (or the segments of the scope) |
-| 5 | Account Universe | Who matters in this market, whether or not there is news |
-| 6 | Active Account Signals | Who has verified recent developments, with Intelligence Priority |
-| 7 | Fulfilment Intelligence | Where logistics activity is concentrating, and what it means operationally |
-| 8 | Commercial Intelligence Chains | For High-priority signals: signal → … → next action |
-| 9 | Evidence Gaps & Source Conflicts | What we don't know, and where sources disagree |
-| 10 | Intelligence Watchlist | What to monitor, what counts as a signal, source, cadence |
-| 11 | Sources & Methodology | Full traceability |
+| 0 | Header | Scope, dates, data cut-off, label key, disclaimer |
+| 1 | Executive Intelligence | Five questions, headline KPIs, competitor line |
+| 2 | Market & Fulfilment Context | Quantitative proof (charts), segment developments, fulfilment themes |
+| 3 | Account Universe | Who matters in this market, whether or not there is news |
+| 4 | Active Account Signals | Who has verified recent developments, with a scored Intelligence Priority |
+| 5 | Competitor Landscape | Which tracked automation vendors are verifiably present, and where |
+| 6 | Commercial Intelligence Chains | For High-priority signals: signal → … → next action |
+| 7 | Intelligence Watchlist | What to monitor, what counts as a signal, source, owner, next check |
+| 8 | Evidence Gaps, Conflicts & Sources | What we don't know, where sources disagree, full traceability |
+
+Sections 3 and 4 are always separate tables. An account appears in §3
+whether or not it has a signal. §4 holds only verified developments in the
+research window.
 
 ---
 
@@ -37,69 +42,85 @@ what to monitor next.
 Include:
 
 - title;
-- reporting date;
-- last-updated timestamp;
+- reporting date and last-updated timestamp;
+- research date and research window for account signals;
 - geographic scope, with benchmarks labelled as such;
-- industry scope;
+- industry scope (subcategory and segments);
 - data cut-off per source family;
-- research date;
 - the label key (Reported / Calculated / Forecast / Analysis / Unconfirmed);
 - the relationship disclaimer: no Geek+ relationship is implied unless one
-  is cited.
+  is cited;
+- the previous report on the same scope, if one exists (file name and date).
 
 ## §1 Executive Intelligence
 
-This is a decision interface, not a summary. It has **five fixed
-questions**, answered in this order:
+This is a decision interface, not a summary. It has three parts, in this
+order.
+
+### 1a. The five questions
 
 | Question | Answer format |
 |---|---|
-| **1. Current market state** | A one-line verdict with a state indicator (e.g. Contracting / Flat / Growing; Stressed / Stable). Give 1–2 decisive evidence points. |
-| **2. What materially changed** | At most 3 changes since the previous report or the reference period. Each change is one line with its date. |
+| **1. Current market state** | A state indicator per dimension (e.g. Demand: Contracting / Flat / Growing; Online: Slowing / Growing; Operators: Stressed / Stable), then a one-line verdict. 1–2 decisive evidence points. |
+| **2. What materially changed** | At most 3 changes. Each is one line with its date. If a previous report exists, compare against it and say "New", "Escalated" or "Resolved". If none exists, say "First report on this scope; changes are within the research window". |
 | **3. Where fulfilment activity is concentrating** | Name the operators, site types and geographies where logistics capacity, investment or change is concentrating. |
-| **4. Accounts with meaningful signals** | Accounts with a High or Medium Intelligence Priority, each with band and a 5–8 word signal description. Link to §6. |
-| **5. What Geek+ should monitor next** | The top 3–5 watchlist items. Link to §10. |
+| **4. Accounts with meaningful signals** | High and Medium signals only, each with band, total score and a 5–8 word description, linking to §4. If nothing reaches High, say why in one line (which gate failed). |
+| **5. What Geek+ should monitor next** | The top 3–5 watchlist items, highest priority and nearest check date first, linking to §7. |
 
-**Rules**
+Each answer carries a **confidence** tag:
 
-- About 250 words in total.
+| Confidence | Rule |
+|---|---|
+| **High** | Supported by at least one tier 1–2 source, with no unresolved conflict |
+| **Medium** | Supported by tier 3–4 sources only, or by tier 1–2 with an unresolved conflict |
+| **Low** | Rests on a single source, on Unconfirmed items, or on a known evidence gap |
+
+Confidence describes the evidence, not the judgement. It is not a label on
+its own; the answer still carries Analysis and the cited facts still carry
+Reported.
+
+### 1b. Headline KPIs (4–6 cards)
+
+- **Promotion test:** a KPI is promoted only if it **materially changes the
+  interpretation** of the market or the commercial situation. Ask: "If this
+  number were different, would the executive conclusion change?" If not,
+  put it in §2.
+- Each card carries: label; value and unit; period; geography; evidence
+  label; source with date; a **"So what"** line (Analysis, one line).
+- Prefer a balanced set that covers demand, channel shift, fulfilment or
+  capacity activity, and a commercial or account signal.
+- Never promote a KPI because it looks good, and never promote one without
+  a reliable source. If one is missing, show fewer cards.
+
+### 1c. Competitor line
+
+One line: which tracked vendors (`data/competitors.yaml`) were verifiably
+observed in this scope, with links to §5. If none: "No tracked vendor
+verifiably observed in this scope."
+
+### Rules
+
+- About 300 words for 1a and 1c combined.
 - No charts. No numbers without a label.
 - Every answer is a judgement (Analysis) supported by 1–2 cited Reported
   facts.
 - Do not repeat section content. Synthesise across sections.
 - A "Bottom line" of at most two sentences is allowed.
 
-## §2 Headline Signals — KPI discipline
+## §2 Market & Fulfilment Context
 
-- Show **4–6 KPI cards**. All other quantitative evidence goes in §3.
-- **Promotion test:** a KPI is promoted only if it **materially changes the
-  interpretation** of the market or the commercial situation. Ask: "If this
-  number were different, would the executive conclusion change?" If not,
-  put it in §3.
-- Each card carries:
-  - label;
-  - value and unit;
-  - period;
-  - geography;
-  - evidence label;
-  - source with date;
-  - a **"So what"** line (Analysis, one line).
-- Prefer a balanced set that covers demand, channel shift, fulfilment or
-  capacity activity, and a commercial or account signal.
-- Never promote a KPI because it looks good, and never promote one without
-  a reliable source. If one is missing, show fewer cards.
+One section with three blocks.
 
-## §3 Market Context
+### 2a. Market evidence
 
-- Holds the supporting quantitative evidence, as compact tables and charts.
+- Supporting quantitative evidence, as compact tables and charts.
 - Every chart follows `visualization-guidelines.md`: the message comes
   first, then a spec block, the metadata and the limitations.
 - Default of 3–5 charts. Each chart maps to an executive question in §1.
 
-## §4 Segment Intelligence
+### 2b. Segment developments
 
-For each segment, show only the most important developments, at most 2–3
-per segment. Each development has these fields:
+For each segment, at most 2–3 developments. Each has:
 
 - **What happened**
 - **Evidence** (Reported)
@@ -110,138 +131,172 @@ per segment. Each development has these fields:
 If a segment has little evidence, say so in an explicit evidence-gap card.
 Never pad a thin segment.
 
-## §5 Account Universe
+### 2c. Fulfilment themes
+
+Organise by operational theme: distribution centres; warehouse expansion;
+e-commerce fulfilment; omnichannel; returns; inventory; SKU complexity;
+labour; peak; automation; 3PL relationships.
+
+For each theme give the **observed signal** (Reported) and the
+**operational implication** (Analysis). Leave out themes with no evidence,
+and record them in §8 instead.
+
+## §3 Account Universe
 
 The strategically relevant companies in the market, **whether or not there
 is recent news**.
 
-- **Target source:** the account-mapping database, once it exists
-  (`accounts/` or a future data file).
+- **Target source:** `data/accounts.csv`, once it holds rows for this scope.
 - **Until then:** use an **interim universe**.
-  - State the inclusion criteria, e.g. a top retailer by fashion revenue in
-    a cited ranking, a major platform, a major brand with a German DC, or a
-    major 3PL serving fashion.
+  - State the inclusion criteria, e.g. a top retailer by revenue in a cited
+    ranking, a major platform, a major brand with a logistics site in
+    `[country]`, or a major 3PL serving `[subcategory]`.
   - Label the universe "Interim — not from account-mapping database".
 - **Fields per account:**
   - company;
+  - parent group;
   - role (see `taxonomy.md` §4);
   - segment;
   - HQ country;
-  - known market logistics footprint (site, type, source);
+  - known logistics footprint in `[country]` (site, type, source);
+  - known automation vendor(s), Reported only, else "Unknown";
   - reason for inclusion;
-  - active signal (Yes, linking to §6, or No);
+  - active signal (Yes, linking to §4, or "No verified signal in research
+    window");
   - last verified date.
-- Unknown fields stay **"Unknown"**. Never fill a footprint from memory.
-- An account is never excluded just because it has no recent news. If it
-  has no active signal, record "No verified signal in research window".
+- Unknown fields stay **"Unknown"**. Never fill a footprint or a vendor
+  from memory.
+- An account is never excluded just because it has no recent news.
+- §3 carries **no priority score**. Scores belong to signals, not accounts.
 
-## §6 Active Account Signals
+## §4 Active Account Signals
 
 Companies with verified developments inside the research window.
 
+- **Section lead (fixed text):** "Being listed here does not make an account
+  a sales opportunity. Intelligence Priority shows where more intelligence
+  gathering is justified."
 - **Columns:**
+  - signal ID (e.g. `[CC]-[SUB]-S01`);
   - account;
   - signal (Reported);
   - date;
-  - country;
-  - category;
   - signal categories (framework §1);
   - evidence (source and tier);
   - logistics implication (Analysis);
-  - **Intelligence Priority**, showing the seven component scores and the
-    band (framework §2).
-- Being listed here does **not** make an account a sales opportunity. Say
-  so in the section lead.
+  - **Intelligence Priority**: the scoring record from framework §2.4 —
+    seven component scores, total, band, gate result and rationale.
+- One row per signal. An account with two unrelated developments gets two
+  rows.
+- If a previous report exists, show the band change (e.g. "Medium → High")
+  and its reason.
+- Also embed the signals as JSON (`<script type="application/json"
+  id="signals-data">`), using the fields in "Embedded data blocks" below.
 
-## §7 Fulfilment Intelligence
+## §5 Competitor Landscape
 
-Organise by operational theme:
+Follow `competitor-observation.md`.
 
-- distribution centres;
-- warehouse expansion;
-- e-commerce fulfilment;
-- omnichannel;
-- returns;
-- inventory;
-- SKU complexity;
-- labour;
-- peak;
-- automation;
-- 3PL relationships.
+- **Section lead (fixed text):** "Observations record where a tracked
+  vendor is publicly reported at a retail account or its 3PL. They are not
+  an assessment of any vendor."
+- **Columns:** vendor; account (and operator, if a 3PL runs the site);
+  site and country; technology as described by the source; deployment
+  stage; date; source and tier; linked signal (§4) or watchlist ID.
+- Include non-tracked vendors only if they appear in a §4 signal, and mark
+  them "Not tracked".
+- If no tracked vendor is observed, say so in one line. Do not pad.
 
-For each theme give the **observed signal** (Reported) and the
-**operational implication** (Analysis). Leave out themes with no evidence,
-and record them in §9 instead.
+## §6 Commercial Intelligence Chains
 
-## §8 Commercial Intelligence Chains
+Build one chain per High-priority signal (framework §3), usually 2–4
+chains. Medium signals may get a chain when the evidence supports one.
 
-Build one chain per High-priority signal (framework §3), usually 2–4 chains.
-
-- Present each chain as a 7-step horizontal or vertical flow.
-- Show the evidence label on every link.
+- Present each chain as a 7-step flow, using the link record in framework
+  §3.2.
+- Show the evidence label and confidence on every link.
+- Link 6 lists watchlist IDs; link 7 shows owner and check-by date.
 - Close with the section callout: "No source states that any account
   requires a Geek+ solution; chains are analytical."
 
-## §9 Evidence Gaps & Source Conflicts
+## §7 Intelligence Watchlist
 
-A consolidated register with two tables.
-
-**Gaps table columns:**
-
-- what is missing;
-- why it matters;
-- where it might be found;
-- watchlist ID, if the gap became a watch item.
-
-**Conflicts table columns:**
-
-- claim;
-- source A value;
-- source B value;
-- more authoritative source;
-- explanation, or "unresolved".
-
-## §10 Intelligence Watchlist
-
-This replaces the generic Outlook. It is designed to be **machine-readable**
-so that monitoring can later be automated.
+This replaces the generic Outlook. It is **machine-readable** so that
+monitoring can later be automated.
 
 | Field | Content |
 |---|---|
-| `id` | Stable ID, e.g. `DE-FASH-W01` |
+| `id` | Stable ID: `[CC]-[SUB]-W[nn]`, e.g. `FR-BEAU-W01`. Never reused. |
 | `account_or_market` | Account name, or market/segment |
+| `type` | `account` / `market` / `regulatory` / `competitor` |
 | `monitor` | What to monitor |
-| `signal_condition` | What would count as a meaningful signal. Make it specific and testable, e.g. "Otto Group names a second site for the Robotic Coordination Layer" |
+| `signal_condition` | What would count as a meaningful signal. Specific and testable, e.g. "Company X names a vendor for site Y" |
 | `why_it_matters` | Link to the operational or commercial question |
-| `expected_source` | Source type plus the specific location (IR page, newsroom URL, Destatis release series, careers page) |
-| `cadence` | Daily / weekly / monthly / quarterly / event-driven (e.g. earnings date) |
+| `expected_source` | Source type plus the specific location (IR page, newsroom URL, statistics release series, careers page) |
+| `cadence` | Daily / weekly / monthly / quarterly / event-driven |
 | `known_dates` | Confirmed scheduled events only (Reported). Unconfirmed dates are marked as such |
-| `linked_signal` | §6 row or §9 gap it came from |
-| `status` | Open / triggered / closed |
+| `next_check` | The date the item should next be checked (YYYY-MM-DD): the earliest known date, or today + cadence |
+| `priority` | Band of the linked signal (`High` / `Medium` / `Low`), or `Gap` if it came from §8 only |
+| `owner` | Team responsible for checking: `Marketing` / `BD` / `Sales Ops` / `Retail Practice` |
+| `linked_signal` | Signal ID (§4) and/or gap ID (§8) it came from |
+| `competitors` | Tracked vendor ids involved (from `data/competitors.yaml`), or empty |
+| `close_condition` | What evidence would close the item (e.g. "tier 1 confirmation of go-live") |
+| `status` | `Open` / `Triggered` / `Closed` |
+| `last_checked` | YYYY-MM-DD, or empty if never checked since the report |
 
 **Rules**
 
+- Sort the table by `priority`, then `next_check`.
 - Separate **confirmed scheduled events** (Reported dates) from **analytical
   expectations**.
-- Also embed the watchlist in the HTML as a JSON block
-  (`<script type="application/json" id="watchlist">`), so it can be
-  extracted later.
+- A triggered item produces a signal record (format below). It does not
+  silently change the report.
+- Embed the watchlist as JSON (`<script type="application/json"
+  id="watchlist-data">`), as an array of objects with the fields above.
 
-## §11 Sources & Methodology
+## §8 Evidence Gaps, Conflicts & Sources
 
-- Numbered source list. For each source give:
-  - organisation;
-  - title;
-  - publication date;
-  - URL;
-  - access date;
-  - tier.
-- Methodology notes:
-  - research date;
-  - source hierarchy used;
-  - data retrieval method for charts;
-  - the method for every Calculated value;
-  - how conflicts were handled.
+**Gaps table:** gap ID (`G[nn]`); what is missing; why it matters; where it
+might be found; watchlist ID, if the gap became a watch item.
+
+**Conflicts table:** claim; source A value; source B value; more
+authoritative source; explanation, or "unresolved".
+
+**Sources:** numbered list. For each source give organisation; title;
+publication date; URL; access date; tier.
+
+**Methodology notes:** research date; source hierarchy used; data retrieval
+method for charts; the method for every Calculated value; how conflicts were
+handled; links that blocked automated access and need manual checking.
+
+---
+
+## Embedded data blocks
+
+Both blocks are JSON arrays, so they can be extracted without parsing the
+page.
+
+**`signals-data`** — one object per §4 row:
+
+```json
+{
+  "id": "FR-BEAU-S01",
+  "account": "…",
+  "signal": "…",
+  "date": "YYYY-MM or YYYY-MM-DD",
+  "categories": ["Facility / expansion"],
+  "sources": [14],
+  "evidence_tier": 3,
+  "scores": {"F": 2, "V": 2, "T": 1, "P": 1, "S": 2, "E": 1, "A": 2},
+  "total": 11,
+  "band": "Medium",
+  "gate": "Evidence gate failed (E=1)",
+  "competitors": ["scallog"],
+  "watchlist": ["FR-BEAU-W01"]
+}
+```
+
+**`watchlist-data`** — one object per §7 row, with the §7 field names.
 
 ---
 
@@ -255,31 +310,40 @@ Use this format for briefs and news items that are not full reports.
 - Retail subcategory: [...]       - Account: [name or N/A]
 - News classification: [primary; others]
 - Source: [org, title, URL, tier]
+- Watchlist item: [ID, if this triggered one]
 Reported: [fact only]
 Analysis: [interpretation]
 Signal categories: [framework §1, or "Context only"]
-Intelligence Priority: [F/V/T/P/S/E/A scores → band]
+Intelligence Priority: [F/V/T/P/S/E/A scores → total → band; gate result]
+Competitor observation: [vendor id + stage, or "None"]
 Evidence gap: [...]
-Next intelligence action: [...]
+Next intelligence action: [action · owner · check-by date]
 ```
 
-## §13 QA checklist (run before delivery)
+## QA checklist (run before delivery)
 
 1. Every number has a unit, period, geography, source and label.
 2. No placeholder or example data remains.
 3. Every chart has a message, a spec block, metadata and limitations, and
    was rendered and inspected.
 4. There are 4–6 headline KPIs, and each passes the promotion test.
-5. The Account Universe includes important accounts even when they have no
-   news.
-6. Every Intelligence Priority shows its component scores, and the words
-   "opportunity", "pipeline" and "sales priority" are not used.
-7. Every Commercial Intelligence Chain labels links 3–5 as Analysis, and no
-   chain states that a company needs Geek+.
-8. Evidence gaps and conflicts are consolidated in §9.
-9. Every watchlist item has a testable signal condition, a source and a
-   cadence. The JSON block is present.
-10. Source links have been checked. Links that block bots are listed for
+5. Every executive answer has a confidence tag that follows the rule.
+6. The Account Universe (§3) and Active Account Signals (§4) are separate
+   tables; §3 includes important accounts with no news and carries no
+   scores.
+7. Every signal shows its scoring record (seven scores, total, band, gate,
+   rationale), and the words "opportunity", "pipeline" and "sales priority"
+   are not used for a signal.
+8. Every competitor observation has a source and tier, and none compares
+   vendor performance or states that a vendor is displaceable.
+9. Every chain labels links 3–5 as Analysis, links link 6 to a watchlist ID,
+   gives link 7 an owner and date, and no chain states that a company needs
+   Geek+.
+10. Evidence gaps and conflicts are consolidated in §8.
+11. Every watchlist item has a testable signal condition, a source, a
+    cadence, a `next_check` date and an owner. Both JSON blocks are present
+    and parse.
+12. Source links have been checked. Links that block bots are listed for
     manual verification.
-11. The layout is readable at ~1440 px and ~375 px, with no horizontal page
+13. The layout is readable at ~1440 px and ~375 px, with no horizontal page
     scroll.

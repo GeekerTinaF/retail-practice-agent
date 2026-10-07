@@ -1,0 +1,118 @@
+# Retail Practice — tracked warehouse-automation vendors
+# The tracked list is set by Geek+ EMEA (2026-10-07). Method:
+# .claude/skills/retail-research/competitor-observation.md
+#
+# Rules
+# - Only names are pre-filled. Every other field stays null until it is
+#   verified from a cited source (`*_source` gives the URL).
+# - `observations` holds only Reported deployments at named European retail
+#   accounts or their 3PLs (competitor-observation.md §2–3), each with its
+#   source. Never add one from memory.
+# - Do not add vendors here because they appeared in research; record them
+#   in the report as "Not tracked" instead.
+
+version: 0.1
+last_updated: 2026-10-07
+
+vendors:
+  - id: autostore
+    name: AutoStore
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null          # as described by a cited source
+    technology_source: null
+    observations: []
+
+  - id: exotec
+    name: Exotec
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: hai_robotics
+    name: Hai Robotics
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: quicktron
+    name: Quicktron Robotics
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: hikrobot
+    name: Hikrobot
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: libiao
+    name: Libiao Robotics
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: scallog
+    name: Scallog
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations:
+      - account: L'Oréal
+        operator: Dimolog
+        site: Bain-de-Bretagne
+        country: FR
+        technology: "Goods-to-person system, 6 stations, 32 robots, used for slow movers"
+        scope: "L'Oréal European e-commerce: 24 brands, 14,000 SKUs, 13 countries"
+        stage: live
+        date: 2025-11-09          # publication date; site live Mar 2025 per the same source
+        integrator: AB Process
+        source: https://www.voxlog.fr/actualite/10369/dimolog-inaugure-son-nouveau-site-breton-centrale-de-distribution-e-commerce-de-l-oreal-en-europe
+        tier: 3
+        cited_in: outputs/france-beauty-retail-intelligence.html (source 14; watchlist FR-BEAU-W01)
+
+  - id: brightpick
+    name: Brightpick
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: mushiny
+    name: Mushiny
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []
+
+  - id: knapp
+    name: KNAPP
+    website: null
+    hq_country: null
+    hq_source: null
+    technology: null
+    technology_source: null
+    observations: []

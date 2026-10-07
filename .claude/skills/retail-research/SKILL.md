@@ -1,6 +1,6 @@
 ---
 name: retail-research
-description: Use when researching European retail industry topics, retail companies/accounts, retail market news, or preparing retail intelligence for Geek+ EMEA Marketing, Business Development, or Sales. Defines the intelligence chain (market → account → fulfilment → commercial), evidence standards, taxonomies, intelligence-priority scoring, the intelligence watchlist, and report/visualization standards.
+description: Use when researching European retail industry topics, retail companies/accounts, retail market news, or preparing retail intelligence for Geek+ EMEA Marketing, Business Development, or Sales. Defines the intelligence chain (market → account → fulfilment → commercial), evidence standards, taxonomies, intelligence-priority scoring, competitor observation, the intelligence watchlist, and report/visualization standards.
 ---
 
 # Retail Research (European Retail) — V0.2
@@ -36,21 +36,29 @@ must make clear:
 ## Workflow
 
 1. **Frame.** Record the market, segment, time window and research date.
+   Check `outputs/` for a previous report on the same scope; if one exists,
+   use it as the baseline for "what changed".
 2. **Collect.** Apply the source hierarchy and evidence labels in
    `evidence-policy.md`.
 3. **Classify.** Tag each finding by country, retail subcategory and news
    type (`taxonomy.md`).
-4. **Structure accounts.** Separate the **Account Universe** from **Active
-   Account Signals** (`report-spec.md` §5–6).
-5. **Score.** Give each active signal an **Intelligence Priority**. This is
-   not a sales priority (`commercial-intelligence-framework.md` §2).
-6. **Chain.** For High-priority signals, build the **Commercial Intelligence
+4. **Structure accounts.** Build the **Account Universe** and the **Active
+   Account Signals** as separate tables (`report-spec.md` §3–4).
+5. **Score.** Give each active signal an **Intelligence Priority** scoring
+   record. This is not a sales priority
+   (`commercial-intelligence-framework.md` §2).
+6. **Observe competitors.** Record every Reported deployment of a tracked
+   vendor (`data/competitors.yaml`) in scope (`competitor-observation.md`).
+7. **Chain.** For High-priority signals, build the **Commercial Intelligence
    Chain** (`commercial-intelligence-framework.md` §3).
-7. **Visualize.** Build a chart only when it proves one sentence
+8. **Visualize.** Build a chart only when it proves one sentence
    (`visualization-guidelines.md`).
-8. **Watch.** Turn each open question into an **Intelligence Watchlist**
-   item (`report-spec.md` §10).
-9. **QA.** Run the checklist in `report-spec.md` §13 before delivering.
+9. **Watch.** Turn each open question into an **Intelligence Watchlist**
+   item with an owner and a next-check date (`report-spec.md` §7).
+10. **Write the executive layer last.** Synthesise §1 from the finished
+    sections (`report-spec.md` §1).
+11. **QA.** Run the checklist at the end of `report-spec.md` before
+    delivering.
 
 ## Non-negotiables
 
@@ -69,13 +77,20 @@ must make clear:
   direct evidence.
 - **Never present intelligence priority as sales priority.** Sales priority
   requires CRM or Sales input.
+- **Never compare or disparage competitors.** Record only Reported vendor
+  deployments; never claim a vendor's customer is at risk or switching
+  (`evidence-policy.md` §10).
 
 ## Supporting files
 
 | File | Covers |
 |---|---|
-| `evidence-policy.md` | Source hierarchy, McKinsey/Deloitte rules, primary company sources, evidence labels, conflicts, gaps |
+| `evidence-policy.md` | Source hierarchy, McKinsey/Deloitte rules, primary company sources, evidence labels, conflicts, gaps, competitor claims |
 | `taxonomy.md` | Retail subcategories, country groupings, news classification |
-| `report-spec.md` | V0.2 report architecture, executive intelligence interface, KPI discipline, account model, watchlist schema, signal record format, QA checklist |
+| `report-spec.md` | Report architecture (9 sections), executive intelligence interface, KPI discipline, account model, competitor section, watchlist schema, embedded JSON blocks, signal record format, QA checklist |
 | `visualization-guidelines.md` | The "every chart proves one sentence" standard and the chart specification block |
-| `commercial-intelligence-framework.md` | Sales-trigger categories, Intelligence Priority scoring, Commercial Intelligence Chain, Geek+ relevance rules |
+| `commercial-intelligence-framework.md` | Sales-trigger categories, Intelligence Priority scoring and scoring record, Commercial Intelligence Chain link rules, Geek+ relevance rules |
+| `competitor-observation.md` | What counts as a vendor observation, the observation record, its effect on scoring and chains, competitor watchlist items |
+
+Reference data lives in `data/`: `countries.yaml`, `subcategories.yaml`,
+`sources.yaml`, `accounts.csv` and `competitors.yaml`.
